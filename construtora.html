@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+
+<html lang="pt"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CARCAS HOUSE | Construção de Casas Estruturais em Madeira</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 com plugins necessários -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              dark: '#14171A',
+              cardDark: '#1B1E22',
+              surface: '#FFFFFF',
+              canvas: '#F5F6F8',
+              accent: '#C5A880',
+              accentHover: '#B3966F',
+              muted: '#68737D',
+              border: '#E2E8F0',
+            }
+          },
+          maxWidth: {
+            'desktop': '1280px',
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="base-styling">
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #F5F6F8;
+      color: #14171A;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::selection {
+      background-color: #14171A;
+      color: #FFFFFF;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+<style data-purpose="component-effects">
+    .transition-card {
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .transition-card:hover {
+      transform: translateY(-4px);
+    }
+    .architectural-grid {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-brand-dark selection:text-white">
+<!-- BEGIN: MainHeader -->
+<header class="sticky top-0 z-50 bg-[#F5F6F8]/90 backdrop-blur-md border-b border-brand-border/60" data-purpose="site-header">
+<div class="max-w-desktop mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
+<!-- Logo da Marca -->
+<a class="flex items-center gap-3 group" data-purpose="brand-identity" href="#">
+<div class="w-10 h-10 rounded-xl bg-brand-dark flex items-center justify-center text-white font-bold tracking-tighter text-lg shadow-sm">
+          CH
+        </div>
+<div class="flex flex-col">
+<span class="font-extrabold text-lg tracking-wider text-brand-dark uppercase leading-tight">Carcas House</span>
+<span class="text-[10px] tracking-widest text-brand-muted uppercase font-medium">Arquitetura &amp; Madeira</span>
+</div>
+</a>
+<!-- Menu Horizontal de Navegação Desktop -->
+<nav class="hidden md:flex items-center gap-8 text-sm font-medium text-brand-muted" data-purpose="navigation-links">
+<a class="text-brand-dark hover:text-brand-dark transition-colors py-1" href="#inicio">Início</a>
+<a class="hover:text-brand-dark transition-colors py-1" href="#tecnologia">Tecnologia</a>
+<a class="hover:text-brand-dark transition-colors py-1" href="#catalogo">Projetos</a>
+<a class="hover:text-brand-dark transition-colors py-1" href="#financiamento">Financiamento</a>
+<a class="hover:text-brand-dark transition-colors py-1" href="#processo">Processo</a>
+<a class="hover:text-brand-dark transition-colors py-1" href="#contacto">Contactos</a>
+</nav>
+<!-- Contacto Rápido & CTA Superior -->
+<div class="flex items-center gap-6" data-purpose="header-cta">
+<div class="hidden xl:flex flex-col text-right">
+<span class="text-xs text-brand-muted font-medium">Linha de Apoio Direta</span>
+<a class="text-sm font-bold text-brand-dark hover:text-brand-accent transition-colors" href="tel:+351210999888">+351 210 999 888</a>
+</div>
+<a class="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-brand-dark text-white text-xs lg:text-sm font-semibold tracking-wide hover:bg-neutral-800 transition-all shadow-sm" href="#contacto">
+          Pedir Orçamento
+        </a>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<main class="flex-grow">
+<!-- BEGIN: HeroSection -->
+<section class="pt-8 pb-20 lg:pt-14 lg:pb-28 overflow-hidden" data-purpose="hero-banner" id="inicio">
+<div class="max-w-desktop mx-auto px-6 lg:px-8">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+<!-- Coluna Esquerda: Texto e Estatísticas -->
+<div class="lg:col-span-6 flex flex-col justify-center">
+<!-- Eyebrow Tag -->
+<div class="inline-flex items-center gap-2 self-start px-3.5 py-1.5 rounded-full bg-white border border-brand-border text-xs font-semibold uppercase tracking-wider text-brand-muted mb-6 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              Construção de Casas Modernas
+            </div>
+<!-- Título Principal Display -->
+<h1 class="text-4xl sm:text-5xl lg:text-[3.25rem] font-extrabold tracking-tight text-brand-dark leading-[1.12] mb-6">
+              Casa pré-fabricada pronta a habitar a partir de <span class="underline decoration-brand-accent/50 underline-offset-8">100 m² em 2 meses</span>
+</h1>
+<!-- Subtítulo -->
+<p class="text-base sm:text-lg text-brand-muted leading-relaxed font-normal mb-8 max-w-xl">
+              Casas sustentáveis com estrutura certificada de madeira, engenharia alemã com alta eficiência energética A+ e conforto acústico definitivo para a sua família.
+            </p>
+<!-- Ações CTA -->
+<div class="flex flex-wrap items-center gap-4 mb-12">
+<a class="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-brand-dark text-white text-sm font-bold tracking-wide hover:bg-neutral-800 transition-all shadow-md hover:shadow-lg" href="#contacto">
+<span>Pedir Orçamento Personalizado</span>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+<a class="inline-flex items-center gap-2 px-6 py-4 rounded-xl bg-white border border-brand-border text-brand-dark text-sm font-bold tracking-wide hover:bg-neutral-50 transition-all shadow-sm" href="#catalogo">
+                Explorar Modelos
+              </a>
+</div>
+<!-- Faixa Horizontal de 3 Métricas -->
+<div class="grid grid-cols-3 gap-4 pt-8 border-t border-brand-border/70 max-w-lg" data-purpose="hero-stats">
+<div>
+<div class="text-3xl font-extrabold text-brand-dark tracking-tight">65<span class="text-brand-accent">~</span></div>
+<div class="text-xs text-brand-muted mt-1 font-medium leading-snug">dias úteis de prazo médio de obra</div>
+</div>
+<div class="border-l border-brand-border pl-4">
+<div class="text-3xl font-extrabold text-brand-dark tracking-tight">7<span class="text-brand-accent">+</span></div>
+<div class="text-xs text-brand-muted mt-1 font-medium leading-snug">anos de garantia estrutural total</div>
+</div>
+<div class="border-l border-brand-border pl-4">
+<div class="text-3xl font-extrabold text-brand-dark tracking-tight">180<span class="text-brand-accent">+</span></div>
+<div class="text-xs text-brand-muted mt-1 font-medium leading-snug">habitações erguidas com excelência</div>
+</div>
+</div>
+</div>
+<!-- Coluna Direita: Imagem Arquitetónica em Destaque -->
+<div class="lg:col-span-6 relative">
+<div class="relative rounded-3xl overflow-hidden shadow-2xl bg-neutral-200 border-4 border-white aspect-[4/3] lg:aspect-[5/4] group">
+<!-- Fotografia da Fachada -->
+<img alt="Fachada de habitação contemporânea com estrutura de madeira e vidro integrada na floresta" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT_KOtjqo0qr2VDtsOr_E5gxske6CZ2kCQ2xrXkV1nATGlgW7tXJ7PvyeNdQ1iAd4irDRtGWs34CgYWXHBp4NfomnD7m8LnKGCBlFyP5t5KQODKghAqtkmYdoGSiVahYx619EYyZV8DT2XKhkFY2KKApPB1n0UxipJwJDgZhE78prsbOJ3Ve-q8sb6QX96agddtMh7ad4YQpzyPizG8KMBSV5hqpPkagvNaqlc0EA_MYIUbbneYtn8fQ"/>
+<!-- Gradiente de acabamento sutil -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
+<!-- Badge Flutuante no Topo -->
+<div class="absolute top-5 right-5 bg-white/95 backdrop-blur-md px-4 py-2 rounded-xl text-xs font-bold text-brand-dark shadow-md flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                Certificação Energética A+
+              </div>
+<!-- Legenda no fundo da imagem -->
+<div class="absolute bottom-6 left-6 right-6 text-white">
+<div class="text-xs font-semibold uppercase tracking-wider text-white/80 mb-1">Modelo Villa Forest 140</div>
+<div class="text-base font-bold">Arquitetura Nórdica com Madeira Nórdica Certificada FSC®</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: HeroSection -->
+<!-- BEGIN: TechnologySection -->
+<section class="py-20 bg-white border-y border-brand-border/60" data-purpose="technology-advantages" id="tecnologia">
+<div class="max-w-desktop mx-auto px-6 lg:px-8">
+<!-- Cabeçalho de Secção -->
+<div class="max-w-2xl mb-14">
+<span class="text-xs uppercase font-extrabold tracking-widest text-brand-accent">Inovação e Rigor Técnico</span>
+<h2 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-2 mb-4">
+            Construímos casas de madeira com tecnologia de ponta
+          </h2>
+<p class="text-brand-muted text-base">
+            O método de construção a seco e pré-fabricação controlada elimina atrasos de intempéries, maximiza a densidade térmica e proporciona um lar saudável e ecológico para várias gerações.
+          </p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch">
+<!-- Coluna Esquerda: Esquema Técnico Arquitetónico -->
+<div class="lg:col-span-5 bg-[#F8F9FB] rounded-2xl p-8 border border-brand-border flex flex-col justify-between architectural-grid">
+<div>
+<div class="flex items-center justify-between mb-6">
+<span class="text-xs font-bold uppercase tracking-wider text-brand-dark bg-white px-3 py-1 rounded-md border border-brand-border shadow-xs">
+                  Corte Construtivo
+                </span>
+<span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md">
+                  Norma Eurocódigo 5
+                </span>
+</div>
+<h3 class="text-xl font-bold text-brand-dark mb-3">Esquema Estrutural Multicamada</h3>
+<p class="text-sm text-brand-muted leading-relaxed mb-6">
+                Vigas lameladas coladas (Glulam) tratadas a autoclave, membrana respirável de barreira de vapor, lã de rocha basáltica de 150mm e revestimento exterior ventilado com acabamentos personalizáveis.
+              </p>
+</div>
+<!-- Ilustração Técnica / Diagrama -->
+<div class="rounded-xl overflow-hidden border border-brand-border bg-white p-4 shadow-sm mb-4">
+<img alt="Diagrama do corte estrutural em madeira com isolamento térmico" class="w-full h-48 object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh1w1FU_jmMQXKa-DmT_D8Pe_QTvgxf-mSq8YPy9Jh_FHCtDU_Uy2E0vkgP2s0GukCLocZ8BMHKVYGCb3sa7PMiM63AwIZs5ZB92XyOqk9KhahtxUStM-CEoOTOd8_0aqkLViMmkcRLjhSfd4Y7XS5IroSeaekZi46LZYo-Swn9vlJC8aHPJIrL8REet0Kz3iMk-L7ufe-2acK8r1Dy3f2JyDDkidjiA8cyU0xs625VlLXs0x8ChWD8w"/>
+</div>
+<div class="flex items-center justify-between text-xs text-brand-muted font-medium pt-2 border-t border-brand-border/60">
+<span>Madeira Tratada Anti-Fogo (C24)</span>
+<span>100% Reciclável</span>
+</div>
+</div>
+<!-- Coluna Direita: 3 Cartões de Benefícios Tecnológicos -->
+<div class="lg:col-span-7 flex flex-col justify-between gap-5">
+<!-- Card 1 -->
+<div class="p-6 sm:p-7 rounded-2xl bg-white border border-brand-border hover:border-neutral-400 transition-card shadow-sm flex items-start gap-5">
+<div class="w-14 h-14 rounded-xl bg-brand-dark text-white flex-shrink-0 flex items-center justify-center">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+<div>
+<h4 class="text-lg font-bold text-brand-dark mb-1">Alta resistência e rigidez estrutural</h4>
+<p class="text-sm text-brand-muted leading-relaxed">
+                  Sem propensão para fissuras ou deformações. Os módulos pré-cortados a laser em fábrica oferecem precisão milimétrica e resistência superior a sismos e condições climatéricas extremas.
+                </p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="p-6 sm:p-7 rounded-2xl bg-white border border-brand-border hover:border-neutral-400 transition-card shadow-sm flex items-start gap-5">
+<div class="w-14 h-14 rounded-xl bg-brand-dark text-white flex-shrink-0 flex items-center justify-center">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+<div>
+<h4 class="text-lg font-bold text-brand-dark mb-1">Isolamento térmico superior (poupança até 60%)</h4>
+<p class="text-sm text-brand-muted leading-relaxed">
+                  A baixa condutividade térmica da madeira, associada à rotura de pontes térmicas e vidros triplos, mantém o clima interior constante, resultando numa redução drástica na fatura energética.
+                </p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="p-6 sm:p-7 rounded-2xl bg-white border border-brand-border hover:border-neutral-400 transition-card shadow-sm flex items-start gap-5">
+<div class="w-14 h-14 rounded-xl bg-brand-dark text-white flex-shrink-0 flex items-center justify-center">
+<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+<div>
+<h4 class="text-lg font-bold text-brand-dark mb-1">Sem assentamento nem tempos de secagem</h4>
+<p class="text-sm text-brand-muted leading-relaxed">
+                  Construção a seco inovadora: pode habitar e mobilar o imóvel imediatamente após a conclusão da montagem, sem humidades residuais ou riscos de fissuras de retração.
+                </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: TechnologySection -->
+<!-- BEGIN: ProjectsCatalogSection -->
+<section class="py-20 lg:py-28" data-purpose="models-catalog" id="catalogo">
+<div class="max-w-desktop mx-auto px-6 lg:px-8">
+<!-- Header do Catálogo com Setas de Navegação -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div>
+<span class="text-xs uppercase font-extrabold tracking-widest text-brand-accent">Coleção Exclusiva</span>
+<h2 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1">
+              Catálogo de Projetos 2025
+            </h2>
+<p class="text-brand-muted text-sm mt-2">Plantas inteligentes personalizáveis de acordo com a topografia do seu lote.</p>
+</div>
+<div class="flex items-center gap-3">
+<button aria-label="Anterior" class="w-11 h-11 rounded-full border border-brand-border bg-white flex items-center justify-center text-brand-dark hover:bg-neutral-100 transition-colors shadow-xs">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M15.75 19.5L8.25 12l7.5-7.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</button>
+<button aria-label="Seguinte" class="w-11 h-11 rounded-full border border-brand-border bg-white flex items-center justify-center text-brand-dark hover:bg-neutral-100 transition-colors shadow-xs">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</button>
+</div>
+</div>
+<!-- Grelha de 4 Modelos Desktop -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+<!-- Modelo 1 -->
+<article class="bg-white rounded-2xl overflow-hidden border border-brand-border/80 shadow-sm transition-card flex flex-col justify-between" data-purpose="house-card">
+<div>
+<div class="relative h-60 overflow-hidden">
+<img alt="Casa modelo Horizon 120m2" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2FjsPW6FvUp9TIVWdsqsmlsnG1gqvGt-7Oa8OJAPCXJPk_1msiBsZeXXDxQB8AEAbH7HEdDkKNipCC-apaF4thqZdPJOF5nDjgUShLYBtPPlpdpj7Jj9IkcJ8YDREYoHajrahnRBFpchuiPIU36hDCdvbIJX2XZZfUq-mNxtaefNBCPwgTCTIV6BSEt3PJGKT7zSCaouLUQYJxNEIpWfS9N_bqrMlZbBZofrx1SeljnRkc6Ecs0XdIA"/>
+<span class="absolute top-3 left-3 bg-brand-dark/90 text-white text-[11px] font-bold px-2.5 py-1 rounded-md tracking-wide">
+                  Mais Vendida
+                </span>
+<span class="absolute bottom-3 right-3 bg-white/95 text-brand-dark text-[11px] font-bold px-2.5 py-1 rounded-md shadow-xs">
+                  2 Pisos • T3
+                </span>
+</div>
+<div class="p-5">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-base font-bold text-brand-dark">Modelo Horizon 120</h3>
+<span class="text-xs font-semibold text-brand-muted">120 m²</span>
+</div>
+<p class="text-xs text-brand-muted mb-4 line-clamp-2">
+                  Janelas panorâmicas de teto ao chão, suíte master com varanda superior e open space.
+                </p>
+<div class="pt-3 border-t border-brand-border/60 flex items-baseline justify-between">
+<span class="text-[11px] text-brand-muted uppercase font-semibold">A partir de</span>
+<span class="text-lg font-extrabold text-brand-dark">115.000 €</span>
+</div>
+</div>
+</div>
+<div class="p-5 pt-0">
+<a class="w-full inline-flex items-center justify-center py-2.5 rounded-xl border border-brand-dark text-brand-dark text-xs font-bold hover:bg-brand-dark hover:text-white transition-all" href="#contacto">
+                Ver Detalhes &amp; Orçamento
+              </a>
+</div>
+</article>
+<!-- Modelo 2 -->
+<article class="bg-white rounded-2xl overflow-hidden border border-brand-border/80 shadow-sm transition-card flex flex-col justify-between" data-purpose="house-card">
+<div>
+<div class="relative h-60 overflow-hidden">
+<img alt="Casa modelo Alpha 77m2" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdD0qdjO17Uv5Ovb4MkBnTOlqn5YMB90oeqVQTIgnWPoqMhf2_zLeLENmQqzxprCXLwIJjBWAdEDlHxnq_QM6EOCVM54ZLPuuwcdDWHOWnIZ7XXuNubqgWJ4uBL54zFLv_1FHCV7quYh47OdpA4yiqpR5_7XQUcveC9EZjoehta0yoWabCeR_pFuzQnjze8cRaiKuSrshPsEZMOb2Xu28MZDq4sjjmGHP6kzxytcg5FhnG3FC-pwSP0g"/>
+<span class="absolute top-3 left-3 bg-emerald-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-md tracking-wide">
+                  Eco Compact
+                </span>
+<span class="absolute bottom-3 right-3 bg-white/95 text-brand-dark text-[11px] font-bold px-2.5 py-1 rounded-md shadow-xs">
+                  Térrea • T2
+                </span>
+</div>
+<div class="p-5">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-base font-bold text-brand-dark">Modelo Alpha 77</h3>
+<span class="text-xs font-semibold text-brand-muted">77 m²</span>
+</div>
+<p class="text-xs text-brand-muted mb-4 line-clamp-2">
+                  Ideal para terrenos compactos e quintas de férias, distribuição sem corredores e com alpendre.
+                </p>
+<div class="pt-3 border-t border-brand-border/60 flex items-baseline justify-between">
+<span class="text-[11px] text-brand-muted uppercase font-semibold">A partir de</span>
+<span class="text-lg font-extrabold text-brand-dark">78.000 €</span>
+</div>
+</div>
+</div>
+<div class="p-5 pt-0">
+<a class="w-full inline-flex items-center justify-center py-2.5 rounded-xl border border-brand-dark text-brand-dark text-xs font-bold hover:bg-brand-dark hover:text-white transition-all" href="#contacto">
+                Ver Detalhes &amp; Orçamento
+              </a>
+</div>
+</article>
+<!-- Modelo 3 -->
+<article class="bg-white rounded-2xl overflow-hidden border border-brand-border/80 shadow-sm transition-card flex flex-col justify-between" data-purpose="house-card">
+<div>
+<div class="relative h-60 overflow-hidden">
+<img alt="Casa modelo Beta 94m2" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0_F7g0n6ysO_e0Li-bvi8zULasf7b3jWCYyuHDXx96bBJFbbQFZQzevUkQYzPRtn7VQgTXW6pMKxy-GsOSDo-Ynu6AmBGovqPSpEWsoLiSYGnX4L-IWhvtgKq4r2Y7azJX3AvpXR0eC21Bhs9_f5trRSWzbEm4BVbZ4yrUTdfHdv5qC1_UgBo_e92vij6lh46VETDWrz9Fu0shBsanhYd3E1Cb9H0TO1WVlA23wm-BQ_TbLEtjAAoiQ"/>
+<span class="absolute top-3 left-3 bg-brand-dark/90 text-white text-[11px] font-bold px-2.5 py-1 rounded-md tracking-wide">
+                  Design Moderno
+                </span>
+<span class="absolute bottom-3 right-3 bg-white/95 text-brand-dark text-[11px] font-bold px-2.5 py-1 rounded-md shadow-xs">
+                  2 Pisos • T3
+                </span>
+</div>
+<div class="p-5">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-base font-bold text-brand-dark">Modelo Beta 94</h3>
+<span class="text-xs font-semibold text-brand-muted">94 m²</span>
+</div>
+<p class="text-xs text-brand-muted mb-4 line-clamp-2">
+                  Pé-direito duplo na sala, mezanino luminoso para escritório e pérgula exterior incluída.
+                </p>
+<div class="pt-3 border-t border-brand-border/60 flex items-baseline justify-between">
+<span class="text-[11px] text-brand-muted uppercase font-semibold">A partir de</span>
+<span class="text-lg font-extrabold text-brand-dark">96.000 €</span>
+</div>
+</div>
+</div>
+<div class="p-5 pt-0">
+<a class="w-full inline-flex items-center justify-center py-2.5 rounded-xl border border-brand-dark text-brand-dark text-xs font-bold hover:bg-brand-dark hover:text-white transition-all" href="#contacto">
+                Ver Detalhes &amp; Orçamento
+              </a>
+</div>
+</article>
+<!-- Modelo 4 -->
+<article class="bg-white rounded-2xl overflow-hidden border border-brand-border/80 shadow-sm transition-card flex flex-col justify-between" data-purpose="house-card">
+<div>
+<div class="relative h-60 overflow-hidden">
+<img alt="Casa modelo Natura 65m2" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAA50LCAmvnCt2InsGzsyELK43fsHA0TWaeB_pExvpJQcU1Ypf56c84flyDrdiIXRNHvKd_YsgfVAv5oizG-n785T7aCHMfQyd0J_zMKCClAqkVlLzAy3cVCChwiDw4J51cZHUE2unxfMIbr-JUhPS8Bkc-rC80jXWZz0kq5NIzgEZP71yafmdfqnNHSd8KvmbY0ZvaixiyPuGY7YzNFEly2_tAhdaeLwmINyO50mNFI-CBQVfnvz5FiA"/>
+<span class="absolute top-3 left-3 bg-brand-accent text-white text-[11px] font-bold px-2.5 py-1 rounded-md tracking-wide">
+                  Eco Plus
+                </span>
+<span class="absolute bottom-3 right-3 bg-white/95 text-brand-dark text-[11px] font-bold px-2.5 py-1 rounded-md shadow-xs">
+                  Térrea • T2
+                </span>
+</div>
+<div class="p-5">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-base font-bold text-brand-dark">Modelo Natura 65</h3>
+<span class="text-xs font-semibold text-brand-muted">65 m²</span>
+</div>
+<p class="text-xs text-brand-muted mb-4 line-clamp-2">
+                  Habitação modular compacta e versátil com acabamentos em madeira termotratada e vidro duplo Guardian Sun.
+                </p>
+<div class="pt-3 border-t border-brand-border/60 flex items-baseline justify-between">
+<span class="text-[11px] text-brand-muted uppercase font-semibold">A partir de</span>
+<span class="text-lg font-extrabold text-brand-dark">68.000 €</span>
+</div>
+</div>
+</div>
+<div class="p-5 pt-0">
+<a class="w-full inline-flex items-center justify-center py-2.5 rounded-xl border border-brand-dark text-brand-dark text-xs font-bold hover:bg-brand-dark hover:text-white transition-all" href="#contacto">
+                Ver Detalhes &amp; Orçamento
+              </a>
+</div>
+</article>
+</div>
+<!-- Botão Central de Catálogo Completo -->
+<div class="text-center">
+<a class="inline-flex items-center gap-3 px-8 py-3.5 rounded-xl bg-brand-dark text-white text-sm font-bold tracking-wide hover:bg-neutral-800 transition-all shadow-sm" href="#contacto">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>Descarregar Catálogo Completo 2025 (PDF)</span>
+</a>
+</div>
+</div>
+</section>
+<!-- END: ProjectsCatalogSection -->
+<!-- BEGIN: FinancingSection -->
+<section class="py-20 bg-white border-t border-brand-border/60" data-purpose="financing-methods" id="financiamento">
+<div class="max-w-desktop mx-auto px-6 lg:px-8">
+<div class="text-center max-w-2xl mx-auto mb-14">
+<span class="text-xs uppercase font-extrabold tracking-widest text-brand-accent">Flexibilidade e Transparência</span>
+<h2 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1 mb-3">
+            Opções de financiamento e pagamento
+          </h2>
+<p class="text-brand-muted text-sm sm:text-base">
+            Soluções ajustadas ao seu plano de investimento, com parcerias institucionais e apoio integral na documentação legal.
+          </p>
+</div>
+<!-- Grelha de 4 Cartões Escuros Minimalistas (inspirados na imagem) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Card 1 Financiamento -->
+<div class="bg-brand-dark text-white rounded-2xl p-7 flex flex-col justify-between transition-card shadow-lg" data-purpose="finance-card">
+<div>
+<div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-white mb-6">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6H2.25m0 0v9.75c0 .414.336.75.75.75H3m18-10.5v.75c0 .414.336.75.75.75h.75m0 0v9.75c0 .414-.336.75-.75.75h-.75m-15.75-9h15m-15 4.5h15m-15 4.5h15" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+<h3 class="text-lg font-bold mb-3 tracking-tight">Crédito Habitação</h3>
+<p class="text-white/70 text-xs sm:text-sm leading-relaxed mb-6">
+                Protocolos diretos com os principais bancos em Portugal. Possibilidade de financiamento até 90% da obra com spreads bonificados.
+              </p>
+</div>
+<div class="flex items-center justify-between pt-4 border-t border-white/10">
+<span class="text-xs text-white/50 font-medium">Taxas a partir de 2.8%</span>
+<a aria-label="Saber mais sobre Crédito" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white hover:text-brand-dark flex items-center justify-center text-white transition-colors" href="#contacto">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+</div>
+</div>
+<!-- Card 2 Financiamento -->
+<div class="bg-brand-dark text-white rounded-2xl p-7 flex flex-col justify-between transition-card shadow-lg" data-purpose="finance-card">
+<div>
+<div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-white mb-6">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-.778.099-1.533.284-2.253" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+<h3 class="text-lg font-bold mb-3 tracking-tight">Fundos Ambientais</h3>
+<p class="text-white/70 text-xs sm:text-sm leading-relaxed mb-6">
+                Apoio e candidatura a subsídios estatais de eficiência energética (Fundo Ambiental, Casa Eficiente) e incentivos verdes.
+              </p>
+</div>
+<div class="flex items-center justify-between pt-4 border-t border-white/10">
+<span class="text-xs text-white/50 font-medium">Incentivos a fundo perdido</span>
+<a aria-label="Saber mais sobre Apoio Ambiental" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white hover:text-brand-dark flex items-center justify-center text-white transition-colors" href="#contacto">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+</div>
+</div>
+<!-- Card 3 Financiamento -->
+<div class="bg-brand-dark text-white rounded-2xl p-7 flex flex-col justify-between transition-card shadow-lg" data-purpose="finance-card">
+<div>
+<div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-white mb-6">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+<h3 class="text-lg font-bold mb-3 tracking-tight">Pagamento Faseado</h3>
+<p class="text-white/70 text-xs sm:text-sm leading-relaxed mb-6">
+                Liquidação repartida por tranches auditadas e associadas aos marcos de execução: projeto, fabrico, montagem e chave na mão.
+              </p>
+</div>
+<div class="flex items-center justify-between pt-4 border-t border-white/10">
+<span class="text-xs text-white/50 font-medium">4 Tranches Transparentes</span>
+<a aria-label="Saber mais sobre Pagamento Faseado" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white hover:text-brand-dark flex items-center justify-center text-white transition-colors" href="#contacto">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+</div>
+</div>
+<!-- Card 4 Financiamento -->
+<div class="bg-brand-dark text-white rounded-2xl p-7 flex flex-col justify-between transition-card shadow-lg" data-purpose="finance-card">
+<div>
+<div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-white mb-6">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+<h3 class="text-lg font-bold mb-3 tracking-tight">Soluções B2B &amp; Turismo</h3>
+<p class="text-white/70 text-xs sm:text-sm leading-relaxed mb-6">
+                Condições especiais para alojamentos turísticos, glampings e empreendimentos imobiliários com faturação com IVA dedutível.
+              </p>
+</div>
+<div class="flex items-center justify-between pt-4 border-t border-white/10">
+<span class="text-xs text-white/50 font-medium">Contratos Empresariais</span>
+<a aria-label="Saber mais sobre Soluções B2B" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white hover:text-brand-dark flex items-center justify-center text-white transition-colors" href="#contacto">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: FinancingSection -->
+<!-- BEGIN: ProcessStepsSection -->
+<section class="py-20 lg:py-28" data-purpose="process-steps" id="processo">
+<div class="max-w-desktop mx-auto px-6 lg:px-8">
+<div class="max-w-2xl mb-16">
+<span class="text-xs uppercase font-extrabold tracking-widest text-brand-accent">Metodologia Comprovada</span>
+<h2 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mt-1 mb-3">
+            Três passos para a sua nova casa
+          </h2>
+<p class="text-brand-muted text-sm sm:text-base">
+            Eliminamos surpresas orçamentais. Um acompanhamento rigoroso do esboço inicial à entrega das chaves.
+          </p>
+</div>
+<!-- Linha Desktop de 3 Passos Conectados -->
+<div class="relative grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Linha Ténue de Ligação Desktop -->
+<div class="hidden md:block absolute top-12 left-1/6 right-1/6 h-[2px] bg-brand-border/80 z-0"></div>
+<!-- Passo 01 -->
+<div class="relative z-10 bg-white p-8 rounded-2xl border border-brand-border/80 shadow-sm flex flex-col justify-between">
+<div>
+<div class="w-14 h-14 rounded-xl bg-brand-dark text-white flex items-center justify-center font-black text-xl mb-6 shadow-sm">
+                01
+              </div>
+<h3 class="text-xl font-bold text-brand-dark mb-2">Consulta e Estudo Prévio</h3>
+<p class="text-sm text-brand-muted leading-relaxed">
+                Analisamos a viabilidade urbanística do seu terreno (PDM), ajustamos o modelo arquitetónico pretendido e fixamos o orçamento fechado em contrato.
+              </p>
+</div>
+<div class="mt-6 pt-4 border-t border-brand-border/60 text-xs font-semibold text-brand-muted">
+              Prazo: 7 a 15 dias
+            </div>
+</div>
+<!-- Passo 02 -->
+<div class="relative z-10 bg-white p-8 rounded-2xl border border-brand-border/80 shadow-sm flex flex-col justify-between">
+<div>
+<div class="w-14 h-14 rounded-xl bg-brand-dark text-white flex items-center justify-center font-black text-xl mb-6 shadow-sm">
+                02
+              </div>
+<h3 class="text-xl font-bold text-brand-dark mb-2">Engenharia e Pré-Fabrico</h3>
+<p class="text-sm text-brand-muted leading-relaxed">
+                Produção das paredes e estruturas em ambiente de fábrica sob rigoroso controlo de humidade e temperatura com componentes certificados.
+              </p>
+</div>
+<div class="mt-6 pt-4 border-t border-brand-border/60 text-xs font-semibold text-brand-muted">
+              Prazo: 30 a 45 dias
+            </div>
+</div>
+<!-- Passo 03 -->
+<div class="relative z-10 bg-white p-8 rounded-2xl border border-brand-border/80 shadow-sm flex flex-col justify-between">
+<div>
+<div class="w-14 h-14 rounded-xl bg-brand-dark text-white flex items-center justify-center font-black text-xl mb-6 shadow-sm">
+                03
+              </div>
+<h3 class="text-xl font-bold text-brand-dark mb-2">Montagem e Chave na Mão</h3>
+<p class="text-sm text-brand-muted leading-relaxed">
+                Transporte para o lote, montagem estrutural em tempo recorde, instalação de redes técnicas, acabamentos de luxo e entrega da certificação técnica final.
+              </p>
+</div>
+<div class="mt-6 pt-4 border-t border-brand-border/60 text-xs font-semibold text-brand-muted">
+              Prazo: 15 a 20 dias
+            </div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: ProcessStepsSection -->
+<!-- BEGIN: LeadFormSection -->
+<section class="py-20 bg-white border-t border-brand-border" data-purpose="budget-calculator" id="contacto">
+<div class="max-w-desktop mx-auto px-6 lg:px-8">
+<div class="bg-[#F8F9FA] rounded-3xl border border-brand-border p-8 lg:p-14 shadow-lg">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+<!-- Informação do Formulário -->
+<div class="lg:col-span-5">
+<span class="inline-block px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider mb-4">
+                Atendimento Rápido
+              </span>
+<h2 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight leading-tight mb-4">
+                Simule o seu orçamento em 24 horas
+              </h2>
+<p class="text-brand-muted text-sm sm:text-base leading-relaxed mb-6">
+                Preencha os dados do seu projeto. O nosso departamento técnico entrará em contacto com uma estimativa de custos detalhada e catálogo técnico de especificações.
+              </p>
+<div class="space-y-4 pt-4 border-t border-brand-border/60">
+<div class="flex items-center gap-3 text-sm text-brand-dark font-medium">
+<div class="w-8 h-8 rounded-lg bg-white border border-brand-border flex items-center justify-center text-emerald-600">
+                    ✓
+                  </div>
+<span>Estimativa sem qualquer compromisso</span>
+</div>
+<div class="flex items-center gap-3 text-sm text-brand-dark font-medium">
+<div class="w-8 h-8 rounded-lg bg-white border border-brand-border flex items-center justify-center text-emerald-600">
+                    ✓
+                  </div>
+<span>Visita técnica ao terreno incluída na fase de projeto</span>
+</div>
+</div>
+</div>
+<!-- Campos do Formulário Desktop -->
+<div class="lg:col-span-7 bg-white p-8 rounded-2xl border border-brand-border shadow-sm">
+<form class="space-y-5" onsubmit="event.preventDefault(); alert('Obrigado! O seu pedido de orçamento foi recebido.');">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+<div>
+<label class="block text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">Nome Completo</label>
+<input class="w-full px-4 py-3 rounded-xl border border-brand-border focus:border-brand-dark focus:ring-0 text-sm placeholder:text-neutral-400" placeholder="Ex: Rui Ferreira" required="" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">Telefone</label>
+<input class="w-full px-4 py-3 rounded-xl border border-brand-border focus:border-brand-dark focus:ring-0 text-sm placeholder:text-neutral-400" placeholder="+351 912 345 678" required="" type="tel"/>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+<div>
+<label class="block text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">Email</label>
+<input class="w-full px-4 py-3 rounded-xl border border-brand-border focus:border-brand-dark focus:ring-0 text-sm placeholder:text-neutral-400" placeholder="rui.ferreira@email.pt" required="" type="email"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">Modelo de Interesse</label>
+<select class="w-full px-4 py-3 rounded-xl border border-brand-border focus:border-brand-dark focus:ring-0 text-sm text-neutral-700">
+<option>Modelo Horizon 120 (120 m²)</option>
+<option>Modelo Alpha 77 (77 m²)</option>
+<option>Modelo Beta 94 (94 m²)</option>
+<option>Modelo Natura 65 (65 m²)</option>
+<option>Projeto À Medida (Personalizado)</option>
+</select>
+</div>
+</div>
+<div>
+<label class="block text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">Localização do Terreno e Observações</label>
+<input class="w-full px-4 py-3 rounded-xl border border-brand-border focus:border-brand-dark focus:ring-0 text-sm placeholder:text-neutral-400" placeholder="Ex: Terreno com 800m² em Sintra, já com viabilidade" type="text"/>
+</div>
+<button class="w-full py-4 rounded-xl bg-brand-dark text-white font-bold text-sm tracking-wide hover:bg-neutral-800 transition-all shadow-md" type="submit">
+                  Solicitar Proposta Sem Compromisso
+                </button>
+<p class="text-[11px] text-center text-brand-muted">
+                  Ao submeter, concorda com a nossa política de privacidade e proteção de dados ao abrigo do RGPD.
+                </p>
+</form>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: LeadFormSection -->
+</main>
+<!-- BEGIN: MainFooter -->
+<footer class="bg-brand-dark text-white pt-16 pb-12 border-t border-neutral-800" data-purpose="site-footer">
+<div class="max-w-desktop mx-auto px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-white/10">
+<!-- Coluna Identidade -->
+<div class="lg:col-span-5">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-9 h-9 rounded-xl bg-white text-brand-dark flex items-center justify-center font-black text-base">
+              CH
+            </div>
+<span class="font-extrabold text-xl tracking-wider text-white uppercase">Carcas House</span>
+</div>
+<p class="text-white/60 text-sm max-w-sm leading-relaxed mb-6">
+            Especialistas em arquitetura sustentável e construção industrializada de casas modulares em madeira. Conforto térmico, rapidez e elegância nórdica.
+          </p>
+<div class="flex items-center gap-4 text-white/50 text-xs">
+<span>Alvará de Construção nº 98451</span>
+<span>•</span>
+<span>Membro Passivhaus Portugal</span>
+</div>
+</div>
+<!-- Coluna Navegação -->
+<div class="lg:col-span-2">
+<h4 class="text-xs font-bold uppercase tracking-widest text-brand-accent mb-4">Navegação</h4>
+<ul class="space-y-2.5 text-sm text-white/70">
+<li><a class="hover:text-white transition-colors" href="#inicio">Início</a></li>
+<li><a class="hover:text-white transition-colors" href="#tecnologia">Tecnologia</a></li>
+<li><a class="hover:text-white transition-colors" href="#catalogo">Projetos 2025</a></li>
+<li><a class="hover:text-white transition-colors" href="#financiamento">Financiamento</a></li>
+<li><a class="hover:text-white transition-colors" href="#processo">Etapas de Obra</a></li>
+</ul>
+</div>
+<!-- Coluna Modelos -->
+<div class="lg:col-span-2">
+<h4 class="text-xs font-bold uppercase tracking-widest text-brand-accent mb-4">Modelos</h4>
+<ul class="space-y-2.5 text-sm text-white/70">
+<li><a class="hover:text-white transition-colors" href="#catalogo">Horizon 120 m²</a></li>
+<li><a class="hover:text-white transition-colors" href="#catalogo">Alpha 77 m²</a></li>
+<li><a class="hover:text-white transition-colors" href="#catalogo">Beta 94 m²</a></li>
+<li><a class="hover:text-white transition-colors" href="#catalogo">Natura 65 m²</a></li>
+<li><a class="hover:text-white transition-colors" href="#contacto">Projetos à Medida</a></li>
+</ul>
+</div>
+<!-- Coluna Contactos -->
+<div class="lg:col-span-3">
+<h4 class="text-xs font-bold uppercase tracking-widest text-brand-accent mb-4">Sede e Contacto</h4>
+<div class="space-y-3 text-sm text-white/70">
+<p>Avenida da Liberdade, 245, 4º Andar<br/>1250-143 Lisboa, Portugal</p>
+<p><a class="hover:text-white transition-colors" href="tel:+351210999888">+351 210 999 888</a></p>
+<p><a class="hover:text-white transition-colors" href="mailto:geral@carcashouse.pt">geral@carcashouse.pt</a></p>
+<p class="text-xs text-white/50 pt-2">Segunda a Sexta: 09:00 - 18:30</p>
+</div>
+</div>
+</div>
+<!-- Copyright e Menções Legais -->
+<div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-white/50 gap-4">
+<div>
+          © 2025 CARCAS HOUSE. Todos os direitos reservados.
+        </div>
+<div class="flex items-center gap-6">
+<a class="hover:text-white transition-colors" href="#">Termos de Utilização</a>
+<a class="hover:text-white transition-colors" href="#">Política de Privacidade</a>
+<a class="hover:text-white transition-colors" href="#">Livro de Reclamações</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- END: MainFooter -->
+</body></html>
