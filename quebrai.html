@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quebra-cabeça Deslizante</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #fdf8ef;
+    --paper: #ffffff;
+    --border: #ece0cc;
+    --border-strong: #ddd0b7;
+    --text: #4a473c;
+    --muted: #a09a8b;
+    --primary: #6dbe8f;
+    --primary-dark: #55996f;
+    --primary-soft: #e8f5ee;
+    --accent: #f4a261;
+    --accent-dark: #d98940;
+    --accent-soft: #fdefd9;
+    --danger: #e76f51;
+    --shadow-sm: 0 2px 6px rgba(140,120,90,.06);
+    --shadow: 0 6px 20px rgba(140,120,90,.09);
+    --shadow-lg: 0 20px 50px rgba(140,120,90,.16);
+  }
+
+  html, body { min-height: 100%; }
+
+  body {
+    font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--bg);
+    background-image: radial-gradient(circle, #efe6d3 1px, transparent 1px);
+    background-size: 22px 22px;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    padding: 16px;
+    line-height: 1.4;
+  }
+
+  .app {
+    max-width: 1040px;
+    margin: 0 auto;
+    display: grid;
+    gap: 16px;
+  }
+
+  @media (min-width: 800px) {
+    .app {
+      grid-template-columns: 320px 1fr;
+      grid-template-rows: auto 1fr;
+      grid-template-areas:
+        "header header"
+        "panel  board";
+      min-height: calc(100vh - 32px);
+      max-height: calc(100vh - 32px);
+    }
+    .header { grid-area: header; }
+    .panel  { grid-area: panel; }
+    .board-area { grid-area: board; }
+  }
+
+  @media (max-width: 799px) {
+    .app { grid-template-columns: 1fr; }
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 14px 22px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 22px 18px 24px 20px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .title-wrap { display: flex; align-items: center; gap: 12px; }
+
+  .title-icon {
+    width: 38px; height: 38px; border-radius: 12px;
+    background: var(--primary-soft);
+    display: grid; place-items: center;
+    flex-shrink: 0;
+  }
+  .title-icon svg { display: block; }
+
+  .header h1 { font-size: 19px; font-weight: 800; letter-spacing: -.2px; color: var(--text); }
+
+  .header-stats { display: flex; gap: 8px; }
+
+  .stat {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 5px 14px;
+    background: var(--bg);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    min-width: 74px;
+  }
+
+  .stat-label {
+    font-size: 9.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .8px;
+    color: var(--muted);
+  }
+
+  .stat-value {
+    font-size: 17px; font-weight: 800;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.3px;
+  }
+
+  .panel {
+    display: flex; flex-direction: column; gap: 16px;
+    padding: 20px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 24px 20px 22px 18px;
+    box-shadow: var(--shadow-sm);
+    overflow-y: auto;
+  }
+
+  .field { display: flex; flex-direction: column; gap: 8px; }
+
+  .field-label {
+    font-size: 11px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: .9px;
+    color: var(--muted);
+  }
+
+  .upload-zone {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px;
+    background: var(--bg);
+    border: 2px dashed var(--border-strong);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: background .18s, border-color .18s, transform .18s;
+  }
+  .upload-zone:hover,
+  .upload-zone.dragover {
+    border-color: var(--primary);
+    background: var(--primary-soft);
+  }
+  .upload-zone.dragover { transform: scale(1.015); }
+
+  .upload-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: var(--paper);
+    display: grid; place-items: center;
+    color: var(--primary-dark);
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+  }
+
+  .upload-text { display: flex; flex-direction: column; line-height: 1.25; }
+  .upload-text strong { font-size: 13.5px; font-weight: 700; color: var(--text); }
+  .upload-text span { font-size: 11.5px; color: var(--muted); }
+
+  .diff-chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+
+  .diff-chip {
+    padding: 9px 4px;
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12.5px; font-weight: 700;
+    color: var(--text);
+    text-align: center;
+    line-height: 1.3;
+    transition: all .15s;
+  }
+  .diff-chip small {
+    display: block;
+    font-size: 10.5px; font-weight: 600;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+  .diff-chip:hover { border-color: var(--primary); }
+  .diff-chip.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+    box-shadow: 0 3px 0 var(--primary-dark);
+  }
+  .diff-chip.active small { color: rgba(255,255,255,.82); }
+
+  .preview-field {
+    background: var(--accent-soft);
+    border: 1px solid #f6dfb6;
+    border-radius: 14px;
+    padding: 12px 14px;
+    gap: 6px;
+  }
+
+  .preview-header { display: flex; align-items: baseline; justify-content: space-between; }
+  .preview-field .field-label { color: var(--accent-dark); }
+
+  .preview-count {
+    font-size: 13px; font-weight: 800;
+    color: var(--accent-dark);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .preview-dots { display: flex; gap: 6px; margin: 2px 0 4px; }
+
+  .dot {
+    width: 15px; height: 15px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: inset 0 -1.5px 0 rgba(0,0,0,.08);
+    transition: background .25s, transform .25s;
+  }
+  .dot.used {
+    background: #f0e3cc;
+    box-shadow: inset 0 0 0 1.5px #e9d6b3;
+    transform: scale(.85);
+  }
+
+  .preview-hint { font-size: 11.5px; color: #b58551; line-height: 1.4; }
+
+  .actions {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    margin-top: auto;
+  }
+
+  .btn {
+    padding: 12px 14px;
+    border: none;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 13.5px; font-weight: 800;
+    letter-spacing: .1px;
+    cursor: pointer;
+    transition: transform .12s, box-shadow .12s, background .15s;
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 7px;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: #fff;
+    box-shadow: 0 3px 0 var(--primary-dark);
+  }
+  .btn-primary:hover { background: #62b385; }
+  .btn-primary:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--primary-dark); }
+
+  .btn-secondary {
+    background: var(--paper);
+    color: var(--text);
+    border: 2px solid var(--border);
+    box-shadow: 0 2px 0 var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--border-strong); }
+  .btn-secondary:active { transform: translateY(2px); box-shadow: 0 0 0 var(--border); }
+
+  .btn:disabled,
+  .btn:disabled:hover {
+    opacity: .5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    background: var(--border);
+    color: var(--muted);
+    border-color: var(--border);
+  }
+
+  .board-area { display: flex; min-width: 0; min-height: 0; }
+
+  .board-wrap {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center;
+    min-width: 0; min-height: 0;
+    padding: 8px;
+  }
+
+  @media (max-width: 799px) {
+    .board-area {
+      aspect-ratio: 1;
+      max-height: 72vh;
+      width: 100%;
+      margin: 0 auto;
+    }
+  }
+
+  .board {
+    position: relative;
+    background: #f5ecdb;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow), 0 0 0 6px rgba(255,255,255,.5);
+    overflow: hidden;
+    touch-action: manipulation;
+  }
+
+  .pieces { position: absolute; inset: 0; }
+
+  .slot {
+    position: absolute;
+    top: 0; left: 0;
+    transition: transform .18s cubic-bezier(.32,.9,.3,1);
+    cursor: pointer;
+    will-change: transform;
+  }
+
+  .board.no-anim .slot { transition: none; }
+
+  .face {
+    position: absolute;
+    background-repeat: no-repeat;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.55),
+      0 1px 2px rgba(120,95,60,.1);
+    border: 1px solid rgba(120,95,60,.13);
+    transition: filter .15s, border-color .15s;
+  }
+
+  @media (hover: hover) {
+    .slot:hover .face {
+      filter: brightness(1.06);
+      border-color: rgba(109,190,143,.7);
+    }
+  }
+
+  .preview-layer {
+    position: absolute; inset: 0;
+    z-index: 5;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+  }
+  .preview-layer.show { opacity: 1; }
+
+  .win-layer {
+    position: absolute; inset: 0;
+    z-index: 10;
+    background: rgba(253,248,239,.8);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: grid; place-items: center;
+    padding: 20px;
+    opacity: 0; visibility: hidden;
+    transition: opacity .3s, visibility .3s;
+  }
+  .win-layer.show { opacity: 1; visibility: visible; }
+
+  .win-card {
+    max-width: 300px; width: 100%;
+    text-align: center;
+    padding: 26px 22px 22px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    box-shadow: var(--shadow-lg);
+    transform: scale(.88);
+    transition: transform .4s cubic-bezier(.2,.9,.3,1.4);
+  }
+  .win-layer.show .win-card { transform: scale(1); }
+
+  .win-icon { font-size: 40px; line-height: 1; margin-bottom: 8px; }
+
+  .win-card h2 {
+    font-size: 21px; font-weight: 800;
+    color: var(--text);
+    margin-bottom: 8px; letter-spacing: -.2px;
+  }
+
+  .win-card p {
+    font-size: 13.5px; color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 18px;
+  }
+
+  .win-card p strong { color: var(--text); font-weight: 800; }
+
+  .win-card .new-best {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 3px 10px;
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+    font-size: 11.5px; font-weight: 800;
+    border-radius: 99px;
+  }
+
+  .win-card .btn { width: 100%; }
+
+  @media (max-width: 799px) {
+    body { padding: 12px; }
+    .header { padding: 12px 16px; }
+    .header h1 { font-size: 17px; }
+    .stat { min-width: 62px; padding: 4px 10px; }
+    .stat-value { font-size: 15px; }
+    .panel { padding: 16px; gap: 14px; }
+    .actions { margin-top: 0; }
+  }
+
+  @media (max-width: 380px) {
+    .header-stats { width: 100%; }
+    .stat { flex: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <header class="header">
+    <div class="title-wrap">
+      <div class="title-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M19 11h-2V8a2 2 0 0 0-2-2h-3V4a2 2 0 1 0-4 0v2H5a2 2 0 0 0-2 2v3h2a2 2 0 1 1 0 4H3v3a2 2 0 0 0 2 2h3v-2a2 2 0 1 1 4 0v2h3a2 2 0 0 0 2-2v-3h2a2 2 0 1 0 0-4z"
+                stroke="#55996f" stroke-width="1.7" stroke-linejoin="round" fill="#c9e9d5"/>
+        </svg>
+      </div>
+      <h1>Quebra-cabeça</h1>
+    </div>
+    <div class="header-stats">
+      <div class="stat">
+        <span class="stat-label">Movimentos</span>
+        <span class="stat-value" id="movesEl">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Tempo</span>
+        <span class="stat-value" id="timeEl">0:00</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Melhor</span>
+        <span class="stat-value" id="bestEl">—</span>
+      </div>
+    </div>
+  </header>
+
+  <aside class="panel">
+
+    <div class="field">
+      <label class="field-label">Imagem</label>
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" id="fileInput" accept="image/*" hidden>
+        <div class="upload-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+        </div>
+        <div class="upload-text">
+          <strong>Escolher imagem</strong>
+          <span>ou arraste e solte</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Dificuldade</label>
+      <div class="diff-chips" id="diffChips">
+        <button class="diff-chip active" data-n="3">Fácil<small>3×3</small></button>
+        <button class="diff-chip" data-n="4">Médio<small>4×4</small></button>
+        <button class="diff-chip" data-n="5">Difícil<small>5×5</small></button>
+      </div>
+    </div>
+
+    <div class="field preview-field">
+      <div class="preview-header">
+        <span class="field-label">Olhadelas</span>
+        <span class="preview-count"><span id="prevNum">6</span> de 6</span>
+      </div>
+      <div class="preview-dots" id="previewDots"></div>
+      <p class="preview-hint">Dá uma espiada na imagem completa.</p>
+    </div>
+
+    <div class="field actions">
+      <button class="btn btn-primary" id="previewBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        Ver imagem
+      </button>
+      <button class="btn btn-secondary" id="shuffleBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="16 3 21 3 21 8"/>
+          <line x1="4" y1="20" x2="21" y2="3"/>
+          <polyline points="21 16 21 21 16 21"/>
+          <line x1="15" y1="15" x2="21" y2="21"/>
+          <line x1="4" y1="4" x2="9" y2="9"/>
+        </svg>
+        Embaralhar
+      </button>
+    </div>
+
+  </aside>
+
+  <main class="board-area">
+    <div class="board-wrap" id="boardWrap">
+      <div class="board" id="board">
+        <div class="pieces" id="pieces"></div>
+        <div class="preview-layer" id="previewLayer"></div>
+        <div class="win-layer" id="winLayer">
+          <div class="win-card">
+            <div class="win-icon">🎉</div>
+            <h2 id="winTitle">Muito bem!</h2>
+            <p id="winInfo"></p>
+            <button class="btn btn-primary" id="againBtn">Jogar de novo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  const $ = (s, r = document) => r.querySelector(s);
+  const board       = $("#board");
+  const piecesLayer = $("#pieces");
+  const previewLayer= $("#previewLayer");
+  const winLayer    = $("#winLayer");
+  const winTitle    = $("#winTitle");
+  const winInfo     = $("#winInfo");
+  const movesEl     = $("#movesEl");
+  const timeEl      = $("#timeEl");
+  const bestEl      = $("#bestEl");
+  const prevNum     = $("#prevNum");
+  const previewDots = $("#previewDots");
+  const previewBtn  = $("#previewBtn");
+  const shuffleBtn  = $("#shuffleBtn");
+  const againBtn    = $("#againBtn");
+  const uploadZone  = $("#uploadZone");
+  const fileInput   = $("#fileInput");
+  const boardWrap   = $("#boardWrap");
+  const diffChips   = $("#diffChips");
+
+  const MAX_PREVIEWS = 6;
+
+  const state = {
+    n: 3,
+    tiles: [],
+    blank: 0,
+    moves: 0,
+    elapsed: 0,
+    running: false,
+    solved: false,
+    imageURL: null,
+    previewsLeft: MAX_PREVIEWS,
+    size: 0,
+    ps: 0,
+    gap: 2
+  };
+
+  let pieceEls = [];
+  let timerId = null;
+  let previewTimeout = null;
+  let resizeRaf = null;
+
+  /* ================= TEMPO / RECORDE ================= */
+  function fmtTime(ms) {
+    const t = Math.max(0, Math.floor(ms / 1000));
+    return Math.floor(t / 60) + ":" + String(t % 60).padStart(2, "0");
+  }
+
+  function startTimer() {
+    if (timerId) return;
+    const t0 = performance.now() - state.elapsed;
+    timerId = setInterval(() => {
+      state.elapsed = performance.now() - t0;
+      timeEl.textContent = fmtTime(state.elapsed);
+    }, 120);
+  }
+
+  function stopTimer() { clearInterval(timerId); timerId = null; }
+
+  function bestKey(n) { return "puzzle_best_" + n; }
+  function getBest(n) {
+    try { return JSON.parse(localStorage.getItem(bestKey(n)) || "null"); }
+    catch { return null; }
+  }
+  function setBest(n, rec) {
+    try { localStorage.setItem(bestKey(n), JSON.stringify(rec)); } catch {}
+  }
+  function updateBest() {
+    const b = getBest(state.n);
+    bestEl.textContent = b ? fmtTime(b.time) : "—";
+  }
+
+  /* ================= CENA PADRÃO ================= */
+  function drawCloud(g, x, y, r) {
+    g.fillStyle = "#ffffff";
+    g.beginPath();
+    g.arc(x, y, r, 0, Math.PI * 2);
+    g.arc(x + r * 0.85, y + r * 0.12, r * 0.75, 0, Math.PI * 2);
+    g.arc(x - r * 0.85, y + r * 0.14, r * 0.72, 0, Math.PI * 2);
+    g.arc(x + r * 0.32, y - r * 0.48, r * 0.65, 0, Math.PI * 2);
+    g.arc(x - r * 0.32, y - r * 0.38, r * 0.55, 0, Math.PI * 2);
+    g.fill();
+  }
+
+  function drawFlower(g, x, y, r, color) {
+    g.fillStyle = color;
+    for (let p = 0; p < 5; p++) {
+      const a = (p / 5) * Math.PI * 2 - Math.PI / 2;
+      g.beginPath();
+      g.arc(x + Math.cos(a) * r, y + Math.sin(a) * r, r * 0.72, 0, Math.PI * 2);
+      g.fill();
+    }
+    g.fillStyle = "#ffd166";
+    g.beginPath();
+    g.arc(x, y, r * 0.5, 0, Math.PI * 2);
+    g.fill();
+  }
+
+  function makeDefaultScene() {
+    const S = 1200;
+    const cv = document.createElement("canvas");
+    cv.width = cv.height = S;
+    const g = cv.getContext("2d");
+
+    const sky = g.createLinearGradient(0, 0, 0, S);
+    sky.addColorStop(0, "#bfe3f5");
+    sky.addColorStop(1, "#fef6e4");
+    g.fillStyle = sky;
+    g.fillRect(0, 0, S, S);
+
+    const sunX = S * 0.78, sunY = S * 0.21, sunR = S * 0.085;
+    g.strokeStyle = "#ffd166";
+    g.lineWidth = S * 0.016;
+    g.lineCap = "round";
+    for (let i = 0; i < 12; i++) {
+      const a = (i / 12) * Math.PI * 2;
+      g.beginPath();
+      g.moveTo(sunX + Math.cos(a) * sunR * 1.25, sunY + Math.sin(a) * sunR * 1.25);
+      g.lineTo(sunX + Math.cos(a) * sunR * 1.6,  sunY + Math.sin(a) * sunR * 1.6);
+      g.stroke();
+    }
+    g.fillStyle = "#ffd166";
+    g.beginPath();
+    g.arc(sunX, sunY, sunR, 0, Math.PI * 2);
+    g.fill();
+
+    g.fillStyle = "#e09b2e";
+    g.beginPath();
+    g.arc(sunX - sunR * 0.3, sunY - sunR * 0.12, sunR * 0.09, 0, Math.PI * 2);
+    g.arc(sunX + sunR * 0.3, sunY - sunR * 0.12, sunR * 0.09, 0, Math.PI * 2);
+    g.fill();
+    g.strokeStyle = "#e09b2e";
+    g.lineWidth = S * 0.006;
+    g.beginPath();
+    g.arc(sunX, sunY + sunR * 0.12, sunR * 0.26, 0.25, Math.PI - 0.25);
+    g.stroke();
+
+    drawCloud(g, S * 0.22, S * 0.18, S * 0.085);
+    drawCloud(g, S * 0.50, S * 0.10, S * 0.062);
+    drawCloud(g, S * 0.40, S * 0.34, S * 0.052);
+    drawCloud(g, S * 0.66, S * 0.42, S * 0.048);
+
+    g.fillStyle = "#c8e6c0";
+    g.beginPath();
+    g.moveTo(0, S * 0.66);
+    g.bezierCurveTo(S * 0.22, S * 0.48, S * 0.38, S * 0.56, S * 0.58, S * 0.63);
+    g.bezierCurveTo(S * 0.78, S * 0.70, S * 0.88, S * 0.61, S, S * 0.68);
+    g.lineTo(S, S); g.lineTo(0, S);
+    g.closePath();
+    g.fill();
+
+    g.fillStyle = "#9ed495";
+    g.beginPath();
+    g.moveTo(0, S * 0.78);
+    g.bezierCurveTo(S * 0.3, S * 0.68, S * 0.62, S * 0.83, S * 0.86, S * 0.75);
+    g.bezierCurveTo(S * 0.93, S * 0.73, S * 0.97, S * 0.75, S, S * 0.76);
+    g.lineTo(S, S); g.lineTo(0, S);
+    g.closePath();
+    g.fill();
+
+    g.fillStyle = "#7fbf73";
+    g.beginPath();
+    g.moveTo(0, S * 0.88);
+    g.bezierCurveTo(S * 0.4, S * 0.84, S * 0.62, S * 0.90, S, S * 0.87);
+    g.lineTo(S, S); g.lineTo(0, S);
+    g.closePath();
+    g.fill();
+
+    const treeX = S * 0.17;
+    g.fillStyle = "#a67c52";
+    g.fillRect(treeX - S * 0.017, S * 0.72, S * 0.034, S * 0.16);
+    g.fillStyle = "#7bc47f";
+    g.beginPath();
+    g.arc(treeX, S * 0.68, S * 0.075, 0, Math.PI * 2);
+    g.fill();
+    g.beginPath();
+    g.arc(treeX - S * 0.052, S * 0.72, S * 0.05, 0, Math.PI * 2);
+    g.fill();
+    g.beginPath();
+    g.arc(treeX + S * 0.052, S * 0.72, S * 0.05, 0, Math.PI * 2);
+    g.fill();
+
+    const hX = S * 0.72, hY = S * 0.74;
+    g.fillStyle = "#f5e6cd";
+    g.fillRect(hX - S * 0.058, hY, S * 0.116, S * 0.09);
+    g.fillStyle = "#e07a5f";
+    g.beginPath();
+    g.moveTo(hX - S * 0.075, hY);
+    g.lineTo(hX, hY - S * 0.055);
+    g.lineTo(hX + S * 0.075, hY);
+    g.closePath();
+    g.fill();
+    g.fillStyle = "#a67c52";
+    g.fillRect(hX - S * 0.011, hY + S * 0.04, S * 0.022, S * 0.05);
+    g.fillStyle = "#a8d5e5";
+    g.fillRect(hX + S * 0.018, hY + S * 0.022, S * 0.022, S * 0.022);
+
+    const cores = ["#ff8fa3", "#ffd166", "#c77dff", "#ffffff", "#ff9a76"];
+    for (let i = 0; i < 8; i++) {
+      const fx = S * (0.06 + i * 0.12);
+      const fy = S * (0.92 + (i % 3) * 0.015);
+      drawFlower(g, fx, fy, S * 0.013, cores[i % cores.length]);
+    }
+
+    return cv.toDataURL("image/jpeg", 0.92);
+  }
+
+  /* ================= IMAGEM ================= */
+  function applyImage(url) {
+    state.imageURL = url;
+    previewLayer.style.backgroundImage = 'url("' + url + '")';
+    buildPuzzle();
+  }
+
+  function imageFromSrc(src) {
+    const img = new Image();
+    img.onload = () => {
+      const S = 1200;
+      const cv = document.createElement("canvas");
+      cv.width = cv.height = S;
+      const cx = cv.getContext("2d");
+
+      // FIX: preenche o fundo para que pixels transparentes
+      // (PNG com alfa) não fiquem pretos ao virar JPEG.
+      cx.fillStyle = "#f5ecdb";
+      cx.fillRect(0, 0, S, S);
+
+      const ar = img.width / img.height;
+      let sw, sh, sx, sy;
+      if (ar > 1) { sh = img.height; sw = sh; sx = (img.width - sw) / 2; sy = 0; }
+      else        { sw = img.width;  sh = sw; sx = 0; sy = (img.height - sh) / 2; }
+
+      cx.drawImage(img, sx, sy, sw, sh, 0, 0, S, S);
+      applyImage(cv.toDataURL("image/jpeg", 0.9));
+    };
+    img.onerror = () => alert("Não foi possível carregar essa imagem.");
+    img.src = src;
+  }
+
+  function readFile(file) {
+    if (!file || !file.type.startsWith("image/")) return;
+    const fr = new FileReader();
+    fr.onload = () => imageFromSrc(fr.result);
+    fr.readAsDataURL(file);
+  }
+
+  /* ================= PEÇAS ================= */
+  function createPieces() {
+    piecesLayer.innerHTML = "";
+    pieceEls = [];
+
+    const total = state.n * state.n;
+    for (let p = 0; p < total - 1; p++) {
+      const slot = document.createElement("div");
+      slot.className = "slot";
+
+      const face = document.createElement("div");
+      face.className = "face";
+      face.style.backgroundImage = 'url("' + state.imageURL + '")';
+
+      slot.appendChild(face);
+      piecesLayer.appendChild(slot);
+      pieceEls[p] = slot;
+    }
+  }
+
+  function layout() {
+    const n = state.n;
+    const S = state.size;
+    if (!S || !state.tiles.length) return;
+
+    const ps = S / n;
+    const gap = Math.max(2, Math.min(6, ps * 0.035));
+    state.ps = ps;
+    state.gap = gap;
+
+    const half = gap / 2;
+    const radius = Math.max(3, Math.min(8, ps * 0.06));
+
+    for (let i = 0; i < state.tiles.length; i++) {
+      const p = state.tiles[i];
+      if (p < 0) continue;
+      const slot = pieceEls[p];
+      if (!slot) continue;
+      const face = slot.firstChild;
+
+      const r = (i / n) | 0, c = i % n;
+      const pr = (p / n) | 0, pc = p % n;
+
+      slot.style.width  = ps + "px";
+      slot.style.height = ps + "px";
+      slot.style.transform = "translate(" + (c * ps) + "px," + (r * ps) + "px)";
+
+      face.style.top = face.style.right = face.style.bottom = face.style.left = half + "px";
+      face.style.borderRadius = radius + "px";
+      face.style.backgroundSize = S + "px " + S + "px";
+      face.style.backgroundPosition =
+        (-(pc * ps + half)) + "px " + (-(pr * ps + half)) + "px";
+    }
+  }
+
+  function updatePositions() {
+    const n = state.n;
+    const ps = state.ps;
+    if (!ps) return;
+
+    for (let i = 0; i < state.tiles.length; i++) {
+      const p = state.tiles[i];
+      if (p < 0) continue;
+      const slot = pieceEls[p];
+      if (!slot) continue;
+
+      const r = (i / n) | 0, c = i % n;
+      slot.style.transform = "translate(" + (c * ps) + "px," + (r * ps) + "px)";
+    }
+  }
+
+  // FIX: apenas calcula o tamanho. Não mexe em peças.
+  function ensureBoardSize() {
+    const rect = boardWrap.getBoundingClientRect();
+    if (rect.width < 60 || rect.height < 60) return false;
+    const size = Math.floor(Math.min(rect.width, rect.height) - 8);
+    if (size < 80) return false;
+    state.size = size;
+    board.style.width  = size + "px";
+    board.style.height = size + "px";
+    return true;
+  }
+
+  // Chamado só em resize de janela / orientação
+  function resizeBoard() {
+    const prevSize = state.size;
+    if (!ensureBoardSize()) return;
+    if (state.size === prevSize && state.ps > 0) return; // nada mudou
+
+    board.classList.add("no-anim");
+    layout();
+    void board.offsetWidth;
+    requestAnimationFrame(() => board.classList.remove("no-anim"));
+  }
+
+  /* ================= EMBARALHAMENTO ================= */
+  function isSolved() {
+    const t = state.tiles;
+    for (let i = 0; i < t.length - 1; i++) {
+      if (t[i] !== i) return false;
+    }
+    return true;
+  }
+
+  function shuffle() {
+    const n = state.n;
+    const total = n * n;
+    const steps = total * 60;
+    let lastBlank = -1;
+
+    for (let s = 0; s < steps; s++) {
+      const b = state.blank;
+      const r = (b / n) | 0, c = b % n;
+
+      const opts = [];
+      if (r > 0)     opts.push(b - n);
+      if (r < n - 1) opts.push(b + n);
+      if (c > 0)     opts.push(b - 1);
+      if (c < n - 1) opts.push(b + 1);
+
+      const valid = opts.filter(x => x !== lastBlank);
+      const pick = valid[(Math.random() * valid.length) | 0];
+
+      state.tiles[b] = state.tiles[pick];
+      state.tiles[pick] = -1;
+      lastBlank = b;
+      state.blank = pick;
+    }
+
+    if (isSolved()) shuffle();
+  }
+
+  /* ================= CONSTRUÇÃO ================= */
+  function buildPuzzle() {
+    if (!state.imageURL) return;
+
+    const n = state.n;
+    const total = n * n;
+
+    state.tiles = Array.from({ length: total }, (_, i) => i);
+    state.tiles[total - 1] = -1;
+    state.blank = total - 1;
+    state.moves = 0;
+    state.elapsed = 0;
+    state.running = false;
+    state.solved = false;
+    state.previewsLeft = MAX_PREVIEWS;
+
+    stopTimer();
+    clearTimeout(previewTimeout);
+
+    movesEl.textContent = "0";
+    timeEl.textContent = "0:00";
+    updateBest();
+    updatePreviewUI();
+    hideWin();
+    previewLayer.classList.remove("show");
+
+    board.classList.add("no-anim");
+    createPieces();
+
+    // FIX PRINCIPAL: sempre calcula tamanho e sempre roda layout()
+    // depois de (re)criar as peças. Antes, o layout() era pulado
+    // quando o tamanho do tabuleiro não mudava (ex.: ao clicar em
+    // "Embaralhar"), e as peças ficavam com 0×0 — parecia que a
+    // imagem tinha quebrado.
+    ensureBoardSize();
+    layout();
+
+    shuffle();
+    updatePositions();
+
+    void board.offsetWidth;
+    requestAnimationFrame(() => board.classList.remove("no-anim"));
+  }
+
+  /* ================= MOVIMENTOS ================= */
+  function adjacent(a, b) {
+    const n = state.n;
+    const ar = (a / n) | 0, ac = a % n;
+    const br = (b / n) | 0, bc = b % n;
+    return Math.abs(ar - br) + Math.abs(ac - bc) === 1;
+  }
+
+  function tryMove(i) {
+    if (state.solved || !state.imageURL) return;
+    if (i < 0 || i >= state.tiles.length) return;
+
+    const b = state.blank;
+    if (!adjacent(i, b)) return;
+
+    state.tiles[b] = state.tiles[i];
+    state.tiles[i] = -1;
+    state.blank = i;
+    state.moves++;
+
+    if (!state.running) {
+      state.running = true;
+      startTimer();
+    }
+
+    updatePositions();
+    movesEl.textContent = state.moves;
+    checkWin();
+  }
+
+  /* ================= OLHADELAS ================= */
+  function buildDots() {
+    previewDots.innerHTML = "";
+    for (let i = 0; i < MAX_PREVIEWS; i++) {
+      const d = document.createElement("div");
+      d.className = "dot";
+      previewDots.appendChild(d);
+    }
+  }
+
+  function updatePreviewUI() {
+    prevNum.textContent = state.previewsLeft;
+
+    const dots = previewDots.children;
+    for (let i = 0; i < dots.length; i++) {
+      dots[i].classList.toggle("used", i >= state.previewsLeft);
+    }
+
+    previewBtn.disabled = state.previewsLeft <= 0 || state.solved;
+
+    if (state.previewsLeft <= 0) {
+      previewBtn.innerHTML =
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>' +
+        '<path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>' +
+        '<line x1="1" y1="1" x2="23" y2="23"/>' +
+        '</svg> Sem olhadelas';
+    } else {
+      previewBtn.innerHTML =
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>' +
+        '<circle cx="12" cy="12" r="3"/>' +
+        '</svg> Ver imagem';
+    }
+  }
+
+  function usePreview() {
+    if (state.previewsLeft <= 0 || state.solved || !state.imageURL) return;
+
+    state.previewsLeft--;
+    updatePreviewUI();
+
+    previewLayer.classList.add("show");
+    clearTimeout(previewTimeout);
+    previewTimeout = setTimeout(() => {
+      previewLayer.classList.remove("show");
+    }, 2500);
+  }
+
+  /* ================= VITÓRIA ================= */
+  function checkWin() {
+    if (!isSolved()) return;
+
+    state.solved = true;
+    stopTimer();
+    previewLayer.classList.remove("show");
+
+    const n = state.n;
+    const rec = { time: state.elapsed, moves: state.moves };
+    const prev = getBest(n);
+    const isNew = !prev || rec.time < prev.time;
+    if (isNew) setBest(n, rec);
+    updateBest();
+
+    if (state.previewsLeft === MAX_PREVIEWS) {
+      winTitle.textContent = "Uau, sem espiar!";
+    } else if (state.previewsLeft >= 3) {
+      winTitle.textContent = "Muito bem!";
+    } else {
+      winTitle.textContent = "Conseguiu!";
+    }
+
+    winInfo.innerHTML =
+      "Tempo: <strong>" + fmtTime(rec.time) + "</strong> &nbsp;·&nbsp; " +
+      "Movimentos: <strong>" + rec.moves + "</strong>" +
+      (isNew ? '<br><span class="new-best">Novo recorde!</span>' : "");
+
+    updatePreviewUI();
+    winLayer.classList.add("show");
+  }
+
+  function hideWin() { winLayer.classList.remove("show"); }
+
+  /* ================= ENTRADA ================= */
+  board.addEventListener("pointerdown", (e) => {
+    if (state.solved || !state.imageURL || !state.ps) return;
+    if (previewLayer.classList.contains("show")) return;
+
+    const rect = board.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const c = Math.floor(x / state.ps);
+    const r = Math.floor(y / state.ps);
+
+    if (c < 0 || c >= state.n || r < 0 || r >= state.n) return;
+
+    tryMove(r * state.n + c);
+  });
+
+  window.addEventListener("keydown", (e) => {
+    if (!state.imageURL || state.solved) return;
+
+    const n = state.n;
+    const b = state.blank;
+    const r = (b / n) | 0, c = b % n;
+
+    let target = -1;
+    if (e.key === "ArrowUp"    && r < n - 1) target = b + n;
+    if (e.key === "ArrowDown"  && r > 0)     target = b - n;
+    if (e.key === "ArrowLeft"  && c < n - 1) target = b + 1;
+    if (e.key === "ArrowRight" && c > 0)     target = b - 1;
+
+    if (target >= 0) {
+      e.preventDefault();
+      tryMove(target);
+    }
+  });
+
+  uploadZone.addEventListener("click", () => fileInput.click());
+
+  fileInput.addEventListener("change", (e) => {
+    const f = e.target.files && e.target.files[0];
+    if (f) readFile(f);
+    fileInput.value = "";
+  });
+
+  ["dragenter", "dragover"].forEach(ev =>
+    uploadZone.addEventListener(ev, (e) => {
+      e.preventDefault();
+      uploadZone.classList.add("dragover");
+    })
+  );
+
+  ["dragleave", "drop"].forEach(ev =>
+    uploadZone.addEventListener(ev, (e) => {
+      e.preventDefault();
+      uploadZone.classList.remove("dragover");
+    })
+  );
+
+  uploadZone.addEventListener("drop", (e) => {
+    const f = e.dataTransfer && e.dataTransfer.files[0];
+    if (f) readFile(f);
+  });
+
+  window.addEventListener("dragover", e => e.preventDefault());
+  window.addEventListener("drop", e => e.preventDefault());
+
+  window.addEventListener("paste", (e) => {
+    const items = e.clipboardData && e.clipboardData.items;
+    if (!items) return;
+    for (const it of items) {
+      if (it.type.startsWith("image/")) {
+        const f = it.getAsFile();
+        if (f) readFile(f);
+        break;
+      }
+    }
+  });
+
+  diffChips.addEventListener("click", (e) => {
+    const chip = e.target.closest(".diff-chip");
+    if (!chip) return;
+
+    diffChips.querySelectorAll(".diff-chip").forEach(c =>
+      c.classList.toggle("active", c === chip)
+    );
+
+    state.n = Number(chip.dataset.n);
+    buildPuzzle();
+  });
+
+  shuffleBtn.addEventListener("click", () => buildPuzzle());
+  againBtn.addEventListener("click", () => buildPuzzle());
+  previewBtn.addEventListener("click", usePreview);
+
+  /* ================= RESIZE ================= */
+  function scheduleResize() {
+    if (resizeRaf) cancelAnimationFrame(resizeRaf);
+    resizeRaf = requestAnimationFrame(() => {
+      resizeRaf = null;
+      if (state.imageURL) resizeBoard();
+    });
+  }
+
+  window.addEventListener("resize", scheduleResize);
+  window.addEventListener("orientationchange", () => setTimeout(scheduleResize, 180));
+
+  if (window.ResizeObserver) {
+    new ResizeObserver(scheduleResize).observe(boardWrap);
+  }
+
+  /* ================= INIT ================= */
+  buildDots();
+  updateBest();
+
+  requestAnimationFrame(() => {
+    applyImage(makeDefaultScene());
+  });
+
+})();
+</script>
+</body>
+</html>
