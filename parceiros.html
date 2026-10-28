@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="pt-AO">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Venda websites aos seus clientes sem precisar de desenvolver. Conheça a parceria White Label de criação de sites.">
+<title>Parceria White Label | Venda sites aos seus clientes</title>
+<style>
+:root{--green:#08a765;--green-dark:#07844f;--ink:#17263d;--muted:#5d6b7d;--pale:#f2faf6;--line:#e4ebe8;--white:#fff;--navy:#17263d;--radius:20px;--shadow:0 18px 50px #142c2512}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:#fff;line-height:1.55;overflow-x:hidden}a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}.container{width:min(1120px,calc(100% - 40px));margin:auto}.topbar{height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.4px}.brand-mark{width:27px;height:23px;display:inline-block;position:relative}.brand-mark:before,.brand-mark:after{content:"";position:absolute;background:var(--green);height:22px;width:9px;transform:skew(-28deg);top:0}.brand-mark:before{left:3px}.brand-mark:after{left:15px;opacity:.72}.nav{display:flex;align-items:center;gap:27px;font-size:13px;font-weight:600;color:#344257}.nav a:hover{color:var(--green)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:0;border-radius:999px;background:var(--green);color:#fff;padding:13px 21px;font-weight:750;font-size:14px;cursor:pointer;transition:all .3s cubic-bezier(0.25, 0.8, 0.25, 1);box-shadow:0 8px 20px #08a76520;position:relative;overflow:hidden}.btn:hover{background:var(--green-dark);transform:translateY(-2px) scale(1.02);box-shadow:0 12px 25px #08a76540}.btn.small{padding:10px 16px;font-size:12px}.btn.outline{background:#fff;color:var(--green);border:1px solid #b8e5d0;box-shadow:none}.btn.outline:hover{background:var(--pale);transform:translateY(-2px)}
+
+/* Animações Globais */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0) rotate(var(--rot)) scale(var(--scale))}50%{transform:translateY(-15px) rotate(var(--rot)) scale(var(--scale))}}
+@keyframes pulseGlow{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
+.reveal{opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(0.5, 0, 0, 1)}
+.reveal.active{opacity:1;transform:translateY(0)}
+
+.hero{background:linear-gradient(115deg,#f8fcfa 0%,#fff 58%,#f3faf7 100%);overflow:hidden}.hero-grid{min-height:490px;display:grid;grid-template-columns:1fr 1.06fr;align-items:center;gap:35px;padding-top:30px;padding-bottom:48px}.eyebrow{color:var(--green);font-size:11px;font-weight:850;letter-spacing:1.2px;text-transform:uppercase}.hero h1{font-size:clamp(38px,4.6vw,59px);line-height:1.04;letter-spacing:-2.4px;margin:14px 0 15px;max-width:530px}.hero p{font-size:20px;color:#3e4e63;margin:0 0 25px}.hero-note{font-size:12px!important;color:#758293!important;margin-top:13px!important}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+/* Entrada do Hero */
+.hero-copy > * {animation:fadeInUp 0.8s cubic-bezier(0.5, 0, 0, 1) both}
+.hero-copy .eyebrow{animation-delay:0.1s}.hero-copy h1{animation-delay:0.2s}.hero-copy p{animation-delay:0.3s}.hero-actions{animation-delay:0.4s}.hero-note{animation-delay:0.5s}
+
+.hero-art{height:390px;position:relative;display:flex;align-items:center;justify-content:center;isolation:isolate}.glow{position:absolute;width:370px;height:300px;border-radius:50%;background:#d9f2e5;filter:blur(42px);z-index:-1;animation:pulseGlow 4s ease-in-out infinite}
+.phone{position:absolute;width:190px;height:365px;background:#11151a;border-radius:31px;padding:7px;box-shadow:0 25px 45px #12251e30;border:1px solid #222;overflow:hidden}
+.phone:before{content:"";position:absolute;z-index:3;top:10px;left:50%;transform:translateX(-50%);width:67px;height:17px;border-radius:0 0 13px 13px;background:#11151a}
+.phone-screen{height:100%;border-radius:24px;background:#fff;overflow:hidden;color:#17263d;font-size:9px}
+.phone.left{--rot:-8deg;--scale:.9;left:5%;top:49px;animation:float 6s ease-in-out infinite}
+.phone.center{--rot:0deg;--scale:1;z-index:2;top:12px;left:34%;width:207px;height:392px;animation:float 7s ease-in-out infinite 1s}
+.phone.right{--rot:8deg;--scale:.9;right:0;top:62px;animation:float 6.5s ease-in-out infinite 2s}
+
+.mini-nav{display:flex;justify-content:space-between;padding:25px 12px 10px;font-size:8px;font-weight:800}.screen-hero{padding:16px 12px 15px;background:#17263d;color:white;min-height:124px}.screen-hero.light{background:#f8eee5;color:#283247}.screen-hero.food{background:#422b1f;color:#fff}.screen-hero h3{font-size:18px;line-height:1.08;margin:12px 0 7px;letter-spacing:-.5px}.screen-hero p{font-size:8px;line-height:1.5;margin:0;color:inherit}.mini-pill{display:inline-block;border-radius:4px;background:var(--green);color:white;font-size:7px;padding:5px 7px;margin-top:10px}.mini-section{padding:13px 11px}.mini-section strong{display:block;font-size:10px;margin-bottom:8px}.mini-cards{display:grid;grid-template-columns:1fr 1fr;gap:6px}.mini-card{height:63px;border-radius:6px;background:#e6f3ec;padding:7px;font-size:7px}.mini-card:nth-child(2){background:#f5e8dc}.mini-card:nth-child(3){background:#e9edf6}.mini-photo{height:85px;background:linear-gradient(145deg,#d8e5dc,#aab8a9 48%,#6c8175);position:relative}.mini-photo:after{content:"";position:absolute;left:14%;right:12%;bottom:0;height:64%;background:linear-gradient(135deg,#f4f2e9,#7b8b7f);clip-path:polygon(0 35%,50% 0,100% 35%,100% 100%,0 100%)}.mini-food{height:90px;background:linear-gradient(140deg,#a4774e,#f2d9ad 50%,#493326)}
+
+.section{padding:72px 0}.section.soft{background:#f7faf9}.section-head{max-width:620px;margin-bottom:30px}.section h2{font-size:clamp(28px,3vw,38px);letter-spacing:-1.2px;line-height:1.15;margin:8px 0}.section-lead{margin:8px 0 0;color:var(--muted);font-size:17px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:32px}.step{display:flex;align-items:flex-start;gap:16px;transition:transform 0.3s ease}.step:hover{transform:translateX(5px)}.step-num{flex:0 0 42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#def4e9;color:var(--green-dark);font-weight:850;font-size:20px;transition:all 0.3s}.step:hover .step-num{background:var(--green);color:white;transform:scale(1.1) rotate(10deg)}.step h3{font-size:15px;margin:1px 0 4px}.step p{font-size:13px;color:var(--muted);margin:0}
+
+.services-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}.service-list{display:grid;gap:11px;margin:24px 0 26px;padding:0;list-style:none}.service-list li{display:flex;gap:10px;align-items:center;color:#35445a;font-size:14px}.check{width:18px;height:18px;display:grid;place-items:center;border:1.5px solid var(--green);color:var(--green);border-radius:50%;font-size:12px;font-weight:900;flex:none}
+.laptop-scene{position:relative;height:310px;display:flex;align-items:center;justify-content:center}.laptop{width:85%;height:230px;background:#10151c;border:8px solid #20252b;border-bottom-width:13px;border-radius:12px;box-shadow:var(--shadow);overflow:hidden;position:relative;animation:float 8s ease-in-out infinite}.laptop-screen{height:100%;background:#fff}.laptop-nav{padding:10px 14px;font-size:9px;font-weight:800;display:flex;justify-content:space-between}.laptop-hero{height:120px;background:linear-gradient(90deg,#192b36d9,#192b3620),linear-gradient(135deg,#8b9e91,#d5ddd2 50%,#677c70);padding:20px;color:white}.laptop-hero h3{max-width:200px;font-size:20px;line-height:1.1;margin:0 0 10px}.laptop-hero span{font-size:8px;background:#fff;color:#18283c;border-radius:3px;padding:5px 8px}.laptop-bottom{height:55px;background:#fff;padding:10px;display:flex;gap:8px}.laptop-bottom i{display:block;height:32px;flex:1;background:#e3ece6;border-radius:4px}.laptop-base{position:absolute;bottom:25px;width:94%;height:13px;border-radius:2px 2px 12px 12px;background:linear-gradient(#cfd3d5,#8d9499);box-shadow:0 10px 12px #12251e22}.phone-overlay{position:absolute;right:2%;bottom:15px;width:113px;height:220px;border-radius:22px;background:#111;padding:5px;box-shadow:0 15px 28px #14251d30;animation:float 5s ease-in-out infinite 1s}.phone-overlay .phone-screen{border-radius:18px}.phone-overlay .mini-nav{padding-top:19px}.phone-overlay .screen-hero{min-height:95px;padding:10px}.phone-overlay .screen-hero h3{font-size:12px}.phone-overlay .mini-section{padding:8px}.phone-overlay .mini-photo{height:55px}
+
+/* Portfólio */
+.folio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.folio-card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 10px 30px #142c2508;transition:transform .3s,box-shadow .3s;display:flex;flex-direction:column}.folio-card:hover{transform:translateY(-8px);box-shadow:0 18px 38px #142c2514}
+.folio-img-wrap{position:relative;width:100%;height:220px;background:#eef5f1;overflow:hidden;border-bottom:1px solid var(--line);padding:12px 12px 0}
+.folio-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:8px 8px 0 0;box-shadow:0 4px 15px rgba(0,0,0,0.05);transition:transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)}
+.folio-card:hover .folio-img-wrap img{transform:scale(1.06) translateY(2px)}
+.folio-meta{padding:16px 18px;display:flex;flex-direction:column;gap:4px;flex-grow:1}.folio-meta strong{font-size:14px;color:var(--ink)}.folio-meta span{font-size:12px;color:var(--muted);line-height:1.4}.folio-cta{margin-top:32px;text-align:center}
+
+/* Preços & Modelos */
+.pricing-layout{display:grid;grid-template-columns:.95fr 1.05fr;gap:28px;align-items:stretch}.model-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}.model-card{display:block;position:relative;cursor:pointer;transition:all .3s ease;border:1px solid var(--line);border-radius:15px;padding:19px;background:white;box-shadow:0 7px 22px #17263d06}.model-card input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}.model-card:hover{transform:translateY(-5px);box-shadow:0 15px 30px #17263d10;border-color:#b8e5d0}.model-card.is-active{border-color:var(--green);background:#f5fcf8;box-shadow:0 0 0 3px #08a76516}.model-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:50%;background:#e1f5eb;color:var(--green);font-size:21px;font-weight:800}.model-card h3{font-size:15px;margin:14px 0 7px}.model-card p{font-size:12px;color:var(--muted);margin:0}.model-check{position:absolute;top:14px;right:14px;width:19px;height:19px;border-radius:50%;border:1.5px solid #d7e2dc;display:grid;place-items:center;font-size:10px;font-weight:900;line-height:1;color:transparent;background:#fff;transition:all .2s}.model-card.is-active .model-check{border-color:var(--green);background:var(--green);color:#fff}
+.price-list{margin-top:24px;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 4px 15px #00000005}.price-row{display:flex;justify-content:space-between;gap:15px;padding:11px 14px;font-size:12px;border-bottom:1px solid var(--line);transition:background 0.2s}.price-row:hover{background:#f8fcfa}.price-row:last-child{border-bottom:0}.price-row span{color:#526175}.price-row strong{white-space:nowrap;transition:color 0.3s}.price-note{font-size:11px;color:#6b7a86;margin:10px 2px 0;line-height:1.5}
+.sim-wrap{background:#eef8f3;padding:18px;border-radius:18px}.sim-card{background:white;border:1px solid #e1eee7;border-radius:14px;padding:22px;box-shadow:0 8px 24px #163a2610}.sim-title{display:flex;gap:12px;align-items:center;margin-bottom:18px}.sim-title-icon{width:36px;height:36px;border-radius:10px;background:#e1f5eb;display:grid;place-items:center;color:var(--green);font-size:19px}.sim-title h3{margin:0;font-size:17px}.sim-title p{margin:2px 0 0;color:var(--muted);font-size:12px}.field{margin-bottom:15px}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:7px;color:#435166}.field select,.field input{width:100%;border:1px solid #dfe7e3;border-radius:9px;background:white;padding:12px 14px;color:var(--ink);outline:none;transition:all 0.3s ease}.field select:focus,.field input:focus{border-color:var(--green);box-shadow:0 0 0 4px #08a76515;background:#fbfdfc}.sim-box{background:#f6fbf8;border:1px solid #e3f0e9;border-radius:12px;padding:12px 14px;margin-bottom:15px}.sim-row{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:#526175;padding:4px 0}.sim-row strong{color:var(--ink);white-space:nowrap}.sim-box .field{margin:12px 0 0}.range-head{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px}.range-head strong{color:var(--green-dark)}input[type=range]{width:100%;accent-color:var(--green);padding:0;border:none;box-shadow:none;background:transparent}.result{background:#e9f8f0;border-radius:11px;padding:15px;display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0;transition:all 0.3s ease}.result small{display:block;color:#5a7467;font-size:11px}.result strong{display:block;color:#07884f;font-size:21px;letter-spacing:-.5px;transition:color 0.3s}.result .wide{grid-column:1/-1;border-top:1px solid #d5ecdf;padding-top:9px}.fineprint{font-size:10px;color:#718174;margin:12px 0 0}.sim-card .btn{width:100%;font-size:13px}
+
+/* Formulário de Contacto Redesenhado */
+.contact-wrapper{display:grid;grid-template-columns:1fr 1.2fr;gap:40px;background:#fff;border-radius:var(--radius);padding:40px;box-shadow:0 20px 50px rgba(23,38,61,0.08);border:1px solid var(--line);align-items:center}
+.contact-info h2{font-size:32px;letter-spacing:-1px;margin:10px 0 15px}
+.lead-form{display:flex;flex-direction:column;gap:20px}
+.lead-form .field{margin-bottom:0}
+.lead-form .field label{font-size:13px;margin-bottom:8px;color:var(--ink);text-transform:uppercase;letter-spacing:0.5px}
+.lead-form .field input,.lead-form .field textarea{padding:15px 18px;font-size:16px;border-radius:12px;background:#f9fbfa;border:1px solid #dce4e0;width:100%;color:var(--ink);outline:none;transition:all 0.3s ease;font-family:inherit}
+.lead-form .field textarea{min-height:120px;resize:vertical;line-height:1.5}
+.lead-form .field input:focus,.lead-form .field textarea:focus{border-color:var(--green);box-shadow:0 0 0 4px #08a76515;background:#fff}
+.lead-form .field input::placeholder,.lead-form .field textarea::placeholder{color:#9ca9b6;font-weight:normal;text-transform:none;letter-spacing:normal}
+.lead-form .btn{width:100%;padding:17px;font-size:16px;margin-top:5px;border-radius:12px}
+.form-error{color:#c0392b;font-size:12px;margin:0 0 12px;font-weight:600}
+
+.cta-band{background:var(--navy);color:white;padding:50px 0}.cta-content{display:flex;justify-content:space-between;align-items:center;gap:30px}.cta-band h2{font-size:29px;line-height:1.12;letter-spacing:-.7px;max-width:440px;margin:8px 0 10px}.cta-band p{color:#d3dce6;font-size:13px;max-width:460px;margin:0 0 19px}.cta-band .eyebrow{color:#4ee0a0}.cta-points{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:12px;color:#c3d3e0;margin-top:14px}.scribble{font-size:23px;font-weight:750;font-style:italic;line-height:1.5;transform:rotate(-7deg);color:#eaf4f0;text-align:center}.scribble span{color:#4ee0a0}.footer{padding:21px 0;font-size:11px;color:#68778a}.footer-row{display:flex;justify-content:space-between;gap:15px;align-items:center}.footer-contact{display:flex;gap:10px;align-items:center;color:var(--green-dark);font-weight:750}
+
+@media(max-width:850px){.nav{gap:14px}.nav a:not(.btn){display:none}.hero-grid{grid-template-columns:1fr;gap:0;padding-top:55px}.hero-copy{text-align:center}.hero h1{margin-left:auto;margin-right:auto;font-size:48px}.hero p{font-size:18px}.hero-actions{justify-content:center}.hero-art{height:365px;max-width:560px;width:100%;margin:5px auto 0}.phone.left{left:8%}.phone.center{left:33%}.phone.right{right:5%}.services-grid,.pricing-layout{grid-template-columns:1fr}.laptop-scene{order:2}.steps{gap:17px}.step{gap:10px}.step-num{flex-basis:36px;height:36px}.section{padding:58px 0}.cta-content{align-items:flex-start}.scribble{font-size:18px}.folio-grid{grid-template-columns:1fr}.cta-content{flex-direction:column;align-items:center;text-align:center}.contact-wrapper{grid-template-columns:1fr;padding:30px;gap:30px}}
+@media(max-width:560px){.container{width:min(100% - 30px,1120px)}.topbar{height:66px}.brand{font-size:14px}.nav .btn{padding:10px 12px;font-size:11px}.hero-grid{padding-top:42px;padding-bottom:25px}.hero h1{font-size:40px;letter-spacing:-1.6px}.hero p{font-size:16px}.hero-art{height:305px;transform:scale(.9);transform-origin:top center;margin-bottom:-25px}.phone{width:154px;height:310px;border-radius:26px}.phone.left{left:0;top:38px}.phone.center{width:171px;height:337px;left:31%;top:4px}.phone.right{right:-2px;top:47px}.phone-screen{border-radius:19px}.screen-hero h3{font-size:15px}.section{padding:47px 0}.section h2{font-size:29px}.section-lead{font-size:15px}.steps{grid-template-columns:1fr;gap:21px}.services-grid{gap:10px}.laptop-scene{height:250px;transform:scale(.92);margin:0 -12px}.model-cards{grid-template-columns:1fr}.model-card{padding:16px}.sim-wrap{padding:10px}.sim-card{padding:15px}.result{grid-template-columns:1fr 1fr;padding:12px}.result strong{font-size:18px}.scribble{display:none}.cta-band h2{font-size:27px}.footer-row{align-items:flex-start;flex-direction:column}.price-row{font-size:11px}.radio-line{gap:10px}.folio-grid{gap:20px}.sim-row{font-size:11px}.contact-wrapper{padding:24px 20px}}
+</style>
+</head>
+<body>
+<header class="container topbar">
+  <a class="brand" href="#inicio"><span class="brand-mark" aria-hidden="true"></span><span>White Label</span></a>
+  <nav class="nav" aria-label="Navegação principal">
+    <a href="#como-funciona">Como funciona</a>
+    <a href="#servicos">Serviços</a>
+    <a href="#portfolio">Portfólio</a>
+    <a href="#modelos">Preços</a>
+    <a href="#simulador">Simulador</a>
+    <a class="btn small" href="https://wa.me/244955639957?text=Ol%C3%A1%21%20Tenho%20interesse%20na%20parceria%20White%20Label." target="_blank" rel="noopener">◉ Falar no WhatsApp</a>
+  </nav>
+</header>
+
+<main>
+<section class="hero" id="inicio"><div class="container hero-grid">
+  <div class="hero-copy">
+    <div class="eyebrow">Parceria White Label</div>
+    <h1>Venda sites aos seus clientes.</h1>
+    <p>Nós fazemos o desenvolvimento.</p>
+    <div class="hero-actions">
+      <a class="btn" href="https://wa.me/244955639957?text=Ol%C3%A1%21%20Quero%20saber%20como%20funciona%20a%20parceria%20White%20Label." target="_blank" rel="noopener">◉ Quero ser parceiro</a>
+      <a class="btn outline" href="https://joselelo.vercel.app/" target="_blank" rel="noopener">Ver portfólio</a>
+    </div>
+    <p class="hero-note">Mais serviços para oferecer. Sem montar uma equipa técnica.</p>
+  </div>
+  <div class="hero-art" aria-label="Mockups de telemóveis com websites"><div class="glow"></div>
+    <div class="phone left"><div class="phone-screen"><div class="mini-nav"><span>✦ belavida</span><span>☰</span></div><div class="screen-hero light"><h3>Cuide de si. Todos os dias.</h3><p>Bem-estar e beleza ao seu alcance.</p><span class="mini-pill" style="background:#a56d4b">Conheça-nos</span></div><div class="mini-section"><strong>Os nossos serviços</strong><div class="mini-cards"><div class="mini-card">✧<br>Tratamentos</div><div class="mini-card">♡<br>Bem-estar</div><div class="mini-card">✦<br>Cuidados</div><div class="mini-card">→<br>Contactos</div></div></div></div></div>
+    <div class="phone center"><div class="phone-screen"><div class="mini-nav"><span>aurora.</span><span>☰</span></div><div class="screen-hero"><p>O seu negócio</p><h3>merece um site profissional.</h3><p>Uma presença digital feita para crescer.</p><span class="mini-pill">Saiba mais</span></div><div class="mini-section"><strong>Soluções digitais para o seu negócio</strong><div class="mini-cards"><div class="mini-card">▣<br>Design moderno</div><div class="mini-card">◉<br>Suporte contínuo</div></div></div><div class="mini-section"><strong>Vamos conversar?</strong><div class="mini-card" style="height:32px;background:#08a765;color:white;text-align:center">Fale connosco</div></div></div></div>
+    <div class="phone right"><div class="phone-screen"><div class="mini-nav"><span>Sabor &amp; Lar</span><span>☰</span></div><div class="screen-hero food"><p>Feito com carinho</p><h3>Sabores que conectam pessoas.</h3><span class="mini-pill" style="background:#bd8b53">Ver menu</span></div><div class="mini-food"></div><div class="mini-section"><strong>O nosso restaurante</strong><p style="font-size:8px;color:#657080">Boa comida, bons momentos.</p><div class="mini-card" style="height:27px;background:#f1e4d4">Consultar menu →</div></div></div></div>
+  </div>
+</div></section>
+
+<section class="section" id="como-funciona"><div class="container">
+  <div class="section-head reveal"><div class="eyebrow">Como funciona</div><h2>Como funciona?</h2><p class="section-lead">Três passos. Uma nova fonte de receita.</p></div>
+  <div class="steps">
+    <div class="step reveal" style="transition-delay: 0.1s;"><div class="step-num">1</div><div><h3>Escolha o modelo de parceria.</h3><p>Comissão de 20% ou margem própria.</p></div></div>
+    <div class="step reveal" style="transition-delay: 0.2s;"><div class="step-num">2</div><div><h3>Venda o serviço aos seus clientes.</h3><p>Apresente os serviços com a sua marca.</p></div></div>
+    <div class="step reveal" style="transition-delay: 0.3s;"><div class="step-num">3</div><div><h3>Envie-nos o projeto.</h3><p>Nós tratamos do desenvolvimento do site.</p></div></div>
+  </div>
+</div></section>
+
+<section class="section soft" id="servicos"><div class="container services-grid">
+  <div class="reveal">
+    <div class="eyebrow">O que pode vender</div>
+    <h2>Mais serviços para oferecer.</h2>
+    <p class="section-lead">Sem desenvolver tudo sozinho.</p>
+    <ul class="service-list">
+      <li><span class="check">✓</span>Landing pages</li>
+      <li><span class="check">✓</span>Websites institucionais</li>
+      <li><span class="check">✓</span>Websites com blog</li>
+      <li><span class="check">✓</span>Portfólios profissionais</li>
+      <li><span class="check">✓</span>Catálogos digitais</li>
+      <li><span class="check">✓</span>Sites para restaurantes, hotéis e negócios locais</li>
+    </ul>
+    <a class="btn" href="#modelos">Ver preços dos serviços&nbsp; →</a>
+  </div>
+  <div class="laptop-scene reveal">
+    <div class="laptop"><div class="laptop-screen"><div class="laptop-nav"><span>◈ construtora</span><span>Início　Projetos　Contactos</span></div><div class="laptop-hero"><h3>O lugar certo para o seu próximo investimento.</h3><span>Ver projetos →</span></div><div class="laptop-bottom"><i></i><i></i><i></i></div></div></div>
+    <div class="laptop-base"></div>
+    <div class="phone-overlay"><div class="phone-screen"><div class="mini-nav"><span>construtora</span><span>☰</span></div><div class="screen-hero"><h3>O lugar certo para o seu próximo investimento.</h3><span class="mini-pill">Ver projetos</span></div><div class="mini-section"><strong>Destaques</strong><div class="mini-photo"></div></div></div></div>
+  </div>
+</div></section>
+
+<section class="section" id="portfolio"><div class="container">
+  <div class="section-head reveal">
+    <div class="eyebrow">Portfólio</div>
+    <h2>Veja o que pode vender com a sua marca.</h2>
+    <p class="section-lead">Exemplos de sites que desenvolvemos para parceiros.</p>
+  </div>
+  <div class="folio-grid">
+    
+    <!-- Projeto 1: Advocacia -->
+    <article class="folio-card reveal" style="transition-delay: 0.1s;">
+      <div class="folio-img-wrap">
+        <img src="https://joselelo.vercel.app/advogacia.png" alt="Site de Advocacia" loading="lazy">
+      </div>
+      <div class="folio-meta">
+        <strong>Site de Advocacia</strong>
+        <span>Website profissional para um escritório de advocacia, focado em credibilidade e captação.</span>
+      </div>
+    </article>
+
+    <!-- Projeto 2: Authentik -->
+    <article class="folio-card reveal" style="transition-delay: 0.2s;">
+      <div class="folio-img-wrap">
+        <img src="https://joselelo.vercel.app/authentik.png" alt="Authentik" loading="lazy">
+      </div>
+      <div class="folio-meta">
+        <strong>Authentik</strong>
+        <span>Landing page moderna e minimalista focada em conversão para empresas de tecnologia.</span>
+      </div>
+    </article>
+
+    <!-- Projeto 3: Cafeteria -->
+    <article class="folio-card reveal" style="transition-delay: 0.3s;">
+      <div class="folio-img-wrap">
+        <img src="https://joselelo.vercel.app/rosa.png" alt="Cafeteria" loading="lazy">
+      </div>
+      <div class="folio-meta">
+        <strong>Cafeteria</strong>
+        <span>Website elegante para uma cafeteria, com menu interativo e sistema de reservas.</span>
+      </div>
+    </article>
+
+  </div>
+  <div class="folio-cta reveal">
+    <a class="btn outline" href="https://joselelo.vercel.app/" target="_blank" rel="noopener">◉ Ver portfólio completo</a>
+  </div>
+</div></section>
+
+<section class="section soft" id="modelos"><div class="container pricing-layout">
+  <div class="reveal">
+    <div class="eyebrow">Escolha o seu modelo</div>
+    <h2>Duas formas de ganhar com cada projeto.</h2>
+    <p class="section-lead">Escolha o modelo. A tabela de preços e o simulador atualizam automaticamente.</p>
+
+    <div class="model-cards" role="radiogroup" aria-label="Modelo de parceria">
+      <label class="model-card is-active" data-model="margin">
+        <input type="radio" name="model" value="margin" checked>
+        <span class="model-check" aria-hidden="true">✓</span>
+        <div class="model-icon">%</div>
+        <h3>Margem própria</h3>
+        <p>Paga o preço White Label e acrescenta o valor que quiser por cima. Todo o lucro extra é seu.</p>
+      </label>
+      <label class="model-card" data-model="commission">
+        <input type="radio" name="model" value="commission">
+        <span class="model-check" aria-hidden="true">✓</span>
+        <div class="model-icon">↗</div>
+        <h3>Comissão de 20%</h3>
+        <p>Vende pelo preço da tabela (já com +15%) e recebe 20% de comissão em cada venda.</p>
+      </label>
+    </div>
+
+    <div id="precos" class="price-list" aria-label="Tabela de preços White Label"></div>
+    <p class="price-note" id="priceNote"></p>
+  </div>
+
+  <div class="sim-wrap reveal" id="simulador" style="transition-delay: 0.2s;">
+    <div class="sim-card">
+      <div class="sim-title">
+        <div class="sim-title-icon">▣</div>
+        <div><h3>Simulador de ganhos</h3><p>Escolha o serviço e veja quanto ganha.</p></div>
+      </div>
+
+      <div class="field">
+        <label for="service">Serviço</label>
+        <select id="service"></select>
+      </div>
+
+      <div class="sim-box" id="boxMargin">
+        <div class="sim-row"><span>Preço White Label (o que nos paga)</span><strong id="wlPrice">100.000 Kz</strong></div>
+        <div class="field">
+          <label for="markup">Quanto quer ganhar por site? (Kz)</label>
+          <input id="markup" type="number" min="0" step="5000" value="50000" inputmode="numeric">
+        </div>
+      </div>
+
+      <div class="sim-box" id="boxCommission" hidden>
+        <div class="sim-row"><span>Preço ao cliente (já com +15%)</span><strong id="commPrice">115.000 Kz</strong></div>
+        <div class="sim-row"><span>A sua comissão (20%)</span><strong id="commGain" style="color:var(--green-dark)">23.000 Kz</strong></div>
+      </div>
+
+      <div class="field">
+        <div class="range-head"><label for="sites">Sites por mês</label><strong id="sitesValue">5</strong></div>
+        <input id="sites" type="range" min="1" max="30" value="5">
+        <div class="range-head"><span>1 site</span><span>30 sites</span></div>
+      </div>
+
+      <div class="result">
+        <div><small>Preço final ao cliente</small><strong id="finalPrice">150.000 Kz</strong></div>
+        <div><small>Ganho por site</small><strong id="unitGain">50.000 Kz</strong></div>
+        <div class="wide"><small>Ganho mensal estimado</small><strong id="monthlyGain">250.000 Kz</strong></div>
+      </div>
+
+      <button class="btn" id="simWhatsApp" type="button">◉ Quero ser parceiro pelo WhatsApp</button>
+      <p class="fineprint">Estimativas antes de impostos e outras despesas. Na comissão, o valor é 20% do preço final ao cliente. Confirme as condições no contrato.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- Formulário de Contacto Atualizado (Apenas Nome e Mensagem) -->
+<section class="section soft" id="contacto">
+  <div class="container">
+    <div class="contact-wrapper reveal">
+      <div class="contact-info">
+        <div class="eyebrow">Fale connosco</div>
+        <h2>Deixe a sua mensagem.</h2>
+        <p class="section-lead">Entramos em contacto para explicar como funciona a parceria e tirar todas as suas dúvidas.</p>
+        <ul class="service-list" style="margin-top: 25px;">
+          <li><span class="check">✓</span>Resposta rápida garantida</li>
+          <li><span class="check">✓</span>Atendimento personalizado</li>
+          <li><span class="check">✓</span>Sem qualquer compromisso</li>
+        </ul>
+      </div>
+      <form class="lead-form" id="leadForm" novalidate>
+        <div class="field">
+          <label for="leadName">Nome</label>
+          <input id="leadName" type="text" placeholder="O seu nome completo" autocomplete="name" required>
+        </div>
+        
+        <div class="field">
+          <label for="leadMessage">A Sua Mensagem</label>
+          <textarea id="leadMessage" placeholder="Conte-nos um pouco sobre o seu negócio ou faça a sua pergunta." required></textarea>
+        </div>
+        
+        <p class="form-error" id="formError" role="alert" hidden></p>
+        <button class="btn" type="submit">◉ Quero ser contactado</button>
+        <p class="fineprint" style="text-align:center; margin-top:-5px;">Ao enviar, abrimos o WhatsApp para nos enviar os seus dados.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="container cta-content">
+    <div class="reveal">
+      <div class="eyebrow">Pronto para começar?</div>
+      <h2>O próximo projeto pode ser o início da sua parceria.</h2>
+      <p>Escolha o modelo que faz sentido para o seu negócio e comece a oferecer desenvolvimento web aos seus clientes.</p>
+      <div class="cta-points">
+        <span>✓ Sem equipa técnica</span>
+        <span>✓ Preços fixos</span>
+        <span>✓ Suporte contínuo</span>
+      </div>
+      <br>
+      <a class="btn" href="https://wa.me/244955639957?text=Ol%C3%A1%21%20Quero%20come%C3%A7ar%20a%20parceria%20White%20Label." target="_blank" rel="noopener">◉ Falar no WhatsApp</a>
+    </div>
+    <div class="scribble reveal" style="transition-delay: 0.2s;">Mais serviços.<br>Mais clientes.<br><span>Mais ganhos.</span></div>
+  </div>
+</section>
+</main>
+
+<footer class="container footer"><div class="footer-row">
+  <div><strong>White Label</strong>　|　Sites que impulsionam negócios.</div>
+  <a class="footer-contact" href="https://wa.me/244955639957" target="_blank" rel="noopener">◉　955 639 957　 <span style="color:#718092;font-weight:500">Fale connosco pelo WhatsApp</span></a>
+</div></footer>
+
+<script>
+/* ================= SIMULADOR + TABELA DE PREÇOS ================= */
+(() => {
+  const SERVICES = [
+    { name: 'Landing page — domínio gratuito elegível', base: 40000 },
+    { name: 'Landing page — domínio pago', base: 79000 },
+    { name: 'Website institucional', base: 100000 },
+    { name: 'Website institucional + blog', base: 180000 },
+    { name: 'Catálogo digital', base: 200000 },
+    { name: 'Portfólio — domínio gratuito elegível', base: 40000 },
+    { name: 'Portfólio — domínio pago', base: 79000 },
+    { name: 'Website para negócio local', base: 190000 }
+  ];
+
+  const money = n => Math.round(n).toLocaleString('pt-PT') + ' Kz';
+  const withFee = base => Math.round(base * 1.15 / 1000) * 1000;
+
+  const $ = id => document.getElementById(id);
+  const serviceSel = $('service');
+  const priceList = $('precos');
+  const priceNote = $('priceNote');
+  const markup = $('markup');
+  const sites = $('sites');
+  const sitesValue = $('sitesValue');
+  const finalPrice = $('finalPrice');
+  const unitGain = $('unitGain');
+  const monthlyGain = $('monthlyGain');
+  const wlPrice = $('wlPrice');
+  const commPrice = $('commPrice');
+  const commGain = $('commGain');
+  const boxMargin = $('boxMargin');
+  const boxCommission = $('boxCommission');
+  const simBtn = $('simWhatsApp');
+
+  let model = 'margin';
+
+  SERVICES.forEach((s, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = s.name;
+    serviceSel.appendChild(opt);
+
+    const row = document.createElement('div');
+    row.className = 'price-row';
+    const nameEl = document.createElement('span');
+    nameEl.textContent = s.name;
+    const valEl = document.createElement('strong');
+    valEl.dataset.index = i;
+    row.append(nameEl, valEl);
+    priceList.appendChild(row);
+  });
+  serviceSel.value = '2';
+
+  function render() {
+    priceList.querySelectorAll('strong[data-index]').forEach(el => {
+      const s = SERVICES[+el.dataset.index];
+      el.style.opacity = 0;
+      setTimeout(() => {
+        el.textContent = money(model === 'commission' ? withFee(s.base) : s.base);
+        el.style.opacity = 1;
+      }, 150);
+    });
+    priceNote.textContent = model === 'commission'
+      ? 'Preços já com o ajuste de +15%. Recebe 20% de comissão sobre cada venda.'
+      : 'Estes são os preços que nos paga. Acrescente a sua margem e venda pelo preço que quiser.';
+
+    document.querySelectorAll('.model-card').forEach(card => {
+      card.classList.toggle('is-active', card.dataset.model === model);
+    });
+
+    boxMargin.hidden = model !== 'margin';
+    boxCommission.hidden = model !== 'commission';
+
+    const base = SERVICES[+serviceSel.value].base;
+    const qty = Math.max(1, +sites.value || 1);
+    sitesValue.textContent = qty;
+
+    wlPrice.textContent = money(base);
+    commPrice.textContent = money(withFee(base));
+    commGain.textContent = money(withFee(base) * 0.2);
+
+    let price, gain;
+    if (model === 'margin') {
+      const extra = Math.max(0, +markup.value || 0);
+      price = base + extra; 
+      gain = extra;
+    } else {
+      price = withFee(base);
+      gain = price * 0.2;
+    }
+
+    finalPrice.textContent = money(price);
+    unitGain.textContent = money(gain);
+    monthlyGain.textContent = money(gain * qty);
+
+    simBtn.onclick = () => {
+      const s = SERVICES[+serviceSel.value];
+      const linhas = [
+        'Olá! Tenho interesse na parceria White Label.',
+        'Serviço: ' + s.name + '.',
+        model === 'commission'
+          ? 'Modelo: comissão de 20%. Preço ao cliente: ' + money(withFee(s.base)) + '.'
+          : 'Modelo: margem própria. Preço White Label: ' + money(s.base) + '. Preço ao cliente: ' + money(price) + '.',
+        'Ganho estimado por site: ' + money(gain) + '.',
+        'Volume estimado: ' + qty + ' site(s) por mês (' + money(gain * qty) + '/mês).',
+        'Como podemos começar?'
+      ];
+      window.open('https://wa.me/244955639957?text=' + encodeURIComponent(linhas.join('\n')), '_blank', 'noopener');
+    };
+  }
+
+  document.querySelectorAll('input[name="model"]').forEach(r => {
+    r.addEventListener('change', () => { model = r.value; render(); });
+  });
+  [serviceSel, markup, sites].forEach(el => el.addEventListener('input', render));
+
+  render();
+})();
+
+/* ================= FORMULÁRIO (SEM TELEMÓVEL) ================= */
+(() => {
+  const form = document.getElementById('leadForm');
+  const nameEl = document.getElementById('leadName');
+  const messageEl = document.getElementById('leadMessage');
+  const err = document.getElementById('formError');
+
+  const showErr = msg => { err.textContent = msg; err.hidden = false; };
+  const clearErr = () => { err.hidden = true; err.textContent = ''; };
+
+  [nameEl, messageEl].forEach(el => el.addEventListener('input', clearErr));
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = nameEl.value.trim();
+    const message = messageEl.value.trim();
+
+    if (name.length < 2) { showErr('Escreva o seu nome.'); nameEl.focus(); return; }
+    if (message.length < 3) { showErr('Por favor, escreva uma mensagem.'); messageEl.focus(); return; }
+
+    clearErr();
+    
+    // Constrói a mensagem para o WhatsApp
+    let msg = 'Olá! Chamo-me ' + name + '.\n\n';
+    msg += 'Mensagem: ' + message + '\n\n';
+    msg += 'Quero saber mais sobre a parceria White Label.';
+    
+    window.open('https://wa.me/244955639957?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+  });
+})();
+
+/* ================= SCROLL REVEAL ANIMATIONS ================= */
+(() => {
+  const revealElements = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    root: null,
+    threshold: 0.1,
+    rootMargin: "0px 0px -50px 0px"
+  });
+
+  revealElements.forEach(el => revealObserver.observe(el));
+})();
+</script>
+</body></html>
