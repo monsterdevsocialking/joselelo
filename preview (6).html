@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LegendaVideo — Editor de Legendas</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg:#0d0f14;
+  --panel:#151820;
+  --panel2:#1b1f29;
+  --border:#292e3a;
+  --text:#f4f5f8;
+  --muted:#9299a9;
+  --primary:#6c7cff;
+  --primary2:#8793ff;
+  --green:#45c98a;
+  --danger:#ed6b75;
+}
+
+* {box-sizing:border-box}
+
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+}
+
+button,input,select,textarea {font:inherit}
+button {cursor:pointer}
+
+.app {min-height:100vh;display:flex;flex-direction:column}
+
+header {
+  height:65px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
+  border-bottom:1px solid var(--border);
+  background:#11141b;
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.logo {display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px}
+.logo-icon {
+  width:34px;height:34px;border-radius:10px;
+  background:var(--primary);display:grid;place-items:center;
+  font-size:17px;
+}
+.header-right {display:flex;align-items:center;gap:10px}
+.status {font-size:12px;color:var(--muted)}
+.status span {color:var(--green)}
+
+button {
+  border:0;
+  border-radius:8px;
+  padding:10px 14px;
+  color:white;
+  background:var(--panel2);
+  transition:.2s;
+}
+button:hover {filter:brightness(1.15)}
+button:disabled {opacity:.45;cursor:not-allowed}
+.primary {background:var(--primary)}
+.primary:hover {background:var(--primary2)}
+.secondary {border:1px solid var(--border);background:transparent}
+.small {font-size:12px;padding:7px 10px}
+.danger {color:var(--danger)}
+
+main {
+  width:min(1500px,100%);
+  margin:auto;
+  padding:22px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 350px;
+  gap:18px;
+}
+
+.left {min-width:0}
+.right {min-width:0}
+
+.panel {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.panel-head {
+  display:flex;align-items:center;justify-content:space-between;
+  padding:15px 17px;border-bottom:1px solid var(--border);
+}
+.panel-head h3 {font-size:14px;margin:0;font-weight:700}
+.muted {color:var(--muted);font-size:12px}
+
+.video-area {
+  background:#08090c;
+  min-height:300px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+}
+
+video {
+  width:100%;
+  max-height:540px;
+  display:block;
+  object-fit:contain;
+}
+
+.empty-video {
+  padding:50px 20px;text-align:center;color:var(--muted);
+}
+.empty-video .symbol {font-size:42px;margin-bottom:12px}
+.empty-video h3 {color:white;margin:0 0 8px}
+.empty-video p {font-size:13px;line-height:1.6}
+
+.subtitle-overlay {
+  position:absolute;
+  left:50%;
+  bottom:10%;
+  transform:translateX(-50%);
+  width:90%;
+  text-align:center;
+  pointer-events:none;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  line-height:1.2;
+  font-family:Arial,sans-serif;
+  font-size:30px;
+  font-weight:800;
+  color:white;
+  -webkit-text-stroke:1.4px black;
+  paint-order:stroke fill;
+  text-shadow:2px 3px 4px #000;
+}
+
+.video-controls {
+  padding:12px 15px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;
+  border-top:1px solid var(--border);
+}
+.video-controls .group {display:flex;gap:8px;align-items:center}
+.time {font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+.section {margin-top:17px}
+.section-title {
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:10px;
+}
+.section-title h3 {font-size:14px;margin:0}
+
+.drop-zone {
+  border:1px dashed #454d61;
+  padding:18px;
+  border-radius:10px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  cursor:pointer;
+}
+.drop-zone:hover {border-color:var(--primary);background:#171b29}
+.drop-zone strong {color:white}
+.drop-zone input {display:none}
+
+.transcription-box {padding:16px}
+.transcription-box p {font-size:13px;color:var(--muted);line-height:1.6}
+.progress {
+  height:6px;background:#292e3a;border-radius:10px;overflow:hidden;
+  margin:12px 0;
+}
+.progress div {height:100%;width:0;background:var(--primary);transition:width .2s}
+.log {font-size:12px;color:var(--muted);min-height:18px}
+
+.caption-list {
+  display:flex;flex-direction:column;gap:8px;
+  max-height:480px;overflow-y:auto;padding:12px;
+}
+
+.caption {
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:11px;
+  background:#191d26;
+  cursor:pointer;
+}
+.caption.active {border-color:var(--primary);background:#20243a}
+.caption-top {display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.caption-time {font-size:11px;color:var(--primary2);font-weight:700}
+.caption-actions {display:flex;gap:5px}
+.caption textarea {
+  width:100%;resize:vertical;min-height:45px;
+  border:1px solid transparent;background:transparent;
+  color:white;outline:none;font-size:13px;line-height:1.5;
+}
+.caption textarea:focus {border-color:var(--primary);border-radius:5px}
+.caption-bottom {display:flex;gap:7px;align-items:center}
+.caption-bottom input {
+  width:90px;background:#10131a;border:1px solid var(--border);
+  color:white;padding:6px;border-radius:5px;font-size:11px;
+}
+.empty-list {text-align:center;padding:30px;color:var(--muted);font-size:13px}
+
+.tabs {display:flex;border-bottom:1px solid var(--border)}
+.tab {
+  flex:1;padding:13px 5px;background:transparent;
+  color:var(--muted);border-radius:0;font-size:12px;
+  border-bottom:2px solid transparent;
+}
+.tab.active {color:white;border-bottom-color:var(--primary)}
+
+.tab-content {padding:16px}
+.field {margin-bottom:17px}
+.field label {
+  display:flex;justify-content:space-between;
+  font-size:12px;color:#c4c9d5;margin-bottom:8px;
+}
+.field input[type="text"],
+.field input[type="number"],
+.field select {
+  width:100%;padding:10px;background:#10131a;
+  color:white;border:1px solid var(--border);border-radius:7px;
+  outline:none;
+}
+.field input:focus,.field select:focus {border-color:var(--primary)}
+.field input[type="color"] {width:100%;height:38px;border:0;background:transparent}
+.field input[type="range"] {width:100%;accent-color:var(--primary)}
+.field input[type="checkbox"] {accent-color:var(--primary)}
+.field .check {display:flex;align-items:center;gap:8px;font-size:12px}
+.row-fields {display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.style-buttons {display:flex;gap:7px;flex-wrap:wrap}
+.style-buttons button {font-size:12px;padding:8px 11px}
+.style-buttons button.active {background:var(--primary)}
+.presets {display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.preset {
+  border:1px solid var(--border);border-radius:8px;padding:10px;
+  background:#10131a;text-align:center;font-size:12px;
+}
+.preset:hover {border-color:var(--primary)}
+.preset-sample {font-size:18px;font-weight:800;margin-bottom:6px}
+
+.export-box {padding:15px}
+.export-box button {width:100%;margin-bottom:8px}
+.notice {font-size:11px;color:var(--muted);line-height:1.5;margin-top:8px}
+
+.modal-backdrop {
+  position:fixed;inset:0;background:#000a;z-index:100;
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.modal {
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:13px;padding:22px;width:min(440px,100%);
+}
+.modal h3 {margin:0 0 10px;font-size:17px}
+.modal p {font-size:13px;color:var(--muted);line-height:1.6}
+.modal-actions {display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
+
+footer {
+  text-align:center;padding:18px;color:#737b8b;font-size:11px;
+}
+
+@media(max-width:1000px) {
+  main {grid-template-columns:1fr}
+  .right {display:grid;grid-template-columns:1fr 1fr;gap:15px}
+  .right .panel {height:max-content}
+}
+@media(max-width:650px) {
+  header {padding:0 13px}
+  main {padding:12px;gap:13px}
+  .right {display:flex;flex-direction:column}
+  .video-area {min-height:220px}
+  .subtitle-overlay {font-size:22px}
+  .status {display:none}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">CC</div>
+    LegendaVideo
+  </div>
+  <div class="header-right">
+    <div class="status" id="appStatus"><span>●</span> Pronto para começar</div>
+    <button class="secondary small" id="importSrtBtn">Importar SRT</button>
+    <input type="file" id="srtInput" accept=".srt,.vtt" hidden>
+  </div>
+</header>
+
+<main>
+<div class="left">
+
+  <div class="panel">
+    <div class="panel-head">
+      <h3>Pré-visualização</h3>
+      <span class="muted" id="videoInfo">Nenhum vídeo carregado</span>
+    </div>
+
+    <div class="video-area" id="videoArea">
+      <div class="empty-video" id="emptyVideo">
+        <div class="symbol">▶</div>
+        <h3>Comece por adicionar um vídeo</h3>
+        <p>Importe um vídeo para gerar e editar as legendas.</p>
+        <button class="primary" id="selectVideoBtn">Selecionar vídeo</button>
+      </div>
+      <video id="video" controls playsinline style="display:none"></video>
+      <div class="subtitle-overlay" id="subtitleOverlay"></div>
+    </div>
+
+    <div class="video-controls">
+      <div class="group">
+        <button class="secondary small" id="playBtn">▶ Reproduzir</button>
+        <span class="time" id="currentTime">00:00.00</span>
+      </div>
+      <div class="group">
+        <button class="secondary small" id="prevBtn">← Anterior</button>
+        <button class="secondary small" id="nextBtn">Seguinte →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      <h3>Vídeo e transcrição</h3>
+      <span class="muted" id="durationLabel"></span>
+    </div>
+
+    <div class="panel">
+      <div class="transcription-box">
+        <label class="drop-zone" id="dropZone">
+          <input type="file" id="videoInput" accept="video/*">
+          <strong>Selecionar ou arrastar vídeo</strong><br>
+          Formatos comuns: MP4, MOV, WebM
+        </label>
+
+        <div class="row-fields" style="margin-top:14px">
+          <div class="field" style="margin:0">
+            <label>Idioma do áudio</label>
+            <select id="language">
+              <option value="portuguese">Português</option>
+              <option value="english">Inglês</option>
+              <option value="spanish">Espanhol</option>
+              <option value="french">Francês</option>
+              <option value="auto">Detecção automática</option>
+            </select>
+          </div>
+          <div class="field" style="margin:0">
+            <label>Precisão</label>
+            <select id="modelChoice">
+              <option value="tiny">Rápido — Tiny</option>
+              <option value="small" selected>Mais preciso — Small</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:9px;margin-top:15px">
+          <button class="primary" id="transcribeBtn" style="flex:1">✦ Gerar legendas</button>
+          <button class="secondary" id="stopBtn" disabled>Parar</button>
+        </div>
+
+        <div class="progress"><div id="progressBar"></div></div>
+        <div class="log" id="log">Aguardando vídeo.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      <h3>Legendas</h3>
+      <div style="display:flex;gap:6px">
+        <button class="secondary small" id="addCaptionBtn">+ Adicionar</button>
+        <button class="secondary small" id="clearCaptionsBtn">Limpar</button>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head">
+        <span class="muted" id="captionCount">0 legendas</span>
+        <button class="secondary small" id="sortBtn">Ordenar por tempo</button>
+      </div>
+      <div class="caption-list" id="captionList">
+        <div class="empty-list">As legendas aparecerão aqui.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="right">
+
+  <div class="panel">
+    <div class="tabs">
+      <button class="tab active" data-tab="style">Aparência</button>
+      <button class="tab" data-tab="position">Posição</button>
+    </div>
+
+    <div class="tab-content" id="styleTab">
+
+      <div class="field">
+        <label>Estilos rápidos</label>
+        <div class="presets">
+          <button class="preset" data-preset="classic">
+            <div class="preset-sample" style="color:white;text-shadow:2px 2px black">Aa</div>
+            Clássica
+          </button>
+          <button class="preset" data-preset="social">
+            <div class="preset-sample" style="color:#ffe45c;text-shadow:2px 2px black">Aa</div>
+            Social media
+          </button>
+          <button class="preset" data-preset="minimal">
+            <div class="preset-sample" style="color:white;font-weight:400">Aa</div>
+            Minimalista
+          </button>
+          <button class="preset" data-preset="boxed">
+            <div class="preset-sample" style="background:#222;padding:3px">Aa</div>
+            Com fundo
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Tipo de letra</label>
+        <select id="fontFamily">
+          <option value="Arial, sans-serif">Arial</option>
+          <option value="Inter, sans-serif">Inter</option>
+          <option value="'DM Sans', sans-serif">DM Sans</option>
+          <option value="Verdana, sans-serif">Verdana</option>
+          <option value="Georgia, serif">Georgia</option>
+          <option value="'Times New Roman', serif">Times New Roman</option>
+          <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+          <option value="Impact, sans-serif">Impact</option>
+          <option value="monospace">Monospace</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Tamanho <span id="fontSizeValue">30 px</span></label>
+        <input type="range" id="fontSize" min="14" max="70" value="30">
+      </div>
+
+      <div class="field">
+        <label>Cor do texto</label>
+        <input type="color" id="fontColor" value="#ffffff">
+      </div>
+
+      <div class="field">
+        <label>Estilo do texto</label>
+        <div class="style-buttons">
+          <button class="secondary" id="boldBtn"><b>B</b></button>
+          <button class="secondary" id="italicBtn"><i>I</i></button>
+          <button class="secondary" id="upperBtn">AA</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Contorno</label>
+        <div class="row-fields">
+          <select id="outlineColor">
+            <option value="#000000">Preto</option>
+            <option value="#ffffff">Branco</option>
+            <option value="#2563eb">Azul</option>
+            <option value="#ff0000">Vermelho</option>
+            <option value="transparent">Sem contorno</option>
+          </select>
+          <input type="number" id="outlineSize" min="0" max="8" value="2">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Sombra</label>
+        <select id="shadow">
+          <option value="strong">Forte</option>
+          <option value="soft">Suave</option>
+          <option value="none">Sem sombra</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Fundo da legenda</label>
+        <div class="row-fields">
+          <input type="color" id="backgroundColor" value="#000000">
+          <input type="range" id="backgroundOpacity" min="0" max="100" value="0">
+        </div>
+        <div class="muted">Cor e opacidade do fundo</div>
+      </div>
+
+      <div class="field">
+        <label>Alinhamento</label>
+        <select id="textAlign">
+          <option value="center">Centro</option>
+          <option value="left">Esquerda</option>
+          <option value="right">Direita</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="tab-content" id="positionTab" style="display:none">
+      <div class="field">
+        <label>Posição vertical <span id="verticalValue">10%</span></label>
+        <input type="range" id="verticalPosition" min="2" max="90" value="10">
+      </div>
+      <div class="field">
+        <label>Posição horizontal <span id="horizontalValue">50%</span></label>
+        <input type="range" id="horizontalPosition" min="5" max="95" value="50">
+      </div>
+      <div class="field">
+        <label>Largura máxima <span id="widthValue">90%</span></label>
+        <input type="range" id="captionWidth" min="30" max="100" value="90">
+      </div>
+      <div class="field">
+        <label>Espaçamento entre linhas</label>
+        <input type="range" id="lineHeight" min="9" max="20" value="12">
+      </div>
+      <div class="field">
+        <label>Fundo arredondado</label>
+        <input type="range" id="radius" min="0" max="30" value="5">
+      </div>
+      <p class="notice">As alterações são aplicadas imediatamente à pré-visualização.</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><h3>Exportar</h3></div>
+    <div class="export-box">
+      <button class="primary" id="exportSrtBtn">Descarregar SRT</button>
+      <button class="secondary" id="exportVttBtn">Descarregar VTT</button>
+      <button class="secondary" id="exportVideoBtn">Exportar vídeo com legendas</button>
+      <div class="notice">
+        O vídeo será exportado em WebM com as legendas incorporadas. O tempo de exportação depende da duração e do desempenho do computador.
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><h3>Atalhos</h3></div>
+    <div class="tab-content">
+      <p class="notice">Clique numa legenda para saltar até ao respetivo momento do vídeo.</p>
+      <p class="notice">Pode editar o texto e os tempos diretamente na lista.</p>
+      <p class="notice">Use SRT para guardar as legendas separadamente do vídeo.</p>
+    </div>
+  </div>
+</div>
+</main>
+
+<footer>LegendaVideo · Transcreva, edite e personalize as suas legendas.</footer>
+</div>
+
+<div class="modal-backdrop" id="exportModal">
+  <div class="modal">
+    <h3>Exportar vídeo</h3>
+    <p id="exportMessage">A preparar a exportação. Mantenha esta página aberta.</p>
+    <div class="progress"><div id="exportProgress"></div></div>
+    <div class="modal-actions">
+      <button class="secondary" id="closeExport" disabled>Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { pipeline, env } from
+'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.2';
+
+import { FFmpeg } from
+'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js';
+
+import { fetchFile, toBlobURL } from
+'https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.2/dist/esm/index.js';
+
+env.allowLocalModels = false;
+
+const $ = id => document.getElementById(id);
+
+const video = $('video');
+const videoArea = $('videoArea');
+const overlay = $('subtitleOverlay');
+const captionList = $('captionList');
+
+let videoURL = null;
+let videoFile = null;
+let captions = [];
+let activeCaption = -1;
+let recognizer = null;
+let ffmpeg = null;
+let stopRequested = false;
+let isExporting = false;
+
+const style = {
+  fontFamily: 'Arial, sans-serif',
+  fontSize: 30,
+  color: '#ffffff',
+  bold: true,
+  italic: false,
+  uppercase: false,
+  outlineColor: '#000000',
+  outlineSize: 2,
+  shadow: 'strong',
+  backgroundColor: '#000000',
+  backgroundOpacity: 0,
+  align: 'center',
+  vertical: 10,
+  horizontal: 50,
+  width: 90,
+  lineHeight: 1.2,
+  radius: 5
+};
+
+function setStatus(text) {
+  $('appStatus').innerHTML = '<span>●</span> ' + text;
+}
+
+function log(text) {
+  $('log').textContent = text;
+}
+
+function progress(value) {
+  $('progressBar').style.width = Math.max(0,Math.min(100,value)) + '%';
+}
+
+function formatTime(seconds) {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+  const ms = Math.round((seconds % 1) * 1000);
+  return [h,m,s].map(x => String(x).padStart(2,'0')).join(':') +
+    '.' + String(ms).padStart(3,'0');
+}
+
+function parseTime(value) {
+  const parts = String(value).trim().replace(',', '.').split(':');
+  if (parts.length === 3) {
+    return Number(parts[0])*3600 + Number(parts[1])*60 + Number(parts[2]);
+  }
+  if (parts.length === 2) {
+    return Number(parts[0])*60 + Number(parts[1]);
+  }
+  return Number(value) || 0;
+}
+
+function download(content, name, type) {
+  const blob = new Blob([content], {type});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
+function applyStyle() {
+  const s = style;
+  overlay.style.fontFamily = s.fontFamily;
+  overlay.style.fontSize = s.fontSize + 'px';
+  overlay.style.color = s.color;
+  overlay.style.fontWeight = s.bold ? '800' : '400';
+  overlay.style.fontStyle = s.italic ? 'italic' : 'normal';
+  overlay.style.textTransform = s.uppercase ? 'uppercase' : 'none';
+  overlay.style.webkitTextStroke =
+    s.outlineSize + 'px ' + s.outlineColor;
+  overlay.style.paintOrder = 'stroke fill';
+  overlay.style.textShadow =
+    s.shadow === 'strong' ? '2px 3px 4px #000' :
+    s.shadow === 'soft' ? '0 1px 5px #000' : 'none';
+  overlay.style.background =
+    s.backgroundOpacity > 0
+    ? hexToRgba(s.backgroundColor,s.backgroundOpacity/100)
+    : 'transparent';
+  overlay.style.textAlign = s.align;
+  overlay.style.bottom = 'auto';
+  overlay.style.top = s.vertical + '%';
+  overlay.style.left = s.horizontal + '%';
+  overlay.style.width = s.width + '%';
+  overlay.style.lineHeight = s.lineHeight;
+  overlay.style.borderRadius = s.radius + 'px';
+  overlay.style.padding = s.backgroundOpacity > 0 ? '7px 12px' : '0';
+  overlay.style.transform = 'translate(-50%, -50%)';
+
+  $('fontSizeValue').textContent = s.fontSize + ' px';
+  $('verticalValue').textContent = s.vertical + '%';
+  $('horizontalValue').textContent = s.horizontal + '%';
+  $('widthValue').textContent = s.width + '%';
+}
+
+function hexToRgba(hex,alpha) {
+  const n = parseInt(hex.slice(1),16);
+  return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${alpha})`;
+}
+
+function updateOverlay() {
+  if (!video.src || !captions.length) {
+    overlay.textContent = '';
+    return;
+  }
+
+  const t = video.currentTime;
+  const index = captions.findIndex(c => t >= c.start && t <= c.end);
+
+  if (index !== activeCaption) {
+    activeCaption = index;
+    renderCaptionList();
+  }
+
+  overlay.textContent = index >= 0 ? captions[index].text : '';
+}
+
+function renderCaptionList() {
+  $('captionCount').textContent = captions.length + ' legendas';
+
+  if (!captions.length) {
+    captionList.innerHTML = '<div class="empty-list">As legendas aparecerão aqui.</div>';
+    return;
+  }
+
+  captionList.innerHTML = '';
+
+  captions.forEach((c,i) => {
+    const item = document.createElement('div');
+    item.className = 'caption' + (i === activeCaption ? ' active' : '');
+
+    const top = document.createElement('div');
+    top.className = 'caption-top';
+
+    const time = document.createElement('span');
+    time.className = 'caption-time';
+    time.textContent = formatTime(c.start) + ' → ' + formatTime(c.end);
+
+    const actions = document.createElement('div');
+    actions.className = 'caption-actions';
+
+    const duplicate = document.createElement('button');
+    duplicate.className = 'secondary small';
+    duplicate.textContent = 'Duplicar';
+    duplicate.onclick = e => {
+      e.stopPropagation();
+      captions.splice(i+1,0,{...c,start:c.end,end:c.end+2});
+      renderCaptionList();
+    };
+
+    const remove = document.createElement('button');
+    remove.className = 'secondary small danger';
+    remove.textContent = '×';
+    remove.onclick = e => {
+      e.stopPropagation();
+      captions.splice(i,1);
+      activeCaption = -1;
+      renderCaptionList();
+      updateOverlay();
+    };
+
+    actions.append(duplicate,remove);
+    top.append(time,actions);
+
+    const textarea = document.createElement('textarea');
+    textarea.value = c.text;
+    textarea.setAttribute('aria-label','Texto da legenda');
+    textarea.addEventListener('input', () => {
+      captions[i].text = textarea.value;
+      updateOverlay();
+    });
+
+    const bottom = document.createElement('div');
+    bottom.className = 'caption-bottom';
+
+    const startInput = document.createElement('input');
+    startInput.value = c.start.toFixed(2);
+    startInput.title = 'Início em segundos';
+    startInput.addEventListener('change', () => {
+      captions[i].start = Math.max(0,parseTime(startInput.value));
+      renderCaptionList();
+      updateOverlay();
+    });
+
+    const endInput = document.createElement('input');
+    endInput.value = c.end.toFixed(2);
+    endInput.title = 'Fim em segundos';
+    endInput.addEventListener('change', () => {
+      captions[i].end = Math.max(c.start,parseTime(endInput.value));
+      renderCaptionList();
+      updateOverlay();
+    });
+
+    const jump = document.createElement('button');
+    jump.className = 'secondary small';
+    jump.textContent = '▶ Ver';
+    jump.onclick = () => {
+      video.currentTime = c.start;
+      activeCaption = i;
+      updateOverlay();
+      video.play();
+    };
+
+    bottom.append(startInput,endInput,jump);
+    item.append(top,textarea,bottom);
+    item.addEventListener('click', () => {
+      activeCaption = i;
+      video.currentTime = c.start;
+      updateOverlay();
+      renderCaptionList();
+    });
+
+    captionList.appendChild(item);
+  });
+}
+
+function parseSRT(text) {
+  const blocks = text.trim().replace(/\r/g,'').split(/\n\s*\n/);
+  const result = [];
+
+  for (const block of blocks) {
+    const lines = block.split('\n');
+    const timeLine = lines.findIndex(x => x.includes('-->'));
+    if (timeLine < 0) continue;
+
+    const times = lines[timeLine].split('-->');
+    if (times.length !== 2) continue;
+
+    const start = parseTime(times[0].trim());
+    const end = parseTime(times[1].trim());
+    const content = lines.slice(timeLine+1).join('\n').trim();
+
+    if (content) result.push({start,end,text:content});
+  }
+
+  return result.sort((a,b)=>a.start-b.start);
+}
+
+function makeSRT() {
+  return captions.map((c,i) =>
+    `${i+1}\n${formatTime(c.start).replace('.',',')} --> ${formatTime(c.end).replace('.',',')}\n${c.text}`
+  ).join('\n\n');
+}
+
+function makeVTT() {
+  return 'WEBVTT\n\n' + captions.map(c =>
+    `${formatTime(c.start)} --> ${formatTime(c.end)}\n${c.text}`
+  ).join('\n\n');
+}
+
+async function loadFFmpeg() {
+  if (ffmpeg?.loaded) return ffmpeg;
+
+  ffmpeg = new FFmpeg();
+  ffmpeg.on('log', ({message}) => {
+    if (message) log(message.slice(0,150));
+  });
+
+  const base = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd';
+
+  await ffmpeg.load({
+    coreURL: await toBlobURL(base + '/ffmpeg-core.js','text/javascript'),
+    wasmURL: await toBlobURL(base + '/ffmpeg-core.wasm','application/wasm')
+  });
+
+  return ffmpeg;
+}
+
+async function extractAudio(file) {
+  const engine = await loadFFmpeg();
+
+  log('A extrair áudio do vídeo...');
+  progress(8);
+
+  const inputName = 'input_video';
+  const outputName = 'audio.wav';
+
+  await engine.writeFile(inputName,await fetchFile(file));
+
+  await engine.exec([
+    '-i',inputName,
+    '-vn',
+    '-ac','1',
+    '-ar','16000',
+    '-c:a','pcm_s16le',
+    outputName
+  ]);
+
+  const data = await engine.readFile(outputName);
+  return new Blob([data.buffer],{type:'audio/wav'});
+}
+
+async function wavToFloat32(blob) {
+  const buffer = await blob.arrayBuffer();
+  const audioContext = new AudioContext({sampleRate:16000});
+
+  try {
+    const decoded = await audioContext.decodeAudioData(buffer);
+    const channel = decoded.getChannelData(0);
+    const output = new Float32Array(channel.length);
+    output.set(channel);
+    return output;
+  } finally {
+    await audioContext.close();
+  }
+}
+
+async function loadRecognizer(modelName) {
+  if (recognizer && recognizer.modelName === modelName) return recognizer;
+
+  recognizer = null;
+  setStatus('A carregar modelo de IA...');
+
+  const model = 'onnx-community/whisper-' + modelName;
+
+  const instance = await pipeline(
+    'automatic-speech-recognition',
+    model,
+    {
+      dtype: 'q8',
+      progress_callback: data => {
+        if (data.status === 'progress' && data.progress) {
+          log('A descarregar modelo: ' + Math.round(data.progress) + '%');
+        }
+      }
+    }
+  );
+
+  instance.modelName = modelName;
+  recognizer = instance;
+  return instance;
+}
+
+async function transcribe() {
+  if (!videoFile) {
+    alert('Primeiro selecione um vídeo.');
+    return;
+  }
+
+  stopRequested = false;
+  $('transcribeBtn').disabled = true;
+  $('stopBtn').disabled = false;
+  progress(0);
+
+  try {
+    setStatus('A preparar áudio...');
+    const audioBlob = await extractAudio(videoFile);
+
+    if (stopRequested) throw new Error('Processamento interrompido.');
+
+    log('A preparar áudio para reconhecimento...');
+    const audio = await wavToFloat32(audioBlob);
+
+    if (!audio.length) throw new Error('Não foi possível extrair áudio.');
+
+    const rms = Math.sqrt(audio.reduce((sum,v)=>sum+v*v,0)/audio.length);
+    if (rms < 0.0001) {
+      throw new Error('O áudio parece estar vazio ou sem som.');
+    }
+
+    progress(30);
+
+    const modelName = $('modelChoice').value;
+    const model = await loadRecognizer(modelName);
+
+    if (stopRequested) throw new Error('Processamento interrompido.');
+
+    setStatus('A reconhecer fala...');
+    log('A transcrever o áudio. Isto pode demorar alguns minutos...');
+
+    const language = $('language').value;
+    const options = {
+      chunk_length_s: 30,
+      stride_length_s: 5,
+      return_timestamps: true,
+      task: 'transcribe',
+      do_sample: false
+    };
+
+    if (language !== 'auto') options.language = language;
+
+    const result = await model(audio,options);
+
+    if (stopRequested) throw new Error('Processamento interrompido.');
+
+    const chunks = result.chunks || [];
+
+    if (chunks.length) {
+      captions = chunks
+        .filter(x => x.text && x.text.trim())
+        .map(x => ({
+          start: Number(x.timestamp?.[0] ?? 0),
+          end: Number(x.timestamp?.[1] ?? 0),
+          text: x.text.trim()
+        }))
+        .filter(x => x.end > x.start);
+    }
+
+    if (!captions.length && result.text) {
+      captions = [{
+        start:0,
+        end:video.duration || audio.length/16000,
+        text:result.text.trim()
+      }];
+    }
+
+    if (!captions.length) {
+      throw new Error('Não foi possível reconhecer a fala. Experimente outro modelo ou verifique o áudio.');
+    }
+
+    captions.sort((a,b)=>a.start-b.start);
+    activeCaption = -1;
+    renderCaptionList();
+    updateOverlay();
+    progress(100);
+    log('Transcrição concluída. Revise as palavras e os tempos.');
+    setStatus('Transcrição concluída');
+
+  } catch (error) {
+    console.error(error);
+    log(error.message || 'Erro durante a transcrição.');
+    setStatus('Erro no processamento');
+    alert(error.message || 'Não foi possível gerar as legendas.');
+  } finally {
+    $('transcribeBtn').disabled = false;
+    $('stopBtn').disabled = true;
+  }
+}
+
+function loadVideo(file) {
+  if (!file || !file.type.startsWith('video/')) {
+    alert('Selecione um ficheiro de vídeo válido.');
+    return;
+  }
+
+  if (videoURL) URL.revokeObjectURL(videoURL);
+
+  videoFile = file;
+  videoURL = URL.createObjectURL(file);
+
+  video.src = videoURL;
+  video.style.display = 'block';
+  $('emptyVideo').style.display = 'none';
+
+  captions = [];
+  activeCaption = -1;
+  renderCaptionList();
+
+  video.onloadedmetadata = () => {
+    $('videoInfo').textContent =
+      video.videoWidth + ' × ' + video.videoHeight;
+    $('durationLabel').textContent =
+      'Duração: ' + formatTime(video.duration);
+    log('Vídeo carregado. Pode gerar as legendas.');
+    setStatus('Vídeo carregado');
+  };
+}
+
+$('videoInput').addEventListener('change',e=>loadVideo(e.target.files[0]));
+$('selectVideoBtn').onclick=()=>$('videoInput').click();
+
+$('dropZone').addEventListener('dragover',e=>{
+  e.preventDefault();
+  $('dropZone').style.borderColor='var(--primary)';
+});
+$('dropZone').addEventListener('dragleave',()=>{
+  $('dropZone').style.borderColor='';
+});
+$('dropZone').addEventListener('drop',e=>{
+  e.preventDefault();
+  const file=e.dataTransfer.files[0];
+  loadVideo(file);
+});
+
+$('transcribeBtn').onclick=transcribe;
+$('stopBtn').onclick=()=>{
+  stopRequested=true;
+  log('A interromper...');
+};
+
+$('video').addEventListener('timeupdate',()=>{
+  $('currentTime').textContent=formatTime(video.currentTime);
+  updateOverlay();
+});
+
+$('playBtn').onclick=()=>{
+  if(video.paused) video.play();
+  else video.pause();
+};
+video.addEventListener('play',()=>$('playBtn').textContent='Ⅱ Pausar');
+video.addEventListener('pause',()=>$('playBtn').textContent='▶ Reproduzir');
+
+$('prevBtn').onclick=()=>{
+  const i=captions.findIndex(c=>c.start>=video.currentTime);
+  const target=i>0?i-1:0;
+  if(captions[target]) video.currentTime=captions[target].start;
+};
+$('nextBtn').onclick=()=>{
+  const i=captions.findIndex(c=>c.start>video.currentTime);
+  if(captions[i]) video.currentTime=captions[i].start;
+};
+
+$('addCaptionBtn').onclick=()=>{
+  const start=video.currentTime || 0;
+  captions.push({start,end:start+3,text:'Nova legenda'});
+  captions.sort((a,b)=>a.start-b.start);
+  renderCaptionList();
+};
+$('clearCaptionsBtn').onclick=()=>{
+  if(confirm('Apagar todas as legendas?')) {
+    captions=[];
+    activeCaption=-1;
+    renderCaptionList();
+    updateOverlay();
+  }
+};
+$('sortBtn').onclick=()=>{
+  captions.sort((a,b)=>a.start-b.start);
+  renderCaptionList();
+};
+
+$('importSrtBtn').onclick=()=>$('srtInput').click();
+$('srtInput').addEventListener('change',async e=>{
+  const file=e.target.files[0];
+  if(!file) return;
+  const text=await file.text();
+  captions=parseSRT(text);
+  activeCaption=-1;
+  renderCaptionList();
+  updateOverlay();
+  log('Legendas importadas.');
+  e.target.value='';
+});
+
+$('exportSrtBtn').onclick=()=>{
+  if(!captions.length) return alert('Não existem legendas para exportar.');
+  download(makeSRT(),'legendas.srt','text/plain;charset=utf-8');
+};
+$('exportVttBtn').onclick=()=>{
+  if(!captions.length) return alert('Não existem legendas para exportar.');
+  download(makeVTT(),'legendas.vtt','text/vtt;charset=utf-8');
+};
+
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    tab.classList.add('active');
+    $('styleTab').style.display=tab.dataset.tab==='style'?'block':'none';
+    $('positionTab').style.display=tab.dataset.tab==='position'?'block':'none';
+  };
+});
+
+const controls = {
+  fontFamily:'fontFamily',
+  fontSize:'fontSize',
+  color:'fontColor',
+  outlineColor:'outlineColor',
+  outlineSize:'outlineSize',
+  shadow:'shadow',
+  backgroundColor:'backgroundColor',
+  backgroundOpacity:'backgroundOpacity',
+  align:'textAlign',
+  vertical:'verticalPosition',
+  horizontal:'horizontalPosition',
+  width:'captionWidth',
+  lineHeight:'lineHeight',
+  radius:'radius'
+};
+
+Object.entries(controls).forEach(([key,id])=>{
+  $(id).addEventListener('input',()=>{
+    style[key]=$(id).value;
+    if(['fontSize','outlineSize','backgroundOpacity','vertical','horizontal','width','lineHeight','radius'].includes(key)) {
+      style[key]=Number(style[key]);
+    }
+    if(key==='lineHeight') style.lineHeight=Number(style.lineHeight)/10;
+    applyStyle();
+  });
+});
+
+$('boldBtn').onclick=()=>{
+  style.bold=!style.bold;
+  $('boldBtn').classList.toggle('primary',style.bold);
+  applyStyle();
+};
+$('italicBtn').onclick=()=>{
+  style.italic=!style.italic;
+  $('italicBtn').classList.toggle('primary',style.italic);
+  applyStyle();
+};
+$('upperBtn').onclick=()=>{
+  style.uppercase=!style.uppercase;
+  $('upperBtn').classList.toggle('primary',style.uppercase);
+  applyStyle();
+};
+
+const presets = {
+  classic:{
+    fontFamily:'Arial, sans-serif',fontSize:30,color:'#ffffff',
+    bold:true,italic:false,uppercase:false,
+    outlineColor:'#000000',outlineSize:2,shadow:'strong',
+    backgroundOpacity:0,align:'center'
+  },
+  social:{
+    fontFamily:'Impact, sans-serif',fontSize:38,color:'#ffe45c',
+    bold:true,italic:false,uppercase:true,
+    outlineColor:'#000000',outlineSize:3,shadow:'strong',
+    backgroundOpacity:0,align:'center'
+  },
+  minimal:{
+    fontFamily:'Inter, sans-serif',fontSize:26,color:'#ffffff',
+    bold:false,italic:false,uppercase:false,
+    outlineColor:'transparent',outlineSize:0,shadow:'soft',
+    backgroundOpacity:0,align:'center'
+  },
+  boxed:{
+    fontFamily:'Arial, sans-serif',fontSize:30,color:'#ffffff',
+    bold:true,italic:false,uppercase:false,
+    outlineColor:'transparent',outlineSize:0,shadow:'none',
+    backgroundOpacity:75,align:'center'
+  }
+};
+
+document.querySelectorAll('[data-preset]').forEach(btn=>{
+  btn.onclick=()=>{
+    Object.assign(style,presets[btn.dataset.preset]);
+    $('fontFamily').value=style.fontFamily;
+    $('fontSize').value=style.fontSize;
+    $('fontColor').value=style.color;
+    $('outlineColor').value=style.outlineColor;
+    $('outlineSize').value=style.outlineSize;
+    $('shadow').value=style.shadow;
+    $('backgroundOpacity').value=style.backgroundOpacity;
+    $('textAlign').value=style.align;
+    applyStyle();
+    $('boldBtn').classList.toggle('primary',style.bold);
+    $('italicBtn').classList.toggle('primary',style.italic);
+    $('upperBtn').classList.toggle('primary',style.uppercase);
+  };
+});
+
+function drawCaption(ctx,canvas,c) {
+  const text=c?.text || '';
+  if(!text) return;
+
+  const s=style;
+  const width=canvas.width*s.width/100;
+  const fontSize=s.fontSize*(canvas.width/900);
+  const fontWeight=s.bold?'800':'400';
+  const fontStyle=s.italic?'italic':'normal';
+
+  ctx.save();
+  ctx.font=`${fontStyle} ${fontWeight} ${fontSize}px ${s.fontFamily}`;
+  ctx.textAlign=s.align;
+  ctx.textBaseline='middle';
+
+  const display=s.uppercase?text.toUpperCase():text;
+  const words=display.split(/\s+/);
+  const lines=[];
+  let line='';
+
+  for(const word of words) {
+    const test=line?line+' '+word:word;
+    if(ctx.measureText(test).width>width*0.95 && line) {
+      lines.push(line);
+      line=word;
+    } else line=test;
+  }
+  if(line) lines.push(line);
+
+  const lineHeight=fontSize*s.lineHeight;
+  const totalHeight=lines.length*lineHeight;
+  const x=canvas.width*s.horizontal/100;
+  const y=canvas.height*s.vertical/100;
+  const padding=fontSize*.35;
+
+  if(s.backgroundOpacity>0) {
+    ctx.globalAlpha=s.backgroundOpacity/100;
+    ctx.fillStyle=s.backgroundColor;
+    const boxWidth=Math.min(width,Math.max(...lines.map(l=>ctx.measureText(l).width))+padding*2);
+    const boxX=s.align==='left'?x-width/2:
+      s.align==='right'?x+width/2-boxWidth:x-boxWidth/2;
+    ctx.beginPath();
+    ctx.roundRect(boxX,y-totalHeight/2-padding,boxWidth,totalHeight+padding*2,s.radius);
+    ctx.fill();
+    ctx.globalAlpha=1;
+  }
+
+  ctx.lineWidth=s.outlineSize*(canvas.width/900);
+  ctx.lineJoin='round';
+  ctx.strokeStyle=s.outlineColor;
+  ctx.fillStyle=s.color;
+
+  if(s.shadow!=='none') {
+    ctx.shadowColor='#000';
+    ctx.shadowBlur=s.shadow==='strong'?6:3;
+    ctx.shadowOffsetY=2;
+  }
+
+  lines.forEach((line,i)=>{
+    const yy=y-totalHeight/2+lineHeight*(i+.5);
+    if(s.outlineSize>0 && s.outlineColor!=='transparent') ctx.strokeText(line,x,yy);
+    ctx.fillText(line,x,yy);
+  });
+
+  ctx.restore();
+}
+
+async function exportVideo() {
+  if(!videoFile || !captions.length) {
+    alert('Adicione um vídeo e legendas antes de exportar.');
+    return;
+  }
+  if(isExporting) return;
+
+  isExporting=true;
+  $('exportModal').style.display='flex';
+  $('closeExport').disabled=true;
+  $('exportMessage').textContent='A preparar vídeo...';
+
+  try {
+    const canvas=document.createElement('canvas');
+    canvas.width=video.videoWidth;
+    canvas.height=video.videoHeight;
+
+    const ctx=canvas.getContext('2d');
+    const stream=canvas.captureStream(30);
+
+    const audioContext=new AudioContext();
+    const source=audioContext.createMediaElementSource(video);
+    const destination=audioContext.createMediaStreamDestination();
+    source.connect(destination);
+    source.connect(audioContext.destination);
+
+    destination.stream.getAudioTracks().forEach(track=>stream.addTrack(track));
+
+    const mimeTypes=[
+      'video/webm;codecs=vp9,opus',
+      'video/webm;codecs=vp8,opus',
+      'video/webm'
+    ];
+
+    const mimeType=mimeTypes.find(type=>MediaRecorder.isTypeSupported(type));
+    if(!mimeType) throw new Error('Este navegador não suporta exportação WebM.');
+
+    const recorder=new MediaRecorder(stream,{mimeType,videoBitsPerSecond:5000000});
+    const chunks=[];
+
+    recorder.ondataavailable=e=>{
+      if(e.data.size) chunks.push(e.data);
+    };
+
+    const finished=new Promise((resolve,reject)=>{
+      recorder.onstop=resolve;
+      recorder.onerror=()=>reject(new Error('Erro durante a gravação.'));
+    });
+
+    video.pause();
+    video.currentTime=0;
+    await new Promise(resolve=>video.addEventListener('seeked',resolve,{once:true}));
+
+    let running=true;
+    const draw=()=>{
+      if(!running) return;
+      ctx.drawImage(video,0,0,canvas.width,canvas.height);
+      const t=video.currentTime;
+      const c=captions.find(x=>t>=x.start && t<=x.end);
+      drawCaption(ctx,canvas,c);
+      requestAnimationFrame(draw);
+    };
+
+    recorder.start(500);
+    draw();
+    await video.play();
+
+    $('exportMessage').textContent='A gravar o vídeo com as legendas...';
+
+    const timer=setInterval(()=>{
+      const percent=video.duration?video.currentTime/video.duration*100:0;
+      $('exportProgress').style.width=percent+'%';
+    },300);
+
+    await new Promise(resolve=>{
+      video.addEventListener('ended',resolve,{once:true});
+    });
+
+    clearInterval(timer);
+    running=false;
+    recorder.stop();
+    await finished;
+
+    const blob=new Blob(chunks,{type:mimeType});
+    download(blob,'legendas-video.webm',mimeType);
+
+    video.pause();
+    video.currentTime=0;
+    $('exportMessage').textContent='Exportação concluída.';
+    $('exportProgress').style.width='100%';
+
+    stream.getTracks().forEach(t=>t.stop());
+    await audioContext.close();
+
+  } catch(error) {
+    console.error(error);
+    $('exportMessage').textContent='Não foi possível exportar: '+error.message;
+    alert(error.message);
+  } finally {
+    isExporting=false;
+    $('closeExport').disabled=false;
+  }
+}
+
+$('exportVideoBtn').onclick=exportVideo;
+$('closeExport').onclick=()=>{
+  $('exportModal').style.display='none';
+};
+
+applyStyle();
+renderCaptionList();
+setStatus('Pronto para começar');
+</script>
+</body>
+</html>
