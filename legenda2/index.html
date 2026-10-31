@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111827">
+<title>LegendaVideo — Legendas automáticas</title>
+
+<style>
+:root {
+  --primary:#5145e5;
+  --primary-light:#eeedff;
+  --dark:#151827;
+  --muted:#777d8e;
+  --border:#e8e9ef;
+  --bg:#f6f7fb;
+  --white:#fff;
+  --green:#079669;
+  --red:#dc3545;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Inter,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--dark);
+}
+
+button,input,select,textarea{font:inherit}
+
+button{cursor:pointer;border:0}
+
+header{
+  height:68px;
+  background:white;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 5%;
+}
+
+.logo{
+  font-size:21px;
+  font-weight:850;
+  letter-spacing:-1px;
+}
+
+.logo span{color:var(--primary)}
+
+.header-label{
+  font-size:12px;
+  color:var(--muted);
+}
+
+main{
+  max-width:1250px;
+  padding:25px 18px;
+  margin:auto;
+}
+
+.intro{margin-bottom:24px}
+
+.intro h1{
+  font-size:30px;
+  letter-spacing:-1px;
+  margin:0 0 7px;
+}
+
+.intro p{
+  font-size:14px;
+  color:var(--muted);
+  margin:0;
+}
+
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(300px,.8fr);
+  gap:18px;
+  align-items:start;
+}
+
+.panel{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:19px;
+  margin-bottom:17px;
+}
+
+.panel h2{
+  font-size:15px;
+  margin:0 0 16px;
+}
+
+.upload{
+  border:2px dashed #c9c9dc;
+  background:#fafaff;
+  border-radius:12px;
+  padding:28px 15px;
+  text-align:center;
+}
+
+.upload strong{
+  display:block;
+  margin-bottom:8px;
+}
+
+.upload p{
+  font-size:12px;
+  color:var(--muted);
+  margin:0 0 14px;
+}
+
+.primary,.secondary,.danger{
+  border-radius:8px;
+  padding:11px 15px;
+  font-size:13px;
+  font-weight:700;
+}
+
+.primary{
+  background:var(--primary);
+  color:white;
+}
+
+.primary:hover{background:#4035c6}
+
+.secondary{
+  background:var(--primary-light);
+  color:var(--primary);
+}
+
+.danger{
+  background:#fff0f0;
+  color:var(--red);
+}
+
+button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.video-wrap{margin-top:16px}
+
+video{
+  width:100%;
+  max-height:420px;
+  background:#111;
+  border-radius:9px;
+  display:block;
+}
+
+.field{margin-bottom:14px}
+
+.field label{
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:7px;
+}
+
+.field input,.field select,.field textarea{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:10px;
+  outline:none;
+  background:white;
+}
+
+.field input:focus,.field select:focus{
+  border-color:var(--primary);
+}
+
+.field input[type=color]{
+  height:42px;
+  padding:4px;
+}
+
+.field input[type=range]{padding:0}
+
+.two{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.progress{
+  width:100%;
+  height:8px;
+  border-radius:20px;
+  overflow:hidden;
+  background:#e9eaf0;
+  margin-top:15px;
+}
+
+.progress div{
+  height:100%;
+  width:0;
+  background:var(--primary);
+  transition:width .25s;
+}
+
+.status{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:10px;
+  min-height:18px;
+  line-height:1.5;
+}
+
+.status.error{color:var(--red)}
+.status.success{color:var(--green)}
+
+.subtitle-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  max-height:430px;
+  overflow:auto;
+}
+
+.subtitle-item{
+  border:1px solid var(--border);
+  padding:11px;
+  border-radius:9px;
+}
+
+.subtitle-item textarea{
+  width:100%;
+  min-height:55px;
+  resize:vertical;
+  border:1px solid var(--border);
+  padding:9px;
+  border-radius:7px;
+}
+
+.time-row{
+  display:grid;
+  grid-template-columns:1fr 1fr auto;
+  gap:7px;
+  margin-bottom:8px;
+}
+
+.time-row input{
+  min-width:0;
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:7px;
+  padding:7px;
+  font-size:11px;
+}
+
+.remove-sub{
+  background:#fff0f0;
+  color:var(--red);
+  border-radius:7px;
+  padding:5px 10px;
+}
+
+.empty{
+  text-align:center;
+  color:var(--muted);
+  padding:25px 5px;
+  font-size:13px;
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.checkbox-row{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  font-size:12px;
+  margin:12px 0;
+}
+
+.checkbox-row input{width:auto}
+
+.note{
+  font-size:11px;
+  line-height:1.6;
+  color:var(--muted);
+}
+
+.separator{
+  border:0;
+  border-top:1px solid var(--border);
+  margin:17px 0;
+}
+
+footer{
+  padding:25px;
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+}
+
+@media(max-width:850px){
+  .layout{grid-template-columns:1fr}
+}
+
+@media(max-width:480px){
+  header{padding:0 14px}
+  main{padding:20px 12px}
+  .panel{padding:14px}
+  .intro h1{font-size:25px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">Legenda<span>Video</span></div>
+  <div class="header-label">Legendas automáticas com IA</div>
+</header>
+
+<main>
+
+<section class="intro">
+  <h1>Legende os seus vídeos.</h1>
+  <p>Transcreva, edite e exporte legendas sem complicações.</p>
+</section>
+
+<div class="layout">
+
+<section>
+
+<div class="panel">
+  <h2>1. Escolher vídeo</h2>
+
+  <div class="upload">
+    <strong>Carregue o seu vídeo</strong>
+    <p>Selecione um ficheiro de vídeo do seu dispositivo.</p>
+    <input type="file" id="videoInput" accept="video/*" hidden>
+    <button class="primary" id="chooseVideo">Selecionar vídeo</button>
+  </div>
+
+  <div class="video-wrap" id="videoWrap" hidden>
+    <video id="video" controls playsinline></video>
+    <p class="note" id="videoInfo"></p>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>2. Gerar legendas automaticamente</h2>
+
+  <div class="field">
+    <label>Idioma do áudio</label>
+    <select id="language">
+      <option value="portuguese">Português</option>
+      <option value="english">Inglês</option>
+      <option value="spanish">Espanhol</option>
+      <option value="french">Francês</option>
+      <option value="auto">Detecção automática</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>Modelo de inteligência artificial</label>
+    <select id="model">
+      <option value="onnx-community/whisper-tiny">Whisper Tiny — rápido e leve</option>
+    </select>
+  </div>
+
+  <button class="primary" id="transcribeBtn" style="width:100%">
+    Gerar legendas
+  </button>
+
+  <div class="progress">
+    <div id="progressBar"></div>
+  </div>
+
+  <div class="status" id="status">
+    Selecione um vídeo para começar.
+  </div>
+</div>
+
+<div class="panel">
+  <h2>3. Editar legendas</h2>
+
+  <div class="actions" style="margin-bottom:14px">
+    <button class="secondary" id="addSubtitle">+ Adicionar</button>
+    <button class="secondary" id="sortSubtitles">Organizar tempos</button>
+  </div>
+
+  <div class="subtitle-list" id="subtitleList">
+    <div class="empty">As suas legendas aparecerão aqui.</div>
+  </div>
+</div>
+
+</section>
+
+<aside>
+
+<div class="panel">
+  <h2>4. Personalizar aparência</h2>
+
+  <div class="field">
+    <label>Tipo de letra</label>
+    <select id="fontFamily">
+      <option>Arial</option>
+      <option>Inter</option>
+      <option>Verdana</option>
+      <option>Georgia</option>
+      <option>Impact</option>
+      <option>Tahoma</option>
+    </select>
+  </div>
+
+  <div class="two">
+    <div class="field">
+      <label>Tamanho</label>
+      <input type="number" id="fontSize" value="32" min="12" max="100">
+    </div>
+
+    <div class="field">
+      <label>Cor do texto</label>
+      <input type="color" id="fontColor" value="#ffffff">
+    </div>
+  </div>
+
+  <div class="two">
+    <div class="field">
+      <label>Contorno</label>
+      <input type="color" id="outlineColor" value="#000000">
+    </div>
+
+    <div class="field">
+      <label>Fundo</label>
+      <input type="color" id="backgroundColor" value="#000000">
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Opacidade do fundo</label>
+    <input type="range" id="backgroundOpacity" min="0" max="100" value="0">
+  </div>
+
+  <div class="field">
+    <label>Posição</label>
+    <select id="position">
+      <option value="bottom">Inferior</option>
+      <option value="middle">Centro</option>
+      <option value="top">Superior</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>Alinhamento</label>
+    <select id="alignment">
+      <option value="center">Centro</option>
+      <option value="left">Esquerda</option>
+      <option value="right">Direita</option>
+    </select>
+  </div>
+
+  <div class="checkbox-row">
+    <input type="checkbox" id="bold" checked>
+    <label for="bold">Negrito</label>
+  </div>
+
+  <div class="checkbox-row">
+    <input type="checkbox" id="shadow" checked>
+    <label for="shadow">Sombra</label>
+  </div>
+
+  <button class="secondary" id="resetStyle" style="width:100%">
+    Restaurar aparência
+  </button>
+</div>
+
+<div class="panel">
+  <h2>5. Exportar legendas</h2>
+
+  <div class="actions">
+    <button class="primary" id="exportSRT">Descarregar SRT</button>
+    <button class="secondary" id="exportVTT">Descarregar VTT</button>
+  </div>
+
+  <hr class="separator">
+
+  <h2>Exportar vídeo</h2>
+
+  <button class="primary" id="exportVideo" style="width:100%">
+    Exportar vídeo com legendas
+  </button>
+
+  <div class="status" id="exportStatus"></div>
+
+  <p class="note">
+    O vídeo será exportado em WebM. Mantenha esta página aberta
+    até terminar a gravação.
+  </p>
+</div>
+
+</aside>
+</div>
+</main>
+
+<footer>LegendaVideo — Ferramenta de legendagem automática.</footer>
+
+<script type="module">
+
+import { pipeline, env } from
+'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.2';
+
+import { FFmpeg } from
+'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js';
+
+import { fetchFile, toBlobURL } from
+'https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.2/dist/esm/index.js';
+
+env.allowLocalModels = false;
+env.allowRemoteModels = true;
+
+// Configuração conservadora para computadores com pouca memória.
+try {
+  env.backends.onnx.wasm.numThreads = 1;
+} catch(e) {
+  console.warn('Configuração WASM padrão:', e);
+}
+
+const $ = id => document.getElementById(id);
+
+let videoFile = null;
+let videoURL = null;
+let ffmpeg = null;
+let transcriber = null;
+let loadedModel = null;
+let subtitles = [];
+let busy = false;
+
+const video = $('video');
+const status = $('status');
+const progressBar = $('progressBar');
+const subtitleList = $('subtitleList');
+
+function setStatus(message, percent = null, type = '') {
+  status.textContent = message;
+  status.className = 'status ' + type;
+
+  if (percent !== null) {
+    progressBar.style.width =
+      Math.max(0, Math.min(100, percent)) + '%';
+  }
+}
+
+function setExportStatus(message, type = '') {
+  $('exportStatus').textContent = message;
+  $('exportStatus').className = 'status ' + type;
+}
+
+function setBusy(value) {
+  busy = value;
+  $('transcribeBtn').disabled = value;
+  $('chooseVideo').disabled = value;
+  $('model').disabled = value;
+}
+
+function formatTime(seconds, separator = ',') {
+  seconds = Math.max(0, Number(seconds) || 0);
+
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = Math.floor(seconds % 60);
+  const milliseconds = Math.floor((seconds % 1) * 1000);
+
+  return (
+    String(hours).padStart(2,'0') + ':' +
+    String(minutes).padStart(2,'0') + ':' +
+    String(secs).padStart(2,'0') +
+    separator +
+    String(milliseconds).padStart(3,'0')
+  );
+}
+
+function parseTime(value) {
+  const parts = value.trim().replace(',', '.').split(':').map(Number);
+
+  if (parts.length !== 3 || parts.some(n => !Number.isFinite(n))) {
+    return 0;
+  }
+
+  return parts[0] * 3600 + parts[1] * 60 + parts[2];
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, c => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#039;'
+  })[c]);
+}
+
+function download(content, filename, type) {
+  const blob = content instanceof Blob
+    ? content
+    : new Blob([content], {type});
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+
+  link.href = url;
+  link.download = filename;
+  link.click();
+
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
+// ---------------------------------------
+// CARREGAR VÍDEO
+// ---------------------------------------
+
+$('chooseVideo').addEventListener('click', () => {
+  if (!busy) $('videoInput').click();
+});
+
+$('videoInput').addEventListener('change', () => {
+  const file = $('videoInput').files[0];
+
+  if (!file) return;
+
+  if (!file.type.startsWith('video/')) {
+    alert('Selecione um vídeo válido.');
+    return;
+  }
+
+  if (videoURL) URL.revokeObjectURL(videoURL);
+
+  videoFile = file;
+  videoURL = URL.createObjectURL(file);
+
+  video.src = videoURL;
+  $('videoWrap').hidden = false;
+
+  subtitles = [];
+  renderSubtitles();
+
+  $('videoInfo').textContent =
+    `${file.name} · ${(file.size / 1024 / 1024).toFixed(1)} MB`;
+
+  setStatus('Vídeo carregado. Pronto para transcrever.', 0, 'success');
+  setExportStatus('');
+});
+
+
+// ---------------------------------------
+// CARREGAR FFMPEG
+// ---------------------------------------
+
+async function loadFFmpeg() {
+
+  if (ffmpeg && ffmpeg.loaded) return ffmpeg;
+
+  setStatus('A iniciar o motor de processamento de áudio...', 3);
+
+  const workerURL = new URL(
+    './ffmpeg/worker.js',
+    window.location.href
+  ).href;
+
+  // Confirma que o worker local existe.
+  const workerResponse = await fetch(workerURL);
+
+  if (!workerResponse.ok) {
+    throw new Error(
+      'Não foi possível encontrar /ffmpeg/worker.js. Verifique os ficheiros publicados.'
+    );
+  }
+
+  ffmpeg = new FFmpeg();
+
+  ffmpeg.on('log', ({message}) => {
+    if (message) console.log('[FFmpeg]', message);
+  });
+
+  ffmpeg.on('progress', ({progress}) => {
+    if (Number.isFinite(progress)) {
+      setStatus(
+        'A extrair áudio do vídeo...',
+        5 + Math.round(progress * 15)
+      );
+    }
+  });
+
+  const coreBase =
+    'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd';
+
+  setStatus('A descarregar o motor de áudio...', 5);
+
+  const [coreURL, wasmURL] = await Promise.all([
+    toBlobURL(
+      `${coreBase}/ffmpeg-core.js`,
+      'text/javascript'
+    ),
+    toBlobURL(
+      `${coreBase}/ffmpeg-core.wasm`,
+      'application/wasm'
+    )
+  ]);
+
+  await ffmpeg.load({
+    classWorkerURL: workerURL,
+    coreURL,
+    wasmURL
+  });
+
+  return ffmpeg;
+}
+
+
+// ---------------------------------------
+// EXTRAIR ÁUDIO
+// ---------------------------------------
+
+async function extractAudio(file) {
+
+  const engine = await loadFFmpeg();
+
+  const inputName = 'video_input';
+  const outputName = 'audio_output.wav';
+
+  try { await engine.deleteFile(inputName); } catch(e) {}
+  try { await engine.deleteFile(outputName); } catch(e) {}
+
+  setStatus('A preparar o áudio...', 20);
+
+  await engine.writeFile(
+    inputName,
+    await fetchFile(file)
+  );
+
+  await engine.exec([
+    '-i', inputName,
+    '-vn',
+    '-ac', '1',
+    '-ar', '16000',
+    '-c:a', 'pcm_s16le',
+    outputName
+  ]);
+
+  const result = await engine.readFile(outputName);
+
+  try { await engine.deleteFile(inputName); } catch(e) {}
+  try { await engine.deleteFile(outputName); } catch(e) {}
+
+  return new Blob([result], {type:'audio/wav'});
+}
+
+
+// ---------------------------------------
+// CONVERTER WAV PARA ÁUDIO
+// ---------------------------------------
+
+async function wavToFloat32(blob) {
+
+  const buffer = await blob.arrayBuffer();
+
+  const AudioContextClass =
+    window.AudioContext || window.webkitAudioContext;
+
+  const context = new AudioContextClass({
+    sampleRate: 16000
+  });
+
+  try {
+    const audioBuffer = await context.decodeAudioData(buffer);
+
+    // Copiar os dados para libertar a referência ao AudioBuffer.
+    return audioBuffer.getChannelData(0).slice();
+
+  } finally {
+    await context.close();
+  }
+}
+
+
+// ---------------------------------------
+// CARREGAR WHISPER UMA ÚNICA VEZ
+// ---------------------------------------
+
+async function loadWhisper() {
+
+  if (transcriber) return transcriber;
+
+  const model = 'onnx-community/whisper-tiny';
+
+  if (loadedModel === model && transcriber) {
+    return transcriber;
+  }
+
+  setStatus('A descarregar o Whisper Tiny pela primeira vez...', 25);
+
+  const progressByFile = {};
+
+  transcriber = await pipeline(
+    'automatic-speech-recognition',
+    model,
+    {
+      dtype: 'q8',
+      device: 'wasm',
+
+      progress_callback: info => {
+
+        console.log('[Whisper]', info);
+
+        if (
+          info.status === 'progress' &&
+          Number.isFinite(info.progress)
+        ) {
+          progressByFile[info.file || 'model'] = info.progress;
+
+          const values = Object.values(progressByFile);
+          const average = values.reduce((a,b) => a + b, 0) /
+            Math.max(1, values.length);
+
+          const percent = Math.round(average);
+
+          setStatus(
+            `A descarregar os ficheiros do modelo: ${percent}%`,
+            25 + percent * 0.3
+          );
+        }
+
+        if (info.status === 'done') {
+          console.log('Ficheiro do modelo carregado:', info.file);
+        }
+      }
+    }
+  );
+
+  loadedModel = model;
+
+  return transcriber;
+}
+
+
+// ---------------------------------------
+// TRANSCRIÇÃO EM BLOCOS
+// ---------------------------------------
+
+async function transcribeAudio(audio, language) {
+
+  const asr = await loadWhisper();
+
+  const SAMPLE_RATE = 16000;
+  const CHUNK_SECONDS = 30;
+  const CHUNK_SIZE = SAMPLE_RATE * CHUNK_SECONDS;
+
+  const totalChunks = Math.ceil(audio.length / CHUNK_SIZE);
+
+  const allSegments = [];
+
+  for (let i = 0; i < totalChunks; i++) {
+
+    const startSample = i * CHUNK_SIZE;
+    const endSample = Math.min(
+      startSample + CHUNK_SIZE,
+      audio.length
+    );
+
+    const chunk = audio.slice(startSample, endSample);
+
+    const startSeconds = startSample / SAMPLE_RATE;
+
+    const progress = 55 + ((i / totalChunks) * 43);
+
+    setStatus(
+      `A transcrever bloco ${i + 1} de ${totalChunks}... Aguarde.`,
+      progress
+    );
+
+    const options = {
+      task: 'transcribe',
+      return_timestamps: true,
+      do_sample: false
+    };
+
+    if (language !== 'auto') {
+      options.language = language;
+    }
+
+    const result = await asr(chunk, options);
+
+    if (result.chunks && result.chunks.length) {
+
+      for (const item of result.chunks) {
+
+        const localStart = Number(item.timestamp?.[0] ?? 0);
+        const localEnd = Number(item.timestamp?.[1] ?? localStart + 1);
+
+        const text = String(item.text || '').trim();
+
+        if (!text) continue;
+
+        allSegments.push({
+          start: startSeconds + localStart,
+          end: startSeconds + Math.max(localStart + 0.1, localEnd),
+          text
+        });
+      }
+
+    } else if (result.text && result.text.trim()) {
+
+      allSegments.push({
+        start: startSeconds,
+        end: startSeconds + chunk.length / SAMPLE_RATE,
+        text: result.text.trim()
+      });
+    }
+
+    // Permite que o navegador atualize a interface entre blocos.
+    await new Promise(resolve => setTimeout(resolve, 20));
+  }
+
+  return allSegments;
+}
+
+
+// ---------------------------------------
+// BOTÃO DE TRANSCRIÇÃO
+// ---------------------------------------
+
+$('transcribeBtn').addEventListener('click', async () => {
+
+  if (busy) return;
+
+  if (!videoFile) {
+    alert('Primeiro selecione um vídeo.');
+    return;
+  }
+
+  if (videoFile.size > 1024 * 1024 * 1024) {
+    alert('Este vídeo ultrapassa 1 GB. Utilize um vídeo mais pequeno.');
+    return;
+  }
+
+  setBusy(true);
+
+  subtitles = [];
+  renderSubtitles();
+
+  try {
+
+    setStatus('Etapa 1/3 — A extrair o áudio...', 2);
+
+    const audioBlob = await extractAudio(videoFile);
+
+    setStatus('Etapa 2/3 — A preparar o áudio...', 45);
+
+    const audio = await wavToFloat32(audioBlob);
+
+    if (!audio.length) {
+      throw new Error('Não foi possível encontrar áudio no vídeo.');
+    }
+
+    const duration = audio.length / 16000;
+
+    if (duration < 1) {
+      throw new Error('O áudio é demasiado curto.');
+    }
+
+    setStatus('Etapa 3/3 — A iniciar transcrição...', 52);
+
+    const language = $('language').value;
+
+    subtitles = await transcribeAudio(audio, language);
+
+    subtitles = subtitles
+      .filter(item => item.text)
+      .sort((a,b) => a.start - b.start);
+
+    renderSubtitles();
+
+    if (subtitles.length) {
+      setStatus(
+        `Concluído! Foram geradas ${subtitles.length} legendas.`,
+        100,
+        'success'
+      );
+    } else {
+      setStatus(
+        'Não foram identificadas falas. Verifique se o vídeo tem áudio.',
+        100,
+        'error'
+      );
+    }
+
+  } catch(error) {
+
+    console.error(error);
+
+    setStatus(
+      'Erro: ' + (error.message || 'Falha no processamento.'),
+      null,
+      'error'
+    );
+
+  } finally {
+    setBusy(false);
+  }
+});
+
+
+// ---------------------------------------
+// EDITAR LEGENDAS
+// ---------------------------------------
+
+function renderSubtitles() {
+
+  subtitleList.innerHTML = '';
+
+  if (!subtitles.length) {
+    subtitleList.innerHTML =
+      '<div class="empty">Nenhuma legenda disponível.</div>';
+    return;
+  }
+
+  subtitles.forEach((item,index) => {
+
+    const element = document.createElement('div');
+
+    element.className = 'subtitle-item';
+
+    element.innerHTML = `
+      <div class="time-row">
+        <input
+          data-index="${index}"
+          data-time="start"
+          aria-label="Tempo inicial"
+          value="${formatTime(item.start)}"
+        >
+
+        <input
+          data-index="${index}"
+          data-time="end"
+          aria-label="Tempo final"
+          value="${formatTime(item.end)}"
+        >
+
+        <button class="remove-sub" data-remove="${index}">×</button>
+      </div>
+
+      <textarea
+        data-text="${index}"
+        aria-label="Texto da legenda"
+      >${escapeHTML(item.text)}</textarea>
+    `;
+
+    subtitleList.appendChild(element);
+  });
+}
+
+subtitleList.addEventListener('input', event => {
+
+  const target = event.target;
+
+  if (target.dataset.text !== undefined) {
+    subtitles[Number(target.dataset.text)].text = target.value;
+  }
+
+  if (target.dataset.time) {
+
+    const index = Number(target.dataset.index);
+    const value = parseTime(target.value);
+
+    if (target.dataset.time === 'start') {
+      subtitles[index].start = value;
+    } else {
+      subtitles[index].end = value;
+    }
+  }
+});
+
+subtitleList.addEventListener('click', event => {
+
+  const index = event.target.dataset.remove;
+
+  if (index !== undefined) {
+    subtitles.splice(Number(index),1);
+    renderSubtitles();
+  }
+});
+
+$('addSubtitle').addEventListener('click', () => {
+
+  const start = video.currentTime || 0;
+
+  subtitles.push({
+    start,
+    end:start + 3,
+    text:'Nova legenda'
+  });
+
+  subtitles.sort((a,b) => a.start - b.start);
+
+  renderSubtitles();
+});
+
+$('sortSubtitles').addEventListener('click', () => {
+
+  subtitles.sort((a,b) => a.start - b.start);
+
+  renderSubtitles();
+
+  setStatus('Legendas organizadas por ordem de tempo.');
+});
+
+
+// ---------------------------------------
+// EXPORTAR SRT E VTT
+// ---------------------------------------
+
+function createSRT() {
+
+  return subtitles.map((item,index) => {
+
+    return (
+      `${index + 1}\n` +
+      `${formatTime(item.start)} --> ${formatTime(item.end)}\n` +
+      `${item.text}`
+    );
+
+  }).join('\n\n');
+}
+
+function createVTT() {
+
+  return 'WEBVTT\n\n' + subtitles.map(item => {
+
+    return (
+      `${formatTime(item.start,'.')} --> ${formatTime(item.end,'.')}\n` +
+      `${item.text}`
+    );
+
+  }).join('\n\n');
+}
+
+$('exportSRT').addEventListener('click', () => {
+
+  if (!subtitles.length) {
+    alert('Não existem legendas para exportar.');
+    return;
+  }
+
+  download(
+    '\uFEFF' + createSRT(),
+    'legendas.srt',
+    'text/plain;charset=utf-8'
+  );
+});
+
+$('exportVTT').addEventListener('click', () => {
+
+  if (!subtitles.length) {
+    alert('Não existem legendas para exportar.');
+    return;
+  }
+
+  download(
+    createVTT(),
+    'legendas.vtt',
+    'text/vtt;charset=utf-8'
+  );
+});
+
+
+// ---------------------------------------
+// PERSONALIZAÇÃO
+// ---------------------------------------
+
+function getStyle() {
+
+  return {
+    fontFamily:$('fontFamily').value,
+    fontSize:Math.max(12,Math.min(100,Number($('fontSize').value) || 32)),
+    fontColor:$('fontColor').value,
+    outlineColor:$('outlineColor').value,
+    backgroundColor:$('backgroundColor').value,
+    backgroundOpacity:Number($('backgroundOpacity').value) / 100,
+    position:$('position').value,
+    alignment:$('alignment').value,
+    bold:$('bold').checked,
+    shadow:$('shadow').checked
+  };
+}
+
+$('resetStyle').addEventListener('click', () => {
+
+  $('fontFamily').value = 'Arial';
+  $('fontSize').value = 32;
+  $('fontColor').value = '#ffffff';
+  $('outlineColor').value = '#000000';
+  $('backgroundColor').value = '#000000';
+  $('backgroundOpacity').value = 0;
+  $('position').value = 'bottom';
+  $('alignment').value = 'center';
+  $('bold').checked = true;
+  $('shadow').checked = true;
+});
+
+
+// ---------------------------------------
+// DESENHAR LEGENDAS NO VÍDEO
+// ---------------------------------------
+
+function drawCaption(ctx,width,height,text,style) {
+
+  if (!text) return;
+
+  const fontSize = style.fontSize * (width / 1280);
+  const lineHeight = fontSize * 1.3;
+  const maxWidth = width * .85;
+
+  ctx.font =
+    `${style.bold ? 'bold' : 'normal'} ${fontSize}px "${style.fontFamily}"`;
+
+  ctx.textAlign = style.alignment;
+  ctx.textBaseline = 'middle';
+
+  const words = text.split(/\s+/);
+  const lines = [];
+  let line = '';
+
+  for (const word of words) {
+
+    const test = line ? line + ' ' + word : word;
+
+    if (ctx.measureText(test).width > maxWidth && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = test;
+    }
+  }
+
+  if (line) lines.push(line);
+
+  const x = style.alignment === 'left'
+    ? width * .075
+    : style.alignment === 'right'
+      ? width * .925
+      : width / 2;
+
+  let y;
+
+  if (style.position === 'top') {
+    y = height * .12;
+  } else if (style.position === 'middle') {
+    y = height / 2 - ((lines.length - 1) * lineHeight / 2);
+  } else {
+    y = height * .88 - ((lines.length - 1) * lineHeight);
+  }
+
+  lines.forEach((lineText,index) => {
+
+    const lineY = y + index * lineHeight;
+    const lineWidth = ctx.measureText(lineText).width;
+    const padding = fontSize * .3;
+
+    if (style.backgroundOpacity > 0) {
+
+      let left = x - lineWidth / 2;
+
+      if (style.alignment === 'left') left = x;
+      if (style.alignment === 'right') left = x - lineWidth;
+
+      ctx.save();
+      ctx.globalAlpha = style.backgroundOpacity;
+      ctx.fillStyle = style.backgroundColor;
+
+      ctx.fillRect(
+        left - padding,
+        lineY - lineHeight / 2,
+        lineWidth + padding * 2,
+        lineHeight
+      );
+
+      ctx.restore();
+    }
+
+    ctx.lineWidth = Math.max(2,fontSize * .1);
+    ctx.strokeStyle = style.outlineColor;
+    ctx.lineJoin = 'round';
+
+    if (style.shadow) {
+      ctx.shadowColor = 'rgba(0,0,0,.8)';
+      ctx.shadowBlur = fontSize * .15;
+      ctx.shadowOffsetY = fontSize * .05;
+    }
+
+    ctx.strokeText(lineText,x,lineY);
+
+    ctx.fillStyle = style.fontColor;
+    ctx.fillText(lineText,x,lineY);
+
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetY = 0;
+  });
+}
+
+function currentSubtitle(time) {
+  return subtitles.find(item =>
+    time >= item.start && time <= item.end
+  );
+}
+
+
+// ---------------------------------------
+// EXPORTAR VÍDEO WEBM
+// ---------------------------------------
+
+$('exportVideo').addEventListener('click', async () => {
+
+  if (!videoFile) {
+    alert('Primeiro carregue um vídeo.');
+    return;
+  }
+
+  if (!subtitles.length) {
+    alert('Gere ou adicione legendas primeiro.');
+    return;
+  }
+
+  if (!video.videoWidth || !video.duration) {
+    alert('Aguarde o carregamento do vídeo.');
+    return;
+  }
+
+  if (!window.MediaRecorder || !HTMLCanvasElement.prototype.captureStream) {
+    alert('O seu navegador não suporta a exportação de vídeo.');
+    return;
+  }
+
+  const canvas = document.createElement('canvas');
+
+  const width = video.videoWidth;
+  const height = video.videoHeight;
+
+  canvas.width = width;
+  canvas.height = height;
+
+  const ctx = canvas.getContext('2d');
+  const stream = canvas.captureStream(30);
+
+  const capture = video.captureStream
+    ? video.captureStream()
+    : video.mozCaptureStream?.();
+
+  if (capture) {
+    capture.getAudioTracks().forEach(track => {
+      stream.addTrack(track);
+    });
+  }
+
+  const mimeType =
+    MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')
+      ? 'video/webm;codecs=vp9,opus'
+      : 'video/webm';
+
+  let recorder;
+
+  try {
+    recorder = new MediaRecorder(stream,{mimeType});
+  } catch(error) {
+    alert('Não foi possível iniciar a gravação neste navegador.');
+    return;
+  }
+
+  const chunks = [];
+
+  const originalTime = video.currentTime;
+  const originalMuted = video.muted;
+
+  recorder.ondataavailable = event => {
+    if (event.data.size) chunks.push(event.data);
+  };
+
+  recorder.onerror = event => {
+    console.error(event);
+    setExportStatus('Erro durante a gravação.','error');
+  };
+
+  recorder.onstop = () => {
+
+    const blob = new Blob(chunks,{type:'video/webm'});
+
+    download(
+      blob,
+      'video-com-legendas.webm',
+      'video/webm'
+    );
+
+    stream.getTracks().forEach(track => track.stop());
+
+    setExportStatus('Vídeo exportado com sucesso.','success');
+  };
+
+  try {
+
+    setExportStatus('A preparar o vídeo...');
+
+    video.pause();
+    video.currentTime = 0;
+    video.muted = false;
+
+    await new Promise(resolve => {
+
+      if (video.readyState >= 2) {
+        resolve();
+      } else {
+        video.addEventListener('loadeddata',resolve,{once:true});
+      }
+
+    });
+
+    await video.play();
+
+    recorder.start(1000);
+
+    setExportStatus('A gravar vídeo com legendas...');
+
+    let animationId;
+
+    function render() {
+
+      if (recorder.state !== 'recording') return;
+
+      ctx.clearRect(0,0,width,height);
+
+      ctx.drawImage(video,0,0,width,height);
+
+      const subtitle = currentSubtitle(video.currentTime);
+
+      if (subtitle) {
+        drawCaption(
+          ctx,
+          width,
+          height,
+          subtitle.text,
+          getStyle()
+        );
+      }
+
+      if (!video.ended) {
+        animationId = requestAnimationFrame(render);
+      }
+    }
+
+    animationId = requestAnimationFrame(render);
+
+    video.addEventListener('ended',() => {
+
+      cancelAnimationFrame(animationId);
+
+      if (recorder.state === 'recording') {
+        recorder.stop();
+      }
+
+      video.pause();
+      video.currentTime = originalTime;
+      video.muted = originalMuted;
+
+    },{once:true});
+
+  } catch(error) {
+
+    console.error(error);
+
+    if (recorder.state === 'recording') {
+      recorder.stop();
+    }
+
+    video.pause();
+    video.currentTime = originalTime;
+    video.muted = originalMuted;
+
+    setExportStatus(
+      'Falha na exportação: ' + error.message,
+      'error'
+    );
+  }
+});
+
+</script>
+
+</body>
+</html>
