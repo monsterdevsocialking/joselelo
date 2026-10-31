@@ -665,10 +665,11 @@ async function loadFFmpeg() {
 
   setStatus('A iniciar o motor de processamento de áudio...', 3);
 
-  const workerURL = new URL(
-    './ffmpeg/worker.js',
-    window.location.href
-  ).href;
+ await ffmpeg.load({
+  classWorkerURL: workerURL,
+  coreURL,
+  wasmURL
+});
 
   // Confirma que o worker local existe.
   const workerResponse = await fetch(workerURL);
