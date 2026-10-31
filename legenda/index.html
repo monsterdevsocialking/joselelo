@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111827">
+<title>LegendaVideo — Legendas automáticas</title>
+
+<style>
+:root {
+  --bg: #f5f6fa;
+  --surface: #ffffff;
+  --dark: #111827;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --primary: #4f46e5;
+  --primary-light: #eef2ff;
+  --success: #059669;
+  --danger: #dc2626;
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+}
+
+button, input, select, textarea { font: inherit; }
+
+button {
+  cursor: pointer;
+  border: 0;
+}
+
+header {
+  height: 68px;
+  padding: 0 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.logo span { color: var(--primary); }
+
+.header-tag {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+main {
+  max-width: 1250px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.intro { margin-bottom: 25px; }
+
+.intro h1 {
+  font-size: clamp(24px, 4vw, 34px);
+  margin: 0 0 8px;
+  letter-spacing: -1px;
+}
+
+.intro p {
+  color: var(--muted);
+  margin: 0;
+  font-size: 14px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, .85fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.panel {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 18px;
+}
+
+.panel h2 {
+  font-size: 16px;
+  margin: 0 0 16px;
+}
+
+.upload {
+  border: 2px dashed #c7c9d8;
+  border-radius: 12px;
+  padding: 28px 15px;
+  text-align: center;
+  background: #fafaff;
+}
+
+.upload strong {
+  display: block;
+  margin-bottom: 7px;
+}
+
+.upload p {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 0 0 15px;
+}
+
+.primary, .secondary, .danger {
+  padding: 11px 16px;
+  border-radius: 9px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.primary {
+  background: var(--primary);
+  color: white;
+}
+
+.primary:hover { background: #4338ca; }
+
+.secondary {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.danger {
+  background: #fee2e2;
+  color: var(--danger);
+}
+
+video {
+  width: 100%;
+  max-height: 430px;
+  background: #111;
+  border-radius: 10px;
+  display: block;
+}
+
+.video-wrap { margin-top: 18px; }
+
+.field { margin-bottom: 15px; }
+
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 7px;
+}
+
+.field input, .field select, .field textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  background: white;
+  outline: none;
+}
+
+.field input:focus, .field select:focus {
+  border-color: var(--primary);
+}
+
+.field textarea {
+  min-height: 65px;
+  resize: vertical;
+}
+
+.two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.progress {
+  height: 7px;
+  background: #e5e7eb;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 13px;
+}
+
+.progress div {
+  width: 0%;
+  height: 100%;
+  background: var(--primary);
+  transition: width .2s;
+}
+
+.status {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 9px;
+  min-height: 18px;
+}
+
+.subtitle-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 450px;
+  overflow-y: auto;
+}
+
+.subtitle-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.subtitle-item textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 9px;
+  resize: vertical;
+  min-height: 55px;
+}
+
+.time-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 7px;
+  margin-bottom: 8px;
+}
+
+.time-row input {
+  width: 100%;
+  min-width: 0;
+  padding: 7px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font-size: 11px;
+}
+
+.remove-sub {
+  background: #fee2e2;
+  color: var(--danger);
+  border-radius: 7px;
+  padding: 5px 9px;
+}
+
+.empty {
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+  padding: 25px 5px;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  margin: 12px 0;
+}
+
+.checkbox-row input { width: auto; }
+
+.small-note {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+@media(max-width: 850px) {
+  .layout { grid-template-columns: 1fr; }
+}
+
+@media(max-width: 480px) {
+  main { padding: 0 12px; margin-top: 20px; }
+  .panel { padding: 15px; }
+  header { padding: 0 15px; }
+  .two { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">Legenda<span>Video</span></div>
+  <div class="header-tag">Legendas automáticas com IA</div>
+</header>
+
+<main>
+  <section class="intro">
+    <h1>Crie legendas para os seus vídeos.</h1>
+    <p>Transcreva, edite, personalize e exporte as suas legendas.</p>
+  </section>
+
+  <div class="layout">
+    <section>
+      <div class="panel">
+        <h2>1. Carregar vídeo</h2>
+
+        <div class="upload">
+          <strong>Escolha o seu vídeo</strong>
+          <p>MP4, MOV, WebM e outros formatos suportados pelo navegador.</p>
+          <input type="file" id="videoInput" accept="video/*" hidden>
+          <button class="primary" id="chooseVideo">Selecionar vídeo</button>
+        </div>
+
+        <div class="video-wrap" id="videoWrap" hidden>
+          <video id="video" controls playsinline></video>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>2. Gerar legendas automaticamente</h2>
+
+        <div class="field">
+          <label>Idioma do áudio</label>
+          <select id="language">
+            <option value="portuguese">Português</option>
+            <option value="english">Inglês</option>
+            <option value="spanish">Espanhol</option>
+            <option value="french">Francês</option>
+            <option value="auto">Detecção automática</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Modelo de transcrição</label>
+          <select id="model">
+            <option value="onnx-community/whisper-tiny">Whisper Tiny — mais rápido</option>
+            <option value="onnx-community/whisper-small">Whisper Small — mais preciso, mais pesado</option>
+          </select>
+        </div>
+
+        <button class="primary" id="transcribeBtn" style="width:100%">
+          Gerar legendas
+        </button>
+
+        <div class="progress"><div id="progressBar"></div></div>
+        <div class="status" id="status">Aguardando vídeo.</div>
+      </div>
+
+      <div class="panel">
+        <h2>3. Editar legendas</h2>
+
+        <div class="actions" style="margin-bottom:15px">
+          <button class="secondary" id="addSubtitle">+ Adicionar legenda</button>
+          <button class="secondary" id="syncBtn">Sincronizar</button>
+        </div>
+
+        <div class="subtitle-list" id="subtitleList">
+          <div class="empty">As legendas aparecerão aqui depois da transcrição.</div>
+        </div>
+      </div>
+    </section>
+
+    <aside>
+      <div class="panel">
+        <h2>4. Aparência das legendas</h2>
+
+        <div class="field">
+          <label>Tipo de letra</label>
+          <select id="fontFamily">
+            <option value="Arial">Arial</option>
+            <option value="Inter">Inter</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Impact">Impact</option>
+            <option value="Tahoma">Tahoma</option>
+          </select>
+        </div>
+
+        <div class="two">
+          <div class="field">
+            <label>Tamanho</label>
+            <input type="number" id="fontSize" value="32" min="12" max="100">
+          </div>
+          <div class="field">
+            <label>Cor do texto</label>
+            <input type="color" id="fontColor" value="#ffffff">
+          </div>
+        </div>
+
+        <div class="two">
+          <div class="field">
+            <label>Contorno</label>
+            <input type="color" id="outlineColor" value="#000000">
+          </div>
+          <div class="field">
+            <label>Fundo</label>
+            <input type="color" id="backgroundColor" value="#000000">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Opacidade do fundo</label>
+          <input type="range" id="backgroundOpacity" min="0" max="100" value="0">
+        </div>
+
+        <div class="field">
+          <label>Posição vertical</label>
+          <select id="position">
+            <option value="bottom">Inferior</option>
+            <option value="middle">Centro</option>
+            <option value="top">Superior</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Alinhamento</label>
+          <select id="alignment">
+            <option value="center">Centro</option>
+            <option value="left">Esquerda</option>
+            <option value="right">Direita</option>
+          </select>
+        </div>
+
+        <div class="checkbox-row">
+          <input type="checkbox" id="bold" checked>
+          <label for="bold">Texto em negrito</label>
+        </div>
+
+        <div class="checkbox-row">
+          <input type="checkbox" id="shadow" checked>
+          <label for="shadow">Sombra no texto</label>
+        </div>
+
+        <button class="secondary" id="resetStyle" style="width:100%">
+          Restaurar aparência
+        </button>
+      </div>
+
+      <div class="panel">
+        <h2>5. Exportar</h2>
+
+        <div class="actions">
+          <button class="primary" id="exportSRT">Descarregar SRT</button>
+          <button class="secondary" id="exportVTT">Descarregar VTT</button>
+        </div>
+
+        <hr style="border:0;border-top:1px solid var(--border);margin:18px 0">
+
+        <button class="primary" id="exportVideo" style="width:100%">
+          Exportar vídeo com legendas
+        </button>
+
+        <div class="status" id="exportStatus"></div>
+
+        <p class="small-note">
+          A exportação de vídeo é feita através da gravação do preview em WebM.
+          O navegador deve permanecer aberto durante o processo.
+        </p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer>
+  LegendaVideo — Ferramenta de criação e edição de legendas.
+</footer>
+
+<script type="module">
+import { pipeline, env } from
+'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.2';
+
+import { FFmpeg } from
+'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js';
+
+import { fetchFile, toBlobURL } from
+'https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.2/dist/esm/index.js';
+
+env.allowLocalModels = false;
+
+const $ = id => document.getElementById(id);
+
+const videoInput = $('videoInput');
+const video = $('video');
+const videoWrap = $('videoWrap');
+const subtitleList = $('subtitleList');
+const status = $('status');
+const progressBar = $('progressBar');
+
+let videoFile = null;
+let videoURL = null;
+let ffmpeg = null;
+let transcriber = null;
+let subtitles = [];
+let busy = false;
+
+function setStatus(message, progress = null) {
+  status.textContent = message;
+  if (progress !== null) {
+    progressBar.style.width = Math.max(0, Math.min(100, progress)) + '%';
+  }
+}
+
+function setExportStatus(message) {
+  $('exportStatus').textContent = message;
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  })[char]);
+}
+
+function secondsToTime(seconds) {
+  const safe = Math.max(0, Number(seconds) || 0);
+  const h = Math.floor(safe / 3600);
+  const m = Math.floor((safe % 3600) / 60);
+  const s = Math.floor(safe % 60);
+  const ms = Math.floor((safe % 1) * 1000);
+
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')},${String(ms).padStart(3,'0')}`;
+}
+
+function timeToSeconds(value) {
+  const parts = value.trim().replace(',', '.').split(':').map(Number);
+
+  if (parts.length !== 3 || parts.some(n => !Number.isFinite(n))) {
+    return 0;
+  }
+
+  return parts[0] * 3600 + parts[1] * 60 + parts[2];
+}
+
+function downloadFile(content, filename, type) {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+
+  a.href = url;
+  a.download = filename;
+  a.click();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function updateSubtitles() {
+  subtitleList.innerHTML = '';
+
+  if (!subtitles.length) {
+    subtitleList.innerHTML = '<div class="empty">Nenhuma legenda disponível.</div>';
+    return;
+  }
+
+  subtitles.forEach((item, index) => {
+    const element = document.createElement('div');
+    element.className = 'subtitle-item';
+
+    element.innerHTML = `
+      <div class="time-row">
+        <input aria-label="Início da legenda" data-index="${index}" data-type="start"
+          value="${escapeHTML(secondsToTime(item.start))}">
+        <input aria-label="Fim da legenda" data-index="${index}" data-type="end"
+          value="${escapeHTML(secondsToTime(item.end))}">
+        <button class="remove-sub" data-remove="${index}" title="Remover">×</button>
+      </div>
+      <textarea data-text="${index}" aria-label="Texto da legenda">${escapeHTML(item.text)}</textarea>
+    `;
+
+    subtitleList.appendChild(element);
+  });
+}
+
+subtitleList.addEventListener('input', event => {
+  const target = event.target;
+
+  if (target.dataset.text !== undefined) {
+    subtitles[Number(target.dataset.text)].text = target.value;
+  }
+
+  if (target.dataset.type) {
+    const index = Number(target.dataset.index);
+    const value = timeToSeconds(target.value);
+
+    if (target.dataset.type === 'start') {
+      subtitles[index].start = value;
+    } else {
+      subtitles[index].end = value;
+    }
+  }
+});
+
+subtitleList.addEventListener('click', event => {
+  const index = event.target.dataset.remove;
+
+  if (index !== undefined) {
+    subtitles.splice(Number(index), 1);
+    updateSubtitles();
+  }
+});
+
+$('chooseVideo').addEventListener('click', () => videoInput.click());
+
+videoInput.addEventListener('change', () => {
+  const file = videoInput.files[0];
+  if (!file) return;
+
+  if (!file.type.startsWith('video/')) {
+    alert('Selecione um ficheiro de vídeo válido.');
+    return;
+  }
+
+  videoFile = file;
+
+  if (videoURL) URL.revokeObjectURL(videoURL);
+
+  videoURL = URL.createObjectURL(file);
+  video.src = videoURL;
+  videoWrap.hidden = false;
+
+  subtitles = [];
+  updateSubtitles();
+  setStatus('Vídeo carregado. Pronto para transcrever.', 0);
+  setExportStatus('');
+});
+
+async function loadFFmpeg() {
+  if (ffmpeg && ffmpeg.loaded) return ffmpeg;
+
+  ffmpeg = new FFmpeg();
+
+  ffmpeg.on('log', ({ message }) => {
+    if (message) console.log('[FFmpeg]', message);
+  });
+
+  ffmpeg.on('progress', ({ progress }) => {
+    if (Number.isFinite(progress)) {
+      setStatus('A processar áudio...', 10 + progress * 20);
+    }
+  });
+
+  const workerURL = new URL('./ffmpeg/worker.js', window.location.href).href;
+
+  const coreBase =
+    'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd';
+
+  const [coreURL, wasmURL] = await Promise.all([
+    toBlobURL(`${coreBase}/ffmpeg-core.js`, 'text/javascript'),
+    toBlobURL(`${coreBase}/ffmpeg-core.wasm`, 'application/wasm')
+  ]);
+
+  await ffmpeg.load({
+    classWorkerURL: workerURL,
+    coreURL,
+    wasmURL
+  });
+
+  return ffmpeg;
+}
+
+async function extractAudio(file) {
+  const engine = await loadFFmpeg();
+
+  const inputName = 'input_video';
+  const outputName = 'audio.wav';
+
+  try {
+    await engine.deleteFile(inputName);
+  } catch {}
+
+  try {
+    await engine.deleteFile(outputName);
+  } catch {}
+
+  await engine.writeFile(inputName, await fetchFile(file));
+
+  await engine.exec([
+    '-i', inputName,
+    '-vn',
+    '-ac', '1',
+    '-ar', '16000',
+    '-c:a', 'pcm_s16le',
+    outputName
+  ]);
+
+  const data = await engine.readFile(outputName);
+
+  return new Blob([data], { type: 'audio/wav' });
+}
+
+async function wavToFloat32(blob) {
+  const arrayBuffer = await blob.arrayBuffer();
+  const audioContext = new AudioContext({ sampleRate: 16000 });
+
+  try {
+    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+    return audioBuffer.getChannelData(0).slice();
+  } finally {
+    await audioContext.close();
+  }
+}
+
+async function loadTranscriber() {
+  if (transcriber) return transcriber;
+
+  const model = $('model').value;
+
+  transcriber = await pipeline('automatic-speech-recognition', model, {
+    progress_callback: progress => {
+      if (progress.status === 'progress' && progress.total) {
+        const percentage = Math.round(progress.loaded / progress.total * 100);
+        setStatus(`A descarregar modelo de IA: ${percentage}%`, percentage);
+      } else if (progress.status === 'initiate') {
+        setStatus('A iniciar modelo de inteligência artificial...', 0);
+      }
+    }
+  });
+
+  return transcriber;
+}
+
+function normalizeSegments(result) {
+  const chunks = result.chunks || [];
+
+  if (chunks.length) {
+    return chunks.map(chunk => ({
+      start: Number(chunk.timestamp?.[0] ?? 0),
+      end: Number(chunk.timestamp?.[1] ?? 0),
+      text: String(chunk.text || '').trim()
+    })).filter(item => item.text);
+  }
+
+  if (result.text) {
+    return [{
+      start: 0,
+      end: video.duration || 5,
+      text: String(result.text).trim()
+    }];
+  }
+
+  return [];
+}
+
+$('transcribeBtn').addEventListener('click', async () => {
+  if (busy) return;
+
+  if (!videoFile) {
+    alert('Primeiro selecione um vídeo.');
+    return;
+  }
+
+  busy = true;
+  $('transcribeBtn').disabled = true;
+
+  try {
+    setStatus('A preparar o vídeo...', 2);
+
+    const audioBlob = await extractAudio(videoFile);
+
+    setStatus('A descodificar áudio...', 30);
+
+    const audio = await wavToFloat32(audioBlob);
+
+    setStatus('A carregar inteligência artificial...', 35);
+
+    const asr = await loadTranscriber();
+
+    setStatus('A transcrever áudio. Aguarde...', 60);
+
+    const language = $('language').value;
+
+    const options = {
+      chunk_length_s: 30,
+      stride_length_s: 5,
+      return_timestamps: true,
+      task: 'transcribe',
+      do_sample: false
+    };
+
+    if (language !== 'auto') options.language = language;
+
+    const result = await asr(audio, options);
+
+    subtitles = normalizeSegments(result).map(item => ({
+      start: Math.max(0, item.start),
+      end: Math.max(item.start + 0.1, item.end || item.start + 2),
+      text: item.text
+    }));
+
+    updateSubtitles();
+
+    setStatus(
+      subtitles.length
+        ? `${subtitles.length} legendas geradas. Pode editar o texto e os tempos.`
+        : 'Não foram encontradas falas no vídeo.',
+      100
+    );
+
+  } catch (error) {
+    console.error(error);
+    setStatus('Erro: ' + (error.message || 'Não foi possível processar o vídeo.'));
+  } finally {
+    busy = false;
+    $('transcribeBtn').disabled = false;
+  }
+});
+
+$('addSubtitle').addEventListener('click', () => {
+  const currentTime = video.currentTime || 0;
+
+  subtitles.push({
+    start: currentTime,
+    end: currentTime + 3,
+    text: 'Nova legenda'
+  });
+
+  subtitles.sort((a,b) => a.start - b.start);
+  updateSubtitles();
+});
+
+$('syncBtn').addEventListener('click', () => {
+  subtitles.sort((a,b) => a.start - b.start);
+  updateSubtitles();
+  setStatus('Legendas organizadas por ordem de tempo.');
+});
+
+function getSRT() {
+  return subtitles.map((item, index) =>
+    `${index + 1}\n${secondsToTime(item.start)} --> ${secondsToTime(item.end)}\n${item.text}`
+  ).join('\n\n');
+}
+
+function getVTT() {
+  return 'WEBVTT\n\n' + subtitles.map(item => {
+    const start = secondsToTime(item.start).replace(',', '.');
+    const end = secondsToTime(item.end).replace(',', '.');
+    return `${start} --> ${end}\n${item.text}`;
+  }).join('\n\n');
+}
+
+$('exportSRT').addEventListener('click', () => {
+  if (!subtitles.length) return alert('Não existem legendas para exportar.');
+  downloadFile(getSRT(), 'legendas.srt', 'text/plain;charset=utf-8');
+});
+
+$('exportVTT').addEventListener('click', () => {
+  if (!subtitles.length) return alert('Não existem legendas para exportar.');
+  downloadFile(getVTT(), 'legendas.vtt', 'text/vtt;charset=utf-8');
+});
+
+const styleControls = [
+  'fontFamily', 'fontSize', 'fontColor', 'outlineColor',
+  'backgroundColor', 'backgroundOpacity', 'position',
+  'alignment', 'bold', 'shadow'
+];
+
+function getStyle() {
+  return {
+    fontFamily: $('fontFamily').value,
+    fontSize: Math.max(12, Math.min(100, Number($('fontSize').value) || 32)),
+    fontColor: $('fontColor').value,
+    outlineColor: $('outlineColor').value,
+    backgroundColor: $('backgroundColor').value,
+    backgroundOpacity: Number($('backgroundOpacity').value) / 100,
+    position: $('position').value,
+    alignment: $('alignment').value,
+    bold: $('bold').checked,
+    shadow: $('shadow').checked
+  };
+}
+
+$('resetStyle').addEventListener('click', () => {
+  $('fontFamily').value = 'Arial';
+  $('fontSize').value = 32;
+  $('fontColor').value = '#ffffff';
+  $('outlineColor').value = '#000000';
+  $('backgroundColor').value = '#000000';
+  $('backgroundOpacity').value = 0;
+  $('position').value = 'bottom';
+  $('alignment').value = 'center';
+  $('bold').checked = true;
+  $('shadow').checked = true;
+});
+
+function drawCaption(ctx, width, height, text, style) {
+  if (!text) return;
+
+  const maxWidth = width * 0.85;
+  const fontSize = style.fontSize * (width / 1280);
+  const lineHeight = fontSize * 1.3;
+
+  ctx.font = `${style.bold ? 'bold' : 'normal'} ${fontSize}px "${style.fontFamily}"`;
+  ctx.textAlign = style.alignment;
+  ctx.textBaseline = 'middle';
+
+  const words = text.split(/\s+/);
+  const lines = [];
+  let line = '';
+
+  for (const word of words) {
+    const test = line ? `${line} ${word}` : word;
+
+    if (ctx.measureText(test).width > maxWidth && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = test;
+    }
+  }
+
+  if (line) lines.push(line);
+
+  const x = style.alignment === 'left'
+    ? width * 0.075
+    : style.alignment === 'right'
+      ? width * 0.925
+      : width / 2;
+
+  let y;
+
+  if (style.position === 'top') {
+    y = height * 0.12;
+  } else if (style.position === 'middle') {
+    y = height / 2 - (lines.length - 1) * lineHeight / 2;
+  } else {
+    y = height * 0.88 - (lines.length - 1) * lineHeight;
+  }
+
+  const padding = fontSize * 0.3;
+  const bgColor = style.backgroundColor;
+
+  lines.forEach((lineText, index) => {
+    const lineY = y + index * lineHeight;
+    const metrics = ctx.measureText(lineText);
+    const lineWidth = metrics.width;
+
+    if (style.backgroundOpacity > 0) {
+      const previous = ctx.fillStyle;
+      ctx.fillStyle = bgColor;
+      ctx.globalAlpha = style.backgroundOpacity;
+
+      let left = x - lineWidth / 2;
+
+      if (style.alignment === 'left') left = x;
+      if (style.alignment === 'right') left = x - lineWidth;
+
+      ctx.fillRect(
+        left - padding,
+        lineY - lineHeight / 2,
+        lineWidth + padding * 2,
+        lineHeight
+      );
+
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = previous;
+    }
+
+    ctx.lineWidth = Math.max(2, fontSize * 0.1);
+    ctx.strokeStyle = style.outlineColor;
+    ctx.lineJoin = 'round';
+
+    if (style.shadow) {
+      ctx.shadowColor = 'rgba(0,0,0,.8)';
+      ctx.shadowBlur = fontSize * 0.15;
+      ctx.shadowOffsetY = fontSize * 0.05;
+    }
+
+    ctx.strokeText(lineText, x, lineY);
+    ctx.fillStyle = style.fontColor;
+    ctx.fillText(lineText, x, lineY);
+
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetY = 0;
+  });
+}
+
+function findCurrentSubtitle(time) {
+  return subtitles.find(item => time >= item.start && time <= item.end);
+}
+
+$('exportVideo').addEventListener('click', async () => {
+  if (!videoFile) return alert('Primeiro selecione um vídeo.');
+  if (!subtitles.length) return alert('Gere ou adicione legendas primeiro.');
+
+  if (!video.duration || !Number.isFinite(video.duration)) {
+    return alert('Aguarde o carregamento do vídeo.');
+  }
+
+  const canvas = document.createElement('canvas');
+  const width = video.videoWidth || 1280;
+  const height = video.videoHeight || 720;
+
+  canvas.width = width;
+  canvas.height = height;
+
+  const ctx = canvas.getContext('2d');
+  const stream = canvas.captureStream(30);
+
+  const audioStream = video.captureStream
+    ? video.captureStream()
+    : video.mozCaptureStream?.();
+
+  if (audioStream) {
+    audioStream.getAudioTracks().forEach(track => stream.addTrack(track));
+  }
+
+  const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')
+    ? 'video/webm;codecs=vp9,opus'
+    : 'video/webm';
+
+  let recorder;
+
+  try {
+    recorder = new MediaRecorder(stream, { mimeType });
+  } catch (error) {
+    alert('Este navegador não suporta a exportação de vídeo.');
+    return;
+  }
+
+  const chunks = [];
+
+  recorder.ondataavailable = event => {
+    if (event.data.size) chunks.push(event.data);
+  };
+
+  recorder.onerror = event => {
+    console.error(event);
+    setExportStatus('Erro durante a gravação.');
+  };
+
+  recorder.onstop = () => {
+    const blob = new Blob(chunks, { type: 'video/webm' });
+    downloadFile(blob, 'video-com-legendas.webm', 'video/webm');
+    setExportStatus('Vídeo exportado com sucesso.');
+    stream.getTracks().forEach(track => track.stop());
+  };
+
+  const originalTime = video.currentTime;
+  const originalMuted = video.muted;
+
+  try {
+    setExportStatus('A preparar exportação...');
+
+    video.pause();
+    video.currentTime = 0;
+    video.muted = false;
+
+    await new Promise(resolve => {
+      if (video.readyState >= 2) resolve();
+      else video.addEventListener('loadeddata', resolve, { once: true });
+    });
+
+    await video.play();
+
+    recorder.start(1000);
+
+    setExportStatus('A gravar vídeo com legendas...');
+
+    const render = () => {
+      if (recorder.state !== 'recording') return;
+
+      ctx.clearRect(0, 0, width, height);
+      ctx.drawImage(video, 0, 0, width, height);
+
+      const current = findCurrentSubtitle(video.currentTime);
+
+      if (current) {
+        drawCaption(ctx, width, height, current.text, getStyle());
+      }
+
+      if (!video.ended) requestAnimationFrame(render);
+    };
+
+    requestAnimationFrame(render);
+
+    video.addEventListener('ended', () => {
+      if (recorder.state === 'recording') recorder.stop();
+      video.pause();
+      video.currentTime = originalTime;
+      video.muted = originalMuted;
+    }, { once: true });
+
+  } catch (error) {
+    console.error(error);
+
+    if (recorder.state === 'recording') recorder.stop();
+
+    video.pause();
+    video.currentTime = originalTime;
+    video.muted = originalMuted;
+
+    setExportStatus('Não foi possível exportar: ' + error.message);
+  }
+});
+</script>
+
+</body>
+</html>
