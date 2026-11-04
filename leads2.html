@@ -1,0 +1,1523 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b1220">
+<title>MapProspector — Local Business Intelligence</title>
+
+<style>
+:root{
+--bg:#0b1220;
+--panel:#111c2e;
+--panel2:#17263c;
+--line:#293a53;
+--text:#edf3ff;
+--muted:#93a4bd;
+--blue:#829cff;
+--green:#62d9a7;
+--orange:#ffc477;
+--red:#ff9292;
+}
+*{box-sizing:border-box}
+body{
+margin:0;
+background:var(--bg);
+color:var(--text);
+font-family:Arial,sans-serif;
+font-size:14px;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+.sidebar{
+width:245px;
+background:#0d1727;
+border-right:1px solid var(--line);
+padding:25px 17px;
+position:fixed;
+inset:0 auto 0 0;
+display:flex;
+flex-direction:column;
+}
+.brand{
+font-size:19px;
+font-weight:800;
+letter-spacing:-.7px;
+}
+.brand span{color:var(--blue)}
+.brand small{
+display:block;
+font-size:9px;
+letter-spacing:2px;
+color:#8292aa;
+margin-top:6px;
+}
+.nav{margin-top:45px;display:grid;gap:9px}
+.nav a{
+padding:13px;
+border-radius:9px;
+text-decoration:none;
+color:#9cacc2;
+font-weight:bold;
+}
+.nav a.active,.nav a:hover{
+background:#1b2b45;
+color:white;
+}
+.side-info{
+margin-top:auto;
+background:#15243a;
+border:1px solid var(--line);
+border-radius:10px;
+padding:14px;
+color:#aabbd0;
+font-size:11px;
+line-height:1.6;
+}
+.side-info p{color:#8293aa}
+.main{
+margin-left:245px;
+width:calc(100% - 245px);
+max-width:1600px;
+padding:35px clamp(18px,4vw,55px);
+}
+header{
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+gap:15px;
+margin-bottom:28px;
+}
+.eyebrow{
+font-size:9px;
+font-weight:bold;
+letter-spacing:1.7px;
+color:var(--blue);
+}
+h1{
+font-size:36px;
+letter-spacing:-1.5px;
+margin:8px 0;
+}
+h2{font-size:21px;margin:7px 0}
+h3{font-size:15px;margin:0 0 7px}
+p{color:var(--muted);line-height:1.6;margin:0}
+.source-pill{
+border:1px solid var(--line);
+padding:9px 13px;
+border-radius:30px;
+font-size:11px;
+color:#c1cee0;
+white-space:nowrap;
+}
+.panel{
+background:linear-gradient(135deg,#15243a,#101b2d);
+border:1px solid var(--line);
+border-radius:15px;
+padding:22px;
+margin-bottom:17px;
+}
+.section-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+}
+.search-grid{
+display:grid;
+grid-template-columns:1.1fr 1fr .55fr auto;
+gap:12px;
+align-items:end;
+margin-top:22px;
+}
+.field{
+display:grid;
+gap:8px;
+font-size:11px;
+font-weight:bold;
+color:#bdcbe0;
+}
+.field input,.field select,.filter{
+width:100%;
+background:#0d1829;
+color:white;
+border:1px solid #34445e;
+padding:13px;
+border-radius:8px;
+outline:none;
+}
+.field input:focus,.field select:focus,.filter:focus{
+border-color:var(--blue);
+}
+.primary,.secondary,.small{
+border-radius:8px;
+padding:12px 15px;
+font-weight:bold;
+border:0;
+}
+.primary{background:var(--blue);color:#101827}
+.primary:hover{background:#a3b6ff}
+.secondary,.small{
+background:#1c2c44;
+color:#dce7f7;
+border:1px solid #344963;
+}
+button:disabled{opacity:.4;cursor:not-allowed}
+.hint{font-size:11px;margin-top:13px}
+.stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px;
+margin:17px 0 35px;
+}
+.stat{
+background:var(--panel);
+border:1px solid var(--line);
+border-radius:11px;
+padding:17px;
+}
+.stat span{
+font-size:9px;
+letter-spacing:1px;
+color:#9aabc2;
+font-weight:bold;
+}
+.stat strong{
+display:block;
+font-size:27px;
+margin:9px 0 3px;
+}
+.stat small{color:#8293aa}
+.results-head{
+display:flex;
+justify-content:space-between;
+align-items:flex-end;
+gap:15px;
+margin-bottom:15px;
+}
+.actions{display:flex;gap:8px}
+.filter{width:190px;padding:11px}
+.notice{
+border:1px dashed #344761;
+padding:16px;
+border-radius:10px;
+font-size:12px;
+color:#aabbd0;
+line-height:1.6;
+}
+.results{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:12px;
+margin-top:13px;
+}
+.business{
+background:var(--panel);
+border:1px solid var(--line);
+border-radius:12px;
+padding:16px;
+min-width:0;
+}
+.business-top{
+display:flex;
+justify-content:space-between;
+gap:10px;
+}
+.business-name{overflow-wrap:anywhere}
+.category{font-size:11px;color:#9eafc5}
+.score{
+background:#263b32;
+color:#82e0b2;
+padding:6px 9px;
+border-radius:20px;
+font-size:10px;
+height:max-content;
+white-space:nowrap;
+font-weight:bold;
+}
+.meta{
+display:grid;
+gap:9px;
+margin:15px 0;
+font-size:11px;
+color:#b7c5d9;
+}
+.meta a{color:#9eb4ff;overflow-wrap:anywhere}
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:13px}
+.tag{
+background:#1d2c43;
+color:#b6c5da;
+padding:6px 8px;
+border-radius:6px;
+font-size:10px;
+}
+.tag.good{background:#1b352e;color:#80e0b3}
+.tag.warn{background:#3b3020;color:#ffd08a}
+.tag.bad{background:#3b2529;color:#ff9c9c}
+.card-actions{display:flex;gap:7px;flex-wrap:wrap}
+.small{font-size:10px;padding:8px 10px;text-decoration:none;display:inline-block}
+.small:hover{border-color:var(--blue)}
+.verify-box{
+margin-top:14px;
+padding:12px;
+border:1px solid var(--line);
+border-radius:9px;
+background:#0d1829;
+}
+.verify-box p{font-size:10px;margin-bottom:9px}
+.leads{
+border-top:1px solid var(--line);
+padding-top:28px;
+margin-top:35px;
+}
+.lead-list{display:grid;gap:9px}
+.lead{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px;
+padding:13px;
+background:var(--panel);
+border:1px solid var(--line);
+border-radius:9px;
+}
+.lead strong{display:block;font-size:12px}
+.lead small{color:var(--muted)}
+.lead-controls{display:flex;gap:7px;align-items:center}
+.lead-controls select{
+background:#0d1829;
+color:white;
+border:1px solid var(--line);
+border-radius:7px;
+padding:8px;
+font-size:10px;
+}
+.empty{
+text-align:center;
+padding:25px;
+border:1px dashed var(--line);
+border-radius:10px;
+color:var(--muted);
+font-size:12px;
+}
+footer{
+margin-top:40px;
+border-top:1px solid var(--line);
+padding-top:18px;
+font-size:10px;
+color:#8293aa;
+}
+footer a{color:#9eb4ff}
+dialog{
+width:min(680px,calc(100% - 25px));
+max-height:88vh;
+overflow:auto;
+background:#101c2e;
+color:white;
+border:1px solid #40516b;
+border-radius:14px;
+padding:23px;
+}
+dialog::backdrop{background:#020712d9}
+.dialog-head{
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+border-bottom:1px solid var(--line);
+padding-bottom:15px;
+margin-bottom:16px;
+}
+.close{
+border:0;
+background:none;
+color:white;
+font-size:25px;
+}
+.report-block{
+padding:14px;
+background:#17263c;
+border-radius:9px;
+margin:10px 0;
+}
+.report-block h4{
+font-size:10px;
+color:var(--blue);
+letter-spacing:1px;
+margin:0 0 9px;
+}
+.report-block p{font-size:12px;color:#c6d2e4}
+.pitch{white-space:pre-wrap}
+.dialog-actions{
+display:flex;
+justify-content:flex-end;
+gap:8px;
+margin-top:18px;
+}
+@media(max-width:1050px){
+.search-grid{grid-template-columns:1fr 1fr}
+.results{grid-template-columns:1fr}
+}
+@media(max-width:720px){
+.sidebar{width:60px;padding:17px 7px}
+.brand{font-size:0;text-align:center}
+.brand:before{content:"M";font-size:22px;color:var(--blue)}
+.brand small,.side-info{display:none}
+.nav a{font-size:0;text-align:center;padding:13px 5px}
+.nav a:before{content:"⌕";font-size:20px}
+.nav a:nth-child(2):before{content:"▤"}
+.main{margin-left:60px;width:calc(100% - 60px);padding:22px 13px}
+h1{font-size:27px}
+.search-grid{grid-template-columns:1fr}
+.stats{grid-template-columns:1fr 1fr}
+.stat{padding:12px}
+.stat strong{font-size:22px}
+.results-head{align-items:flex-start;flex-direction:column}
+.actions{width:100%}
+.filter{flex:1;min-width:0}
+.lead{align-items:flex-start;flex-direction:column}
+.lead-controls{width:100%;flex-wrap:wrap}
+.dialog-actions{flex-direction:column}
+}
+@media print{
+body{background:white;color:black}
+.sidebar,.main,.dialog-actions,.close{display:none!important}
+dialog{display:block;position:static;width:100%;max-height:none;background:white;color:black;border:0}
+.report-block{background:#f2f4f7}
+.report-block p{color:#222}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+    <div class="brand">Map<span>Prospector</span>
+        <small>LOCAL BUSINESS INTELLIGENCE</small>
+    </div>
+
+    <nav class="nav">
+        <a href="#discover" class="active">⌕ Descobrir empresas</a>
+        <a href="#leads">▤ Os meus leads <b id="savedCount">0</b></a>
+    </nav>
+
+    <div class="side-info">
+        <span style="color:#62d9a7">● Fontes abertas</span>
+        <p>Pesquisa baseada em dados públicos do OpenStreetMap. A cobertura depende da região.</p>
+        Os dados são guardados localmente no teu navegador.
+    </div>
+</aside>
+
+<main class="main">
+
+<header>
+    <div>
+        <span class="eyebrow">PROSPECÇÃO LOCAL</span>
+        <h1>Encontre oportunidades.</h1>
+        <p>Descobre negócios, verifica a sua presença digital e prepara abordagens comerciais.</p>
+    </div>
+    <div class="source-pill">● OpenStreetMap</div>
+</header>
+
+<section class="panel" id="discover">
+
+    <div class="section-top">
+        <div>
+            <span class="eyebrow">NOVA PESQUISA</span>
+            <h2>Que empresas procuras?</h2>
+        </div>
+        <span class="eyebrow">01 / DESCOBERTA</span>
+    </div>
+
+    <form id="searchForm" class="search-grid">
+
+        <label class="field">
+            Tipo de negócio
+            <select id="category">
+                <option value="dentist">Clínicas dentárias</option>
+                <option value="restaurant">Restaurantes</option>
+                <option value="hotel">Hotéis e alojamentos</option>
+                <option value="beauty">Salões de beleza</option>
+                <option value="lawyer">Escritórios de advocacia</option>
+                <option value="real_estate">Imobiliárias</option>
+                <option value="car_repair">Oficinas mecânicas</option>
+                <option value="school">Escolas e formação</option>
+                <option value="pharmacy">Farmácias</option>
+                <option value="supermarket">Supermercados</option>
+                <option value="gym">Ginásios</option>
+                <option value="any">Todos os negócios</option>
+            </select>
+        </label>
+
+        <label class="field">
+            Cidade / região
+            <input id="location" placeholder="Ex.: Benguela, Angola" required>
+        </label>
+
+        <label class="field">
+            Limite de resultados
+            <select id="limit">
+                <option value="25">25</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+            </select>
+        </label>
+
+        <button class="primary" id="searchBtn" type="submit">
+            ⌕ Procurar empresas
+        </button>
+
+    </form>
+
+    <p class="hint">Pesquisa uma cidade ou região. Os serviços públicos podem ter limites de utilização.</p>
+</section>
+
+<section class="stats">
+    <div class="stat">
+        <span>EMPRESAS ENCONTRADAS</span>
+        <strong id="statTotal">0</strong>
+        <small>Pesquisa atual</small>
+    </div>
+    <div class="stat">
+        <span>SEM WEBSITE IDENTIFICADO</span>
+        <strong id="statNoWeb">0</strong>
+        <small>Na fonte consultada</small>
+    </div>
+    <div class="stat">
+        <span>COM TELEFONE</span>
+        <strong id="statPhone">0</strong>
+        <small>Contacto registado</small>
+    </div>
+    <div class="stat">
+        <span>LEADS GUARDADOS</span>
+        <strong id="statSaved">0</strong>
+        <small>Na tua lista</small>
+    </div>
+</section>
+
+<section>
+
+    <div class="results-head">
+        <div>
+            <span class="eyebrow">02 / OPORTUNIDADES</span>
+            <h2 id="resultsTitle">Empresas encontradas</h2>
+            <p id="resultsSubtitle">Faz uma pesquisa para começar.</p>
+        </div>
+
+        <div class="actions">
+            <input id="filterInput" class="filter" placeholder="Filtrar..." type="search">
+            <button id="exportBtn" class="secondary" disabled>Exportar CSV ↓</button>
+        </div>
+    </div>
+
+    <div class="notice" id="notice">
+        Os resultados aparecerão aqui. A ausência de website na fonte não prova que a empresa não tenha um.
+    </div>
+
+    <div class="results" id="results"></div>
+
+</section>
+
+<section class="leads" id="leads">
+
+    <div class="results-head">
+        <div>
+            <span class="eyebrow">03 / ACOMPANHAMENTO</span>
+            <h2>Os meus leads</h2>
+            <p>Guarda empresas e acompanha as tuas abordagens.</p>
+        </div>
+        <button class="secondary" id="clearLeads">Limpar lista</button>
+    </div>
+
+    <div id="leadsList" class="lead-list">
+        <div class="empty">Ainda não guardaste empresas.</div>
+    </div>
+
+</section>
+
+<footer>
+    Dados de empresas © OpenStreetMap contributors ·
+    <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">Licença e atribuição ODbL</a>.
+    Não afiliado ao Google.
+</footer>
+
+</main>
+</div>
+
+<dialog id="reportDialog">
+
+    <div class="dialog-head">
+        <div>
+            <span class="eyebrow">RELATÓRIO COMERCIAL</span>
+            <h2 id="reportName">Empresa</h2>
+        </div>
+        <button class="close" id="closeDialog">×</button>
+    </div>
+
+    <div id="reportContent"></div>
+
+    <div class="dialog-actions">
+        <button class="secondary" id="copyPitch">Copiar mensagem WhatsApp</button>
+        <button class="primary" id="printReport">Imprimir / Guardar PDF</button>
+    </div>
+
+</dialog>
+
+<script>
+const $ = s => document.querySelector(s);
+
+const state = {
+    results: [],
+    leads: loadLeads(),
+    currentReport: null,
+    busy: false
+};
+
+const CATEGORIES = {
+    dentist: [
+        ["amenity","dentist"]
+    ],
+    restaurant: [
+        ["amenity","restaurant"],
+        ["amenity","fast_food"]
+    ],
+    hotel: [
+        ["tourism","hotel"],
+        ["tourism","guest_house"],
+        ["tourism","hostel"]
+    ],
+    beauty: [
+        ["shop","beauty"],
+        ["beauty","hairdresser"]
+    ],
+    lawyer: [
+        ["office","lawyer"]
+    ],
+    real_estate: [
+        ["office","estate_agent"]
+    ],
+    car_repair: [
+        ["shop","car_repair"]
+    ],
+    school: [
+        ["amenity","school"],
+        ["amenity","college"]
+    ],
+    pharmacy: [
+        ["amenity","pharmacy"]
+    ],
+    supermarket: [
+        ["shop","supermarket"]
+    ],
+    gym: [
+        ["leisure","fitness_centre"]
+    ],
+    any: [
+        ["name",""]
+    ]
+};
+
+function loadLeads(){
+    try {
+        return JSON.parse(localStorage.getItem("mp_leads") || "[]");
+    } catch {
+        return [];
+    }
+}
+
+function saveLeads(){
+    localStorage.setItem("mp_leads", JSON.stringify(state.leads));
+    updateCounts();
+    renderLeads();
+}
+
+function esc(v=""){
+    return String(v).replace(/[&<>"']/g,c=>({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+    }[c]));
+}
+
+function normalizeUrl(url){
+    return /^https?:\/\//i.test(url)
+        ? url
+        : "https://" + url;
+}
+
+/* GEOCODIFICAÇÃO */
+
+async function geocode(place){
+
+    const url =
+        "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q="
+        + encodeURIComponent(place);
+
+    const res = await fetch(url, {
+        headers: {
+            "Accept-Language": "pt"
+        }
+    });
+
+    if(!res.ok){
+        throw new Error("Erro ao localizar a região. Tenta novamente mais tarde.");
+    }
+
+    const data = await res.json();
+
+    if(!data.length){
+        throw new Error("Cidade não encontrada. Experimenta escrever cidade e país.");
+    }
+
+    return data[0];
+}
+
+/* PESQUISA OVERPASS */
+
+function buildQuery(bbox, category){
+
+    const [south,north,west,east] = bbox.map(Number);
+
+    const filters = CATEGORIES[category] || CATEGORIES.any;
+
+    const selectors = filters.map(([key,value]) => {
+
+        if(key === "name"){
+            return `
+                node["name"](${south},${west},${north},${east});
+                way["name"](${south},${west},${north},${east});
+            `;
+        }
+
+        return `
+            node["${key}"="${value}"](${south},${west},${north},${east});
+            way["${key}"="${value}"](${south},${west},${north},${east});
+            relation["${key}"="${value}"](${south},${west},${north},${east});
+        `;
+
+    }).join("");
+
+    return `
+        [out:json][timeout:35];
+        (
+            ${selectors}
+        );
+        out center tags;
+    `;
+}
+
+async function fetchOverpass(query){
+
+    const endpoints = [
+        "https://overpass-api.de/api/interpreter",
+        "https://overpass.kumi.systems/api/interpreter"
+    ];
+
+    let lastError;
+
+    for(const endpoint of endpoints){
+
+        try{
+
+            const res = await fetch(endpoint, {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"
+                },
+                body:"data=" + encodeURIComponent(query)
+            });
+
+            if(!res.ok){
+                throw new Error("Serviço temporariamente ocupado.");
+            }
+
+            return await res.json();
+
+        }catch(error){
+            lastError = error;
+        }
+    }
+
+    throw lastError || new Error("Não foi possível consultar os mapas.");
+}
+
+/* NORMALIZAÇÃO */
+
+function getCoords(el){
+
+    if(el.type === "node"){
+        return {
+            lat:el.lat,
+            lon:el.lon
+        };
+    }
+
+    return {
+        lat:el.center?.lat,
+        lon:el.center?.lon
+    };
+}
+
+function formatAddress(tags){
+
+    const parts = [
+        tags["addr:street"],
+        tags["addr:housenumber"],
+        tags["addr:suburb"],
+        tags["addr:city"]
+    ].filter(Boolean);
+
+    return parts.join(", ") || "Morada não registada na fonte";
+}
+
+function normalize(el){
+
+    const t = el.tags || {};
+    const c = getCoords(el);
+
+    if(!t.name || !c.lat || !c.lon){
+        return null;
+    }
+
+    const website =
+        t.website ||
+        t["contact:website"] ||
+        "";
+
+    const phone =
+        t.phone ||
+        t["contact:phone"] ||
+        "";
+
+    const category =
+        t.amenity ||
+        t.shop ||
+        t.office ||
+        t.tourism ||
+        t.leisure ||
+        "Negócio";
+
+    return {
+        id:el.type + "-" + el.id,
+        name:t.name,
+        category,
+        address:formatAddress(t),
+        phone,
+        website,
+        opening:t.opening_hours || "",
+        email:t.email || t["contact:email"] || "",
+        lat:c.lat,
+        lon:c.lon,
+        source:"OpenStreetMap",
+
+        // Não assumimos que não tem website.
+        verification:website
+            ? "Website identificado"
+            : "Não verificado"
+    };
+}
+
+/* LIGAÇÕES PARA OS PERFIS */
+
+function googleMapsUrl(b){
+
+    const query = encodeURIComponent(
+        b.name + " " + b.address
+    );
+
+    return "https://www.google.com/maps/search/?api=1&query=" + query;
+}
+
+function osmUrl(b){
+
+    return `https://www.openstreetmap.org/?mlat=${b.lat}&mlon=${b.lon}#map=18/${b.lat}/${b.lon}`;
+}
+
+/* PONTUAÇÃO */
+
+function opportunityScore(b){
+
+    let score = 25;
+
+    if(!b.website) score += 25;
+    if(!b.phone) score += 8;
+    if(!b.opening) score += 5;
+    if(b.phone) score += 7;
+    if(b.website) score += 5;
+
+    if(b.verification === "Confirmado sem website"){
+        score += 15;
+    }
+
+    return Math.min(95,score);
+}
+
+function verificationLabel(b){
+
+    return b.verification || (
+        b.website
+            ? "Website identificado"
+            : "Não verificado"
+    );
+}
+
+function verificationClass(b){
+
+    if(b.verification === "Confirmado sem website"){
+        return "bad";
+    }
+
+    if(b.verification === "Website confirmado" || b.website){
+        return "good";
+    }
+
+    return "warn";
+}
+
+/* VERIFICAÇÃO MANUAL */
+
+function verifyWebsite(id, result){
+
+    let business = state.results.find(b => b.id === id);
+
+    if(business){
+        business.verification = result;
+    }
+
+    const lead = state.leads.find(b => b.id === id);
+
+    if(lead){
+        lead.verification = result;
+    }
+
+    saveLeads();
+    renderResults();
+}
+
+/* CARTÕES */
+
+function renderResults(){
+
+    const q = $("#filterInput").value.toLowerCase().trim();
+
+    const list = state.results.filter(b =>
+        (b.name + " " + b.category + " " + b.address)
+        .toLowerCase()
+        .includes(q)
+    );
+
+    $("#results").innerHTML = list.map(b => {
+
+        const saved = state.leads.some(x => x.id === b.id);
+        const score = opportunityScore(b);
+
+        return `
+
+        <article class="business">
+
+            <div class="business-top">
+
+                <div>
+                    <h3 class="business-name">${esc(b.name)}</h3>
+
+                    <div class="category">
+                        ${esc(b.category.replaceAll("_"," "))}
+                        · ${esc(b.address)}
+                    </div>
+                </div>
+
+                <span class="score">
+                    ${score}/100
+                </span>
+
+            </div>
+
+            <div class="meta">
+
+                <div>☎ ${b.phone
+                    ? esc(b.phone)
+                    : "Telefone não identificado"}
+                </div>
+
+                <div>↗ ${
+                    b.website
+                    ? `<a href="${esc(normalizeUrl(b.website))}" target="_blank" rel="noopener">${esc(b.website)}</a>`
+                    : "Website não identificado na fonte"
+                }</div>
+
+                <div>◷ ${
+                    b.opening
+                    ? esc(b.opening)
+                    : "Horário não identificado"
+                }</div>
+
+            </div>
+
+            <div class="tag-row">
+
+                <span class="tag ${verificationClass(b)}">
+                    ${verificationLabel(b)}
+                </span>
+
+                <span class="tag">OpenStreetMap</span>
+
+            </div>
+
+            <div class="card-actions">
+
+                <button class="small"
+                    data-action="report"
+                    data-id="${esc(b.id)}">
+                    Ver relatório
+                </button>
+
+                <button class="small"
+                    data-action="save"
+                    data-id="${esc(b.id)}">
+                    ${saved ? "✓ Guardado" : "+ Guardar lead"}
+                </button>
+
+                <a class="small"
+                    href="${googleMapsUrl(b)}"
+                    target="_blank"
+                    rel="noopener">
+                    Ver perfil no Google Maps ↗
+                </a>
+
+                <a class="small"
+                    href="${osmUrl(b)}"
+                    target="_blank"
+                    rel="noopener">
+                    Ver fonte ↗
+                </a>
+
+            </div>
+
+            <div class="verify-box">
+
+                <p>
+                    Depois de abrires a ficha no Google Maps,
+                    confirma se existe website associado.
+                </p>
+
+                <button class="small"
+                    data-action="verify-no"
+                    data-id="${esc(b.id)}">
+                    Não tem website
+                </button>
+
+                <button class="small"
+                    data-action="verify-yes"
+                    data-id="${esc(b.id)}">
+                    Tem website
+                </button>
+
+            </div>
+
+        </article>
+
+        `;
+
+    }).join("");
+
+    $("#resultsSubtitle").textContent =
+        `${list.length} de ${state.results.length} empresas apresentadas.`;
+}
+
+/* ESTATÍSTICAS */
+
+function updateStats(){
+
+    $("#statTotal").textContent = state.results.length;
+
+    $("#statNoWeb").textContent =
+        state.results.filter(b => !b.website).length;
+
+    $("#statPhone").textContent =
+        state.results.filter(b => b.phone).length;
+
+    $("#statSaved").textContent = state.leads.length;
+
+    $("#savedCount").textContent = state.leads.length;
+}
+
+function updateCounts(){
+    updateStats();
+}
+
+/* GUARDAR LEADS */
+
+function saveLead(id){
+
+    const b = state.results.find(x => x.id === id);
+
+    if(!b) return;
+
+    if(!state.leads.some(x => x.id === id)){
+
+        state.leads.unshift({
+            ...b,
+            status:"Por contactar",
+            savedAt:new Date().toISOString()
+        });
+
+        saveLeads();
+        renderResults();
+    }
+}
+
+function removeLead(id){
+
+    state.leads = state.leads.filter(x => x.id !== id);
+
+    saveLeads();
+    renderResults();
+}
+
+function renderLeads(){
+
+    $("#leadsList").innerHTML = state.leads.length
+
+        ? state.leads.map(b => `
+
+        <div class="lead">
+
+            <div>
+                <strong>${esc(b.name)}</strong>
+                <small>${esc(b.category)} · ${esc(b.address)}</small>
+                <br>
+                <small>${esc(verificationLabel(b))}</small>
+            </div>
+
+            <div class="lead-controls">
+
+                <select data-status="${esc(b.id)}">
+                    ${[
+                        "Por contactar",
+                        "Contactado",
+                        "Respondeu",
+                        "Negociação",
+                        "Cliente",
+                        "Sem interesse"
+                    ].map(s => `
+                        <option ${b.status === s ? "selected" : ""}>
+                            ${s}
+                        </option>
+                    `).join("")}
+                </select>
+
+                <button class="small"
+                    data-action="leadreport"
+                    data-id="${esc(b.id)}">
+                    Relatório
+                </button>
+
+                <button class="small"
+                    data-action="remove"
+                    data-id="${esc(b.id)}">
+                    Remover
+                </button>
+
+            </div>
+
+        </div>
+
+        `).join("")
+
+        : `<div class="empty">Ainda não guardaste empresas.</div>`;
+
+    updateCounts();
+}
+
+/* MENSAGEM COMERCIAL */
+
+function buildPitch(b){
+
+    let evidence;
+
+    if(b.verification === "Confirmado sem website"){
+
+        evidence =
+        "Verifiquei a ficha da vossa empresa no Google Maps e não encontrei um website associado.";
+
+    } else if(b.website){
+
+        evidence =
+        "Encontrei o website associado à vossa empresa e gostaria de apresentar algumas ideias de melhoria.";
+
+    } else {
+
+        evidence =
+        "Não encontrei um website associado à vossa empresa nas fontes consultadas. Gostaria de confirmar se já possuem um.";
+
+    }
+
+    return `Olá! Tudo bem?
+
+Estive a conhecer alguns negócios da região e encontrei a vossa empresa.
+
+${evidence}
+
+Trabalho com criação de websites profissionais, pensados para facilitar que potenciais clientes encontrem os serviços, informações e contactos de uma empresa.
+
+Posso enviar-vos uma pequena ideia de como isso poderia funcionar para o vosso negócio, sem compromisso?`;
+}
+
+/* RELATÓRIO */
+
+function openReport(b){
+
+    const score = opportunityScore(b);
+
+    state.currentReport = {
+        business:b,
+        pitch:buildPitch(b)
+    };
+
+    $("#reportName").textContent = b.name;
+
+    $("#reportContent").innerHTML = `
+
+    <div class="report-block">
+        <h4>RESUMO DA EMPRESA</h4>
+
+        <p>
+            <b>${esc(b.name)}</b><br>
+            Categoria: ${esc(b.category)}<br>
+            Morada: ${esc(b.address)}<br>
+            Telefone: ${esc(b.phone || "Não identificado")}<br>
+            Website: ${esc(b.website || "Não identificado na fonte")}<br>
+            Verificação: ${esc(verificationLabel(b))}
+        </p>
+    </div>
+
+    <div class="report-block">
+        <h4>OPORTUNIDADE COMERCIAL</h4>
+
+        <p>
+            Pontuação interna: ${score}/100.<br><br>
+
+            ${
+                b.verification === "Confirmado sem website"
+                ? "Website confirmado como ausente na ficha consultada. Podes avaliar uma proposta de criação de website."
+                : b.website
+                ? "Existe um website registado. Podes avaliar melhorias, contactos, apresentação dos serviços e conversão."
+                : "Website não identificado na fonte. Confirma manualmente com a empresa antes de apresentar uma proposta como se não tivesse website."
+            }
+
+            <br><br>
+            Esta pontuação é apenas uma heurística de organização, não representa intenção de compra.
+        </p>
+    </div>
+
+    <div class="report-block">
+        <h4>SERVIÇO A AVALIAR</h4>
+
+        <p>
+            ${
+                b.category.includes("restaurant")
+                ? "Website profissional, menu digital e pedidos através do WhatsApp."
+                : "Website profissional com apresentação dos serviços, contactos e botão de WhatsApp."
+            }
+        </p>
+    </div>
+
+    <div class="report-block">
+        <h4>MENSAGEM PARA WHATSAPP</h4>
+
+        <p class="pitch">${esc(state.currentReport.pitch)}</p>
+    </div>
+
+    <div class="report-block">
+        <h4>LINKS PARA VERIFICAÇÃO</h4>
+
+        <p>
+            <a href="${googleMapsUrl(b)}" target="_blank" rel="noopener">
+                Abrir perfil no Google Maps ↗
+            </a>
+            <br><br>
+            <a href="${osmUrl(b)}" target="_blank" rel="noopener">
+                Abrir registo OpenStreetMap ↗
+            </a>
+        </p>
+    </div>
+
+    <div class="report-block">
+        <h4>FONTE E LIMITAÇÕES</h4>
+
+        <p>
+            Dados obtidos no OpenStreetMap.
+            A ausência de um campo significa apenas que esse dado não estava registado na fonte.
+            Confirma as informações antes de contactar a empresa.
+        </p>
+    </div>
+
+    `;
+
+    $("#reportDialog").showModal();
+}
+
+/* PESQUISA */
+
+async function doSearch(e){
+
+    e.preventDefault();
+
+    if(state.busy) return;
+
+    const place = $("#location").value.trim();
+    const category = $("#category").value;
+    const limit = Number($("#limit").value);
+
+    if(!place) return;
+
+    state.busy = true;
+
+    $("#searchBtn").disabled = true;
+    $("#searchBtn").textContent = "A pesquisar…";
+
+    $("#notice").textContent =
+        "A localizar a região e a consultar os dados públicos. Aguarda alguns segundos.";
+
+    $("#results").innerHTML = "";
+
+    try{
+
+        const geo = await geocode(place);
+
+        const query = buildQuery(
+            geo.boundingbox,
+            category
+        );
+
+        const raw = await fetchOverpass(query);
+
+        const normalized = (raw.elements || [])
+            .map(normalize)
+            .filter(Boolean);
+
+        const unique = [
+            ...new Map(
+                normalized.map(x => [x.id,x])
+            ).values()
+        ];
+
+        state.results = unique.slice(0,limit);
+
+        state.results.sort(
+            (a,b) => opportunityScore(b) - opportunityScore(a)
+        );
+
+        $("#resultsTitle").textContent =
+            "Resultados em " + geo.name.split(",")[0];
+
+        $("#notice").textContent = state.results.length
+            ? `Pesquisa concluída. Encontrámos ${state.results.length} empresas. Abre cada perfil no Google Maps para confirmar os dados.`
+            : "Não foram encontradas empresas com estes critérios. Experimenta outra categoria ou região.";
+
+        $("#exportBtn").disabled = !state.results.length;
+
+        updateStats();
+        renderResults();
+
+    }catch(error){
+
+        $("#notice").textContent =
+            error.message || "Ocorreu um erro na pesquisa.";
+
+    }finally{
+
+        state.busy = false;
+        $("#searchBtn").disabled = false;
+        $("#searchBtn").textContent = "⌕ Procurar empresas";
+    }
+}
+
+/* EXPORTAR CSV */
+
+function exportCSV(){
+
+    const rows = [[
+        "Nome",
+        "Categoria",
+        "Morada",
+        "Telefone",
+        "Website",
+        "Verificação",
+        "Google Maps",
+        "Latitude",
+        "Longitude"
+    ]];
+
+    state.results.forEach(b => {
+
+        rows.push([
+            b.name,
+            b.category,
+            b.address,
+            b.phone,
+            b.website,
+            verificationLabel(b),
+            googleMapsUrl(b),
+            b.lat,
+            b.lon
+        ]);
+
+    });
+
+    const csv = rows.map(row =>
+        row.map(v =>
+            '"' + String(v ?? "").replace(/"/g,'""') + '"'
+        ).join(";")
+    ).join("\r\n");
+
+    const blob = new Blob(
+        ["\ufeff" + csv],
+        {type:"text/csv;charset=utf-8"}
+    );
+
+    const a = document.createElement("a");
+
+    a.href = URL.createObjectURL(blob);
+    a.download = "mapprospector-leads.csv";
+    a.click();
+
+    URL.revokeObjectURL(a.href);
+}
+
+/* EVENTOS */
+
+$("#searchForm").addEventListener("submit",doSearch);
+
+$("#filterInput").addEventListener("input",renderResults);
+
+$("#exportBtn").addEventListener("click",exportCSV);
+
+$("#results").addEventListener("click",e => {
+
+    const btn = e.target.closest("[data-action]");
+
+    if(!btn) return;
+
+    const id = btn.dataset.id;
+    const action = btn.dataset.action;
+
+    if(action === "save"){
+        saveLead(id);
+    }
+
+    if(action === "report"){
+        const b = state.results.find(x => x.id === id);
+        if(b) openReport(b);
+    }
+
+    if(action === "verify-no"){
+
+        if(confirm(
+            "Confirmaste no Google Maps que esta empresa não tem website associado?"
+        )){
+            verifyWebsite(id,"Confirmado sem website");
+        }
+    }
+
+    if(action === "verify-yes"){
+
+        if(confirm(
+            "Confirmaste que esta empresa tem website?"
+        )){
+            verifyWebsite(id,"Website confirmado");
+        }
+    }
+
+});
+
+$("#leadsList").addEventListener("click",e => {
+
+    const btn = e.target.closest("[data-action]");
+
+    if(!btn) return;
+
+    const id = btn.dataset.id;
+
+    if(btn.dataset.action === "remove"){
+        removeLead(id);
+    }
+
+    if(btn.dataset.action === "leadreport"){
+
+        const b = state.leads.find(x => x.id === id);
+
+        if(b) openReport(b);
+    }
+
+});
+
+$("#leadsList").addEventListener("change",e => {
+
+    if(e.target.matches("[data-status]")){
+
+        const b = state.leads.find(
+            x => x.id === e.target.dataset.status
+        );
+
+        if(b){
+            b.status = e.target.value;
+            saveLeads();
+        }
+    }
+
+});
+
+$("#closeDialog").addEventListener("click",() => {
+    $("#reportDialog").close();
+});
+
+$("#copyPitch").addEventListener("click",async () => {
+
+    if(!state.currentReport) return;
+
+    try{
+
+        await navigator.clipboard.writeText(
+            state.currentReport.pitch
+        );
+
+        $("#copyPitch").textContent = "Copiado ✓";
+
+    }catch{
+
+        $("#copyPitch").textContent =
+            "Não foi possível copiar. Seleciona o texto manualmente.";
+    }
+});
+
+$("#printReport").addEventListener("click",() => {
+    window.print();
+});
+
+$("#clearLeads").addEventListener("click",() => {
+
+    if(state.leads.length && confirm(
+        "Queres mesmo apagar todos os leads guardados?"
+    )){
+
+        state.leads = [];
+        saveLeads();
+        renderResults();
+    }
+
+});
+
+/* INICIALIZAÇÃO */
+
+updateStats();
+renderLeads();
+
+</script>
+</body>
+</html>
