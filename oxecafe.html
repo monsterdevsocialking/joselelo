@@ -1367,14 +1367,103 @@
             }
         }
 
+
+        /* Navegação responsiva: transparente no topo e translúcida ao rolar */
+        nav.site-nav {
+            position: fixed;
+            inset: 0 0 auto;
+            width: 100%;
+            z-index: 1000;
+            background: transparent;
+            transition: background-color .3s ease, backdrop-filter .3s ease, padding .3s ease, box-shadow .3s ease;
+        }
+        nav.site-nav.nav-scrolled {
+            background: rgba(35, 19, 12, .84);
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+            box-shadow: 0 8px 28px rgba(0,0,0,.14);
+            padding-top: 16px;
+            padding-bottom: 16px;
+        }
+        .nav-toggle {
+            display: none;
+            width: 44px;
+            height: 44px;
+            padding: 10px;
+            border: 1px solid rgba(255,248,231,.35);
+            border-radius: 50%;
+            background: rgba(35,19,12,.18);
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .nav-toggle span {
+            display: block;
+            width: 19px;
+            height: 2px;
+            border-radius: 2px;
+            background: var(--creme);
+            transition: transform .25s ease, opacity .2s ease;
+        }
+        .nav-toggle[aria-expanded="true"] span:first-child { transform: translateY(7px) rotate(45deg); }
+        .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+        .nav-toggle[aria-expanded="true"] span:last-child { transform: translateY(-7px) rotate(-45deg); }
+
+        @media (max-width: 992px) {
+            nav.site-nav {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                align-items: center;
+                padding: 18px 7vw;
+            }
+            nav.site-nav.nav-scrolled { padding-top: 13px; padding-bottom: 13px; }
+            .nav-toggle { display: flex; }
+            nav.site-nav .nav-links {
+                display: none;
+                order: 3;
+                flex: 0 0 100%;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                margin-top: 14px;
+                padding: 8px 0;
+                background: rgba(35,19,12,.96);
+                border: 1px solid rgba(255,248,231,.12);
+                border-radius: 12px;
+                box-shadow: 0 16px 35px rgba(0,0,0,.25);
+            }
+            nav.site-nav.nav-open .nav-links { display: flex; }
+            nav.site-nav .nav-links li { width: 100%; }
+            nav.site-nav .nav-links a {
+                display: block;
+                width: 100%;
+                padding: 14px 18px;
+                font-size: .82rem;
+            }
+            nav.site-nav .nav-links a:hover {
+                background: rgba(245,176,65,.1);
+                transform: none;
+            }
+        }
+        @media (max-width: 600px) {
+            nav.site-nav { padding: 16px 22px; }
+            nav.site-nav.nav-scrolled { padding-top: 12px; padding-bottom: 12px; }
+        }
+
     </style>
 </head>
 <body>
 
     <!-- Navegação -->
-    <nav>
+    <nav class="site-nav">
         <a href="#" class="nav-logo">OXE.</a>
-        <ul class="nav-links">
+        <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links" id="nav-links">
             <li><a href="#sobre">Nossa História</a></li>
             <li><a href="#cardapio">Menu</a></li>
             <li><a href="#mural">Mural</a></li>
@@ -1712,6 +1801,30 @@
 
         // --- SCROLL REVEAL ANIMATION (Intersection Observer) ---
         document.addEventListener('DOMContentLoaded', () => {
+            const siteNav = document.querySelector('.site-nav');
+            const navToggle = document.querySelector('.nav-toggle');
+
+            const atualizarEstadoNav = () => {
+                siteNav.classList.toggle('nav-scrolled', window.scrollY > 24);
+            };
+            atualizarEstadoNav();
+            window.addEventListener('scroll', atualizarEstadoNav, { passive: true });
+
+            navToggle.addEventListener('click', () => {
+                const aberto = navToggle.getAttribute('aria-expanded') === 'true';
+                navToggle.setAttribute('aria-expanded', String(!aberto));
+                navToggle.setAttribute('aria-label', aberto ? 'Abrir menu' : 'Fechar menu');
+                siteNav.classList.toggle('nav-open', !aberto);
+            });
+
+            document.querySelectorAll('.site-nav .nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    siteNav.classList.remove('nav-open');
+                    navToggle.setAttribute('aria-expanded', 'false');
+                    navToggle.setAttribute('aria-label', 'Abrir menu');
+                });
+            });
+
             renderizarMenu();
             atualizarCarrinho();
             
